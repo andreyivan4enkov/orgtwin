@@ -8,6 +8,23 @@
 
 ---
 
+## [0.5.0] — 2026-09-03
+
+### Added
+- Политика **FEP / активный вывод** (`policy/fep.py`): ожидаемая свободная энергия
+  G = Risk(KL(q(o′|a)||C)) + Ambiguity(H(q)) − Habit(ln P_Dirichlet);
+  постериор π∝exp(−γG) (Friston).
+- A/B прогон Softmax vs FEP: `scripts/run_v0_5_0.py`, артефакты `reports/run_v0.5.0.*`.
+- `FEPPolicyConfig` в `ExperimentConfig`.
+
+### Changed
+- Симулятор и eval принимают Softmax **или** FEP (`policy_kind`).
+
+### Note
+- Прокси CE+λH в softmax (0.2–0.4) ≠ полная EFE; в 0.5.0 сравнение явное.
+
+---
+
 ## [0.4.0] — 2026-09-03
 
 ### Added

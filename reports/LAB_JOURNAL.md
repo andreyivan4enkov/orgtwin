@@ -231,3 +231,32 @@
 
 ### Артефакты
 - `reports/run_v0.4.0.md`, `run_v0.4.0_full.json`
+
+
+---
+
+## v0.5.0 — FEP vs Softmax (2026-09-03T12:38:22.248105+00:00)
+
+### Изменения
+- Политика активного вывода: Dirichlet + EFE (Risk+Ambiguity−Habit), π∝exp(−γG)
+- A/B с softmax на одном split; артефакты `*v0.5.0*`
+
+### Сравнение (кратко)
+- next_acc: SM=0.5504 FEP=0.4660 (winner=softmax)
+- weekly: SM=0.9215900380017684 FEP=0.8675680432440032 (winner=softmax)
+- top3: SM=0.9112 FEP=0.8465
+
+### Решения
+- Релиз OrgTwin 0.5.0: A/B Softmax vs FEP (EFE Friston)
+- Один split 3+2, один seed; timing обучается на softmax-бандле edges, FEP шарит edges
+- Калибровка длительности — для справки; сравнение политик по raw next-step и weekly
+- Softmax: откат прунинга DECLINED: ['APPLICATION:O_DECLINED|COMPLETE', 'OFFER:O_DECLINED|COMPLETE']
+- FEP cfg: α=0.5 γ=2.0 w_r/a/h=1.0/1.0/1.0
+- Победитель next-step accuracy: softmax
+- Победитель weekly_corr: softmax
+
+### Неудачи
+- **SPLIT_NOT_7_3**: split 3+2, цель 7+3
+
+### Артефакты
+- `reports/run_v0.5.0.md`, `run_v0.5.0_full.json`

@@ -1,0 +1,360 @@
+{
+  "version": "0.5.0",
+  "timestamp_utc": "2026-09-03T12:38:22.248105+00:00",
+  "config": {
+    "donor_id": "BPIC2012",
+    "donor_doi": "10.4121/uuid:3926db30-f712-4394-aebc-75976070e91f",
+    "split": {
+      "fit_months": 3,
+      "holdout_months": 2,
+      "target_fit_months": 7,
+      "target_holdout_months": 3
+    },
+    "policy": {
+      "lambda_entropy": 0.05,
+      "max_iter": 250,
+      "C": 1.0,
+      "random_state": 42,
+      "solver": "saga",
+      "tol": 0.001,
+      "amount_quantiles": [
+        0.0,
+        0.25,
+        0.5,
+        0.75,
+        1.0
+      ],
+      "prune_min_support": 30,
+      "terminal_prefixes": [
+        "A_CANCELLED",
+        "A_DECLINED",
+        "A_APPROVED",
+        "A_REGISTERED"
+      ]
+    },
+    "fep": {
+      "dirichlet_alpha": 0.5,
+      "gamma_precision": 2.0,
+      "preference_power": 1.0,
+      "habit_weight": 1.0,
+      "ambiguity_weight": 1.0,
+      "risk_weight": 1.0,
+      "empty_transition_entropy": 3.0
+    },
+    "timing": {
+      "dt_min_sec": 0.0,
+      "dt_max_sec": 2592000.0,
+      "default_latency_sec": 3600.0,
+      "latency_noise_low": 1.0,
+      "latency_noise_high": 1.0,
+      "ridge_alpha": 1.0,
+      "min_train_dt_samples": 100
+    },
+    "sim": {
+      "max_steps_per_case": 40,
+      "seed": 42
+    },
+    "eval": {
+      "top_k_actions": 20,
+      "next_step_top_k": 3
+    }
+  },
+  "split_meta": {
+    "t0": "2011-09-30 22:38:44.546000+00:00",
+    "t1": "2012-03-14 15:04:54.681000+00:00",
+    "fit_end": "2011-12-30 22:38:44.546000+00:00",
+    "hold_end": "2012-02-29 22:38:44.546000+00:00",
+    "fit_cases": 7427,
+    "hold_cases": 5658,
+    "fit_events": 149330,
+    "hold_events": 112847,
+    "fit_months": 3,
+    "holdout_months": 2
+  },
+  "prune_softmax": {
+    "pruned_actions_by_role": {
+      "APPLICATION": [
+        "A_ACTIVATED|COMPLETE",
+        "O_DECLINED|COMPLETE",
+        "W_Completeren aanvraag|COMPLETE"
+      ],
+      "OFFER": [
+        "O_DECLINED|COMPLETE"
+      ],
+      "WORKITEM": [
+        "W_Afhandelen leads|SCHEDULE",
+        "W_Wijzigen contractgegevens|SCHEDULE"
+      ]
+    },
+    "shannon_upper_bits_after": {
+      "APPLICATION": 4.0,
+      "OFFER": 3.321928094887362,
+      "WORKITEM": 5.0
+    },
+    "lambda_entropy": 0.05
+  },
+  "arms": {
+    "softmax": {
+      "policy_kind": "softmax",
+      "wall_sec": 9.024748034997174,
+      "wall_cal_sec": 10.135892900001636,
+      "train_metrics": {
+        "n_samples": 149330,
+        "n_actions": 36,
+        "n_agents": 65,
+        "cross_entropy": 0.9777343820189112,
+        "policy_entropy_nats": 1.0113296841193136,
+        "lambda_entropy": 0.05,
+        "free_energy_proxy": 1.028300866224877,
+        "fit_action_accuracy": 0.5625594321301814,
+        "fail_rate_proxy": 0.43744056786981855,
+        "loss_audit_form": "L ≈ E[fail] + λ H(policy) ≈ fail_rate + λ * entropy"
+      },
+      "metrics_raw": {
+        "weekly_events_mae": 2286.0666666666666,
+        "weekly_events_mape": 2.985994022354768,
+        "weekly_events_corr": 0.9215900380017684,
+        "case_duration_log_mae": 4.863790194258958,
+        "case_duration_spearman": 0.002365111923376657,
+        "n_cases_compared": 5658,
+        "top20_action_overlap": 15,
+        "sim_events": 86234,
+        "hold_events": 112847,
+        "terminal_share_actual": {
+          "A_CANCELLED": 0.009756573059097716,
+          "A_DECLINED": 0.028738025822573926,
+          "A_APPROVED": 0.008117185215380117,
+          "A_REGISTERED": 0.008117185215380117
+        },
+        "terminal_share_pred": {
+          "A_CANCELLED": 0.018878864485005913,
+          "A_DECLINED": 0.03180879931349584,
+          "A_APPROVED": 0.003362942690818007,
+          "A_REGISTERED": 0.0027483359231857503
+        },
+        "holdout_next_step_accuracy": 0.5503704040358133,
+        "holdout_next_step_top3": 0.911221197109485,
+        "holdout_next_step_ce": 1.0443371175280967,
+        "holdout_next_step_n": 110015,
+        "holdout_free_energy_proxy": 1.0949036017340623,
+        "policy_kind": "softmax",
+        "sim_case_duration_spearman": 0.002365111923376657,
+        "sim_wall_sec": 9.024748034997174
+      },
+      "metrics_cal": {
+        "weekly_events_mae": 2929.0833333333335,
+        "weekly_events_mape": 0.4382610347047489,
+        "weekly_events_corr": 0.8573853156611383,
+        "case_duration_log_mae": 3.889239435050548,
+        "case_duration_spearman": 0.22446562987699406,
+        "n_cases_compared": 5658,
+        "top20_action_overlap": 15,
+        "sim_events": 86234,
+        "hold_events": 112847,
+        "terminal_share_actual": {
+          "A_CANCELLED": 0.009756573059097716,
+          "A_DECLINED": 0.028738025822573926,
+          "A_APPROVED": 0.008117185215380117,
+          "A_REGISTERED": 0.008117185215380117
+        },
+        "terminal_share_pred": {
+          "A_CANCELLED": 0.018878864485005913,
+          "A_DECLINED": 0.03180879931349584,
+          "A_APPROVED": 0.003362942690818007,
+          "A_REGISTERED": 0.0027483359231857503
+        },
+        "holdout_next_step_accuracy": 0.5503704040358133,
+        "holdout_next_step_top3": 0.911221197109485,
+        "holdout_next_step_ce": 1.0443371175280967,
+        "holdout_next_step_n": 110015,
+        "holdout_free_energy_proxy": 1.0949036017340623,
+        "policy_kind": "softmax",
+        "sim_case_duration_spearman": 0.22446562987699406
+      },
+      "sim_meta": {
+        "max_steps_per_case": 40,
+        "n_cases": 5658,
+        "n_hit_max_steps": 760,
+        "n_terminal_stop": 4898,
+        "timing_used": true,
+        "batch_encode": true,
+        "policy_kind": "softmax",
+        "calibrate_duration": false,
+        "latency_noise": [
+          1.0,
+          1.0
+        ],
+        "seed": 42
+      }
+    },
+    "fep_efe": {
+      "policy_kind": "fep_efe",
+      "wall_sec": 10.332060815999284,
+      "wall_cal_sec": 11.388595672997326,
+      "train_metrics": {
+        "n_samples": 149330,
+        "n_actions": 36,
+        "n_outcomes": 23,
+        "n_agents": 65,
+        "n_habit_contexts": 193,
+        "n_transition_contexts": 553,
+        "fit_action_accuracy": 0.4764280452688676,
+        "fit_top3_accuracy": 0.8632090002008973,
+        "generative_cross_entropy": 1.6591697937431023,
+        "variational_free_energy_nats": 1.6591697937431023,
+        "mean_G_truth": 3.4412040334821965,
+        "mean_G_min": 2.8052643073870116,
+        "mean_risk": 1.676675517337492,
+        "mean_ambiguity": 0.5999726953489922,
+        "mean_habit_term": -1.164555820795712,
+        "fep_cfg": {
+          "dirichlet_alpha": 0.5,
+          "gamma_precision": 2.0,
+          "preference_power": 1.0,
+          "habit_weight": 1.0,
+          "ambiguity_weight": 1.0,
+          "risk_weight": 1.0,
+          "empty_transition_entropy": 3.0
+        },
+        "loss_form": "G=w_r·KL(q(o'|a)||C)+w_a·H(q)−w_h·ln P_habit; π∝exp(−γG)",
+        "note": "FEP/EFE — не softmax LR; CE+λH из 0.2–0.4 был только прокси"
+      },
+      "metrics_raw": {
+        "weekly_events_mae": 1938.1666666666667,
+        "weekly_events_mape": 0.41058569147092944,
+        "weekly_events_corr": 0.8675680432440032,
+        "case_duration_log_mae": 5.0264447779701085,
+        "case_duration_spearman": 0.01061050689940539,
+        "n_cases_compared": 5658,
+        "top20_action_overlap": 17,
+        "sim_events": 108273,
+        "hold_events": 112847,
+        "terminal_share_actual": {
+          "A_CANCELLED": 0.009756573059097716,
+          "A_DECLINED": 0.028738025822573926,
+          "A_APPROVED": 0.008117185215380117,
+          "A_REGISTERED": 0.008117185215380117
+        },
+        "terminal_share_pred": {
+          "A_CANCELLED": 0.01881355462580699,
+          "A_DECLINED": 0.014269485467291015,
+          "A_APPROVED": 0.0003879083428001441,
+          "A_REGISTERED": 0.0005356829495811513
+        },
+        "holdout_next_step_accuracy": 0.4660455392446485,
+        "holdout_next_step_top3": 0.8465118392946417,
+        "holdout_next_step_ce": 1.7636194276200061,
+        "holdout_next_step_n": 110015,
+        "holdout_mean_G_truth": 3.49081637266933,
+        "holdout_variational_FE": 1.7636194276200061,
+        "policy_kind": "fep_efe",
+        "sim_case_duration_spearman": 0.01061050689940539,
+        "sim_wall_sec": 10.332060815999284
+      },
+      "metrics_cal": {
+        "weekly_events_mae": 1997.8333333333333,
+        "weekly_events_mape": 0.46143172273742,
+        "weekly_events_corr": 0.8591412802649441,
+        "case_duration_log_mae": 3.889239435050548,
+        "case_duration_spearman": 0.2251997876735223,
+        "n_cases_compared": 5658,
+        "top20_action_overlap": 17,
+        "sim_events": 108273,
+        "hold_events": 112847,
+        "terminal_share_actual": {
+          "A_CANCELLED": 0.009756573059097716,
+          "A_DECLINED": 0.028738025822573926,
+          "A_APPROVED": 0.008117185215380117,
+          "A_REGISTERED": 0.008117185215380117
+        },
+        "terminal_share_pred": {
+          "A_CANCELLED": 0.01881355462580699,
+          "A_DECLINED": 0.014269485467291015,
+          "A_APPROVED": 0.0003879083428001441,
+          "A_REGISTERED": 0.0005356829495811513
+        },
+        "holdout_next_step_accuracy": 0.4660455392446485,
+        "holdout_next_step_top3": 0.8465118392946417,
+        "holdout_next_step_ce": 1.7636194276200061,
+        "holdout_next_step_n": 110015,
+        "holdout_mean_G_truth": 3.49081637266933,
+        "holdout_variational_FE": 1.7636194276200061,
+        "policy_kind": "fep_efe",
+        "sim_case_duration_spearman": 0.2251997876735223
+      },
+      "sim_meta": {
+        "max_steps_per_case": 40,
+        "n_cases": 5658,
+        "n_hit_max_steps": 1976,
+        "n_terminal_stop": 3682,
+        "timing_used": true,
+        "batch_encode": false,
+        "policy_kind": "fep_efe",
+        "calibrate_duration": false,
+        "latency_noise": [
+          1.0,
+          1.0
+        ],
+        "seed": 42
+      }
+    }
+  },
+  "comparison": {
+    "next_step_accuracy": {
+      "softmax": 0.5503704040358133,
+      "fep_efe": 0.4660455392446485,
+      "delta_fep_minus_softmax": -0.0843248647911648
+    },
+    "top3_accuracy": {
+      "softmax": 0.911221197109485,
+      "fep_efe": 0.8465118392946417,
+      "delta_fep_minus_softmax": -0.06470935781484333
+    },
+    "cross_entropy": {
+      "softmax": 1.0443371175280967,
+      "fep_efe": 1.7636194276200061,
+      "delta_fep_minus_softmax": 0.7192823100919095
+    },
+    "weekly_events_corr": {
+      "softmax": 0.9215900380017684,
+      "fep_efe": 0.8675680432440032,
+      "delta_fep_minus_softmax": -0.05402199475776526
+    },
+    "sim_duration_spearman_raw": {
+      "softmax": 0.002365111923376657,
+      "fep_efe": 0.01061050689940539
+    },
+    "sim_duration_spearman_cal": {
+      "softmax": 0.22446562987699406,
+      "fep_efe": 0.2251997876735223
+    },
+    "sim_wall_sec": {
+      "softmax": 9.024748034997174,
+      "fep_efe": 10.332060815999284
+    },
+    "free_energy_metric": {
+      "softmax_proxy_CE_plus_lamH": 1.0949036017340623,
+      "fep_variational_FE_gen_CE": 1.7636194276200061,
+      "fep_mean_G_truth": 3.49081637266933,
+      "note": "Метрики FE несопоставимы 1:1: у softmax — CE+λH прокси; у FEP — generative CE / EFE"
+    }
+  },
+  "winner_next_step": "softmax",
+  "winner_weekly": "softmax",
+  "decisions": [
+    "Релиз OrgTwin 0.5.0: A/B Softmax vs FEP (EFE Friston)",
+    "Один split 3+2, один seed; timing обучается на softmax-бандле edges, FEP шарит edges",
+    "Калибровка длительности — для справки; сравнение политик по raw next-step и weekly",
+    "Softmax: откат прунинга DECLINED: ['APPLICATION:O_DECLINED|COMPLETE', 'OFFER:O_DECLINED|COMPLETE']",
+    "FEP cfg: α=0.5 γ=2.0 w_r/a/h=1.0/1.0/1.0",
+    "Победитель next-step accuracy: softmax",
+    "Победитель weekly_corr: softmax"
+  ],
+  "failures": [
+    {
+      "id": "SPLIT_NOT_7_3",
+      "severity": "critical_limitation",
+      "detail": "split 3+2, цель 7+3"
+    }
+  ]
+}

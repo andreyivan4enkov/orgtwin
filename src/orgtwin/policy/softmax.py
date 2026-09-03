@@ -53,6 +53,7 @@ class SoftmaxPolicyBundle:
     handover_probs: dict[str, dict[str, float]]
     train_metrics: dict = field(default_factory=dict)
     amount_bin_edges: Optional[np.ndarray] = None
+    policy_kind: str = "softmax"
 
     def allowed_actions(self, role_id: str) -> list[str]:
         mask = self.role_action_mask.get(role_id)

@@ -16,7 +16,7 @@ from sklearn.linear_model import Ridge
 from sklearn.preprocessing import OneHotEncoder
 
 from orgtwin.config.constants import TimingConfig, DEFAULT
-from orgtwin.policy.softmax import SoftmaxPolicyBundle, action_name_from_row, prepare_trace_frame
+from orgtwin.policy.softmax import prepare_trace_frame
 
 
 @dataclass
@@ -53,7 +53,7 @@ class TimingModel:
 
 def train_timing_model(
     fit_df: pd.DataFrame,
-    policy: SoftmaxPolicyBundle,
+    policy: Any,
     cfg: TimingConfig | None = None,
 ) -> TimingModel:
     cfg = cfg or DEFAULT.timing
@@ -135,7 +135,7 @@ def train_timing_model(
 
 def train_case_duration_model(
     fit_df: pd.DataFrame,
-    policy: SoftmaxPolicyBundle,
+    policy: Any,
     cfg: TimingConfig | None = None,
 ) -> TimingModel:
     """
@@ -184,7 +184,7 @@ def train_case_duration_model(
 def predict_case_durations(
     model: TimingModel,
     hold_df: pd.DataFrame,
-    policy: SoftmaxPolicyBundle,
+    policy: Any,
 ) -> dict[str, float]:
     first = (
         hold_df.sort_values("time:timestamp")

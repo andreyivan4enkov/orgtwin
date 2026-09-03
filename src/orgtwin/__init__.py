@@ -11,6 +11,7 @@ from orgtwin.sim.engine import (
 )
 from orgtwin.eval.score import evaluate, actual_case_durations
 from orgtwin.policy.softmax import train_softmax_policies, prune_membrane_actions
+from orgtwin.policy.fep import train_fep_policies, FEPConfig, FEPPolicyBundle
 from orgtwin.policy.timing import (
     train_timing_model,
     train_case_duration_model,
@@ -39,6 +40,9 @@ __all__ = [
     "actual_case_durations",
     "train_softmax_policies",
     "prune_membrane_actions",
+    "train_fep_policies",
+    "FEPConfig",
+    "FEPPolicyBundle",
     "train_timing_model",
     "train_case_duration_model",
     "predict_case_durations",

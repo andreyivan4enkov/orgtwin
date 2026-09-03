@@ -1,7 +1,8 @@
 """
-Симуляция OrgTwin v0.4: батч-encode softmax, калибровка длительности, стресс.
+Симуляция OrgTwin: батч-сэмпл политики (softmax или FEP/EFE), калибровка, стресс.
 
-Ускорение: на каждом шаге все живые кейсы кодируются одним transform.
+Ускорение: на каждом шаге все живые кейсы кодируются одним transform (softmax)
+или берут π∝exp(−γG) из кэша контекста (FEP).
 Калибровка: после прогона масштабируем dt кейса так, чтобы сумма → case-head
 (явный костыль; не выдаём за чистую эмерджентность — см. LAB_JOURNAL).
 """
@@ -9,16 +10,20 @@
 from __future__ import annotations
 
 from collections import defaultdict
+from copy import copy
 from dataclasses import dataclass, field
-from typing import Any, Optional
+from typing import Any, Optional, Union
 
 import numpy as np
 import pandas as pd
 
 from orgtwin.config.constants import DEFAULT, ExperimentConfig
 from orgtwin.ir.basis import OrgGraph
+from orgtwin.policy.fep import FEPPolicyBundle, batch_sample_actions_fep
 from orgtwin.policy.softmax import SoftmaxPolicyBundle, sample_next_agent
 from orgtwin.policy.timing import TimingModel
+
+PolicyBundle = Union[SoftmaxPolicyBundle, FEPPolicyBundle]
 
 
 @dataclass
@@ -30,7 +35,7 @@ class SimResult:
     meta: dict = field(default_factory=dict)
 
 
-def _amount_bin_for_row(bundle: SoftmaxPolicyBundle, row: pd.Series) -> str:
+def _amount_bin_for_row(bundle: PolicyBundle, row: pd.Series) -> str:
     amount_col = "case:AMOUNT_REQ" if "case:AMOUNT_REQ" in row.index else (
         "AMOUNT_REQ" if "AMOUNT_REQ" in row.index else None
     )
@@ -44,15 +49,19 @@ def _amount_bin_for_row(bundle: SoftmaxPolicyBundle, row: pd.Series) -> str:
 
 
 def _batch_sample_actions(
-    policy: SoftmaxPolicyBundle,
+    policy: PolicyBundle,
     prevs: list[Any],
     amount_bins: list[Any],
     agents: list[str],
     rng: np.random.Generator,
 ) -> list[str]:
-    """Один encode на батч живых кейсов → сэмпл Action."""
+    """Сэмпл Action: FEP (EFE) или softmax (батч-encode)."""
     if not agents:
         return []
+    if getattr(policy, "policy_kind", "softmax") == "fep_efe":
+        return batch_sample_actions_fep(policy, prevs, amount_bins, agents, rng)  # type: ignore[arg-type]
+
+    assert isinstance(policy, SoftmaxPolicyBundle)
     rows = pd.DataFrame(
         {
             "prev_activity": [str(p if p is not None else "∅") for p in prevs],
@@ -81,7 +90,7 @@ def _batch_sample_actions(
 
 def _batch_predict_dt(
     timing: TimingModel | None,
-    policy: SoftmaxPolicyBundle,
+    policy: PolicyBundle,
     prevs: list[Any],
     actions: list[str],
     agents: list[str],
@@ -159,11 +168,8 @@ def apply_duration_calibration(
     return new_events, new_durs, meta
 
 
-def disable_agents(policy: SoftmaxPolicyBundle, agent_ids: set[str]) -> SoftmaxPolicyBundle:
+def disable_agents(policy: PolicyBundle, agent_ids: set[str]) -> PolicyBundle:
     """Стресс: убрать агентов из пула (копия ссылок + фильтр handover/ролей)."""
-    # shallow copy structurally
-    from copy import copy
-
     p = copy(policy)
     p.agent_to_role = {a: r for a, r in policy.agent_to_role.items() if a not in agent_ids}
     p.handover_probs = {}
@@ -178,6 +184,9 @@ def disable_agents(policy: SoftmaxPolicyBundle, agent_ids: set[str]) -> SoftmaxP
     p.latency_sec = {k: v for k, v in policy.latency_sec.items() if k[0] not in agent_ids}
     p.train_metrics = dict(policy.train_metrics)
     p.train_metrics["stress_disabled_agents"] = sorted(agent_ids)
+    if isinstance(p, FEPPolicyBundle):
+        p._cache_pi = {}
+        p._cache_G = {}
     return p
 
 
@@ -187,7 +196,7 @@ def top_agents_by_workload(workload: dict[str, int], n: int) -> list[str]:
 
 def simulate_batch(
     seed_cases: pd.DataFrame,
-    policy: SoftmaxPolicyBundle,
+    policy: PolicyBundle,
     timing: TimingModel | None = None,
     cfg: ExperimentConfig | None = None,
     max_steps_per_case: int | None = None,
@@ -312,7 +321,8 @@ def simulate_batch(
             "n_hit_max_steps": int(n_max),
             "n_terminal_stop": int(n_terminal),
             "timing_used": timing is not None,
-            "batch_encode": True,
+            "batch_encode": getattr(policy, "policy_kind", "softmax") != "fep_efe",
+            "policy_kind": getattr(policy, "policy_kind", "softmax"),
             "calibrate_duration": bool(calibrate_duration),
             "latency_noise": [tcfg.latency_noise_low, tcfg.latency_noise_high],
             "seed": seed,
@@ -328,7 +338,7 @@ def simulate(*args, **kwargs):
 
 def build_org_from_policy(
     fit_df: pd.DataFrame,
-    policy: SoftmaxPolicyBundle,
+    policy: PolicyBundle,
     donor_id: str = "BPIC2012",
 ) -> OrgGraph:
     from orgtwin.decompose.dof import build_actions_catalog, build_information_schema

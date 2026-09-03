@@ -9,7 +9,7 @@ OrgTwin моделирует фирму как плоский граф аген�
 
 ## Версии
 
-См. [CHANGELOG.md](CHANGELOG.md) и файл `VERSION`. Текущая: **0.4.0**.
+См. [CHANGELOG.md](CHANGELOG.md) и файл `VERSION`. Текущая: **0.5.0**.
 
 Правило: каждый эксперимент — **новая версия**, старые артефакты не переписываем.
 
@@ -23,7 +23,8 @@ python3 -m venv .venv
 # скачать донор BPIC2012 (если нет data/raw/*.xes)
 .venv/bin/python scripts/download_bpic2012.py
 
-.venv/bin/python scripts/run_v0_4_0.py
+# A/B: Softmax vs FEP (Friston EFE)
+.venv/bin/python scripts/run_v0_5_0.py
 ```
 
 Журнал констант и провалов: `reports/LAB_JOURNAL.md`.

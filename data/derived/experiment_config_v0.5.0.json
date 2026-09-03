@@ -1,0 +1,58 @@
+{
+  "donor_id": "BPIC2012",
+  "donor_doi": "10.4121/uuid:3926db30-f712-4394-aebc-75976070e91f",
+  "split": {
+    "fit_months": 3,
+    "holdout_months": 2,
+    "target_fit_months": 7,
+    "target_holdout_months": 3
+  },
+  "policy": {
+    "lambda_entropy": 0.05,
+    "max_iter": 250,
+    "C": 1.0,
+    "random_state": 42,
+    "solver": "saga",
+    "tol": 0.001,
+    "amount_quantiles": [
+      0.0,
+      0.25,
+      0.5,
+      0.75,
+      1.0
+    ],
+    "prune_min_support": 30,
+    "terminal_prefixes": [
+      "A_CANCELLED",
+      "A_DECLINED",
+      "A_APPROVED",
+      "A_REGISTERED"
+    ]
+  },
+  "fep": {
+    "dirichlet_alpha": 0.5,
+    "gamma_precision": 2.0,
+    "preference_power": 1.0,
+    "habit_weight": 1.0,
+    "ambiguity_weight": 1.0,
+    "risk_weight": 1.0,
+    "empty_transition_entropy": 3.0
+  },
+  "timing": {
+    "dt_min_sec": 0.0,
+    "dt_max_sec": 2592000.0,
+    "default_latency_sec": 3600.0,
+    "latency_noise_low": 1.0,
+    "latency_noise_high": 1.0,
+    "ridge_alpha": 1.0,
+    "min_train_dt_samples": 100
+  },
+  "sim": {
+    "max_steps_per_case": 40,
+    "seed": 42
+  },
+  "eval": {
+    "top_k_actions": 20,
+    "next_step_top_k": 3
+  }
+}

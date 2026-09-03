@@ -74,11 +74,25 @@ class EvalConfig:
 
 
 @dataclass(frozen=True)
+class FEPPolicyConfig:
+    """Ожидаемая свободная энергия (Friston); см. policy/fep.py."""
+
+    dirichlet_alpha: float = 0.5
+    gamma_precision: float = 2.0
+    preference_power: float = 1.0
+    habit_weight: float = 1.0
+    ambiguity_weight: float = 1.0
+    risk_weight: float = 1.0
+    empty_transition_entropy: float = 3.0
+
+
+@dataclass(frozen=True)
 class ExperimentConfig:
     donor_id: str = "BPIC2012"
     donor_doi: str = "10.4121/uuid:3926db30-f712-4394-aebc-75976070e91f"
     split: SplitConfig = SplitConfig()
     policy: PolicyConfig = PolicyConfig()
+    fep: FEPPolicyConfig = FEPPolicyConfig()
     timing: TimingConfig = TimingConfig()
     sim: SimConfig = SimConfig()
     eval: EvalConfig = EvalConfig()

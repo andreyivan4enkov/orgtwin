@@ -1,14 +1,18 @@
-"""Сравнение симуляции с holdout + метрики softmax-политики."""
+"""Сравнение симуляции с holdout + метрики политики (softmax или FEP)."""
 
 from __future__ import annotations
 
 from dataclasses import dataclass
+from typing import Union
 
 import numpy as np
 import pandas as pd
 
-from orgtwin.policy.softmax import SoftmaxPolicyBundle, action_name_from_row, action_names_vectorized, next_step_accuracy
+from orgtwin.policy.fep import FEPPolicyBundle, next_step_accuracy_fep
+from orgtwin.policy.softmax import SoftmaxPolicyBundle, action_names_vectorized, next_step_accuracy
 from orgtwin.sim.engine import SimResult
+
+PolicyBundle = Union[SoftmaxPolicyBundle, FEPPolicyBundle]
 
 
 @dataclass
@@ -32,7 +36,7 @@ def actual_case_durations(df: pd.DataFrame) -> dict[str, float]:
 def evaluate(
     hold: pd.DataFrame,
     sim: SimResult,
-    policy: SoftmaxPolicyBundle | None = None,
+    policy: PolicyBundle | None = None,
 ) -> EvalReport:
     weekly_a = _weekly_event_counts_from_ts(hold["time:timestamp"])
 
@@ -94,14 +98,25 @@ def evaluate(
     }
 
     if policy is not None:
-        ns = next_step_accuracy(policy, hold)
-        metrics["holdout_next_step_accuracy"] = ns["accuracy"]
-        metrics["holdout_next_step_top3"] = ns["top3_accuracy"]
-        metrics["holdout_next_step_ce"] = ns["cross_entropy"]
-        metrics["holdout_next_step_n"] = ns["n"]
-        lam = float(policy.train_metrics.get("lambda_entropy", 0.05))
-        metrics["holdout_free_energy_proxy"] = float(
-            ns["cross_entropy"] + lam * policy.train_metrics.get("policy_entropy_nats", 0.0)
-        )
+        if getattr(policy, "policy_kind", "softmax") == "fep_efe":
+            ns = next_step_accuracy_fep(policy, hold)  # type: ignore[arg-type]
+            metrics["holdout_next_step_accuracy"] = ns["accuracy"]
+            metrics["holdout_next_step_top3"] = ns["top3_accuracy"]
+            metrics["holdout_next_step_ce"] = ns["cross_entropy"]
+            metrics["holdout_next_step_n"] = ns["n"]
+            metrics["holdout_mean_G_truth"] = ns.get("mean_G_truth")
+            metrics["holdout_variational_FE"] = ns["cross_entropy"]  # q=δ(role)
+            metrics["policy_kind"] = "fep_efe"
+        else:
+            ns = next_step_accuracy(policy, hold)  # type: ignore[arg-type]
+            metrics["holdout_next_step_accuracy"] = ns["accuracy"]
+            metrics["holdout_next_step_top3"] = ns["top3_accuracy"]
+            metrics["holdout_next_step_ce"] = ns["cross_entropy"]
+            metrics["holdout_next_step_n"] = ns["n"]
+            lam = float(policy.train_metrics.get("lambda_entropy", 0.05))
+            metrics["holdout_free_energy_proxy"] = float(
+                ns["cross_entropy"] + lam * policy.train_metrics.get("policy_entropy_nats", 0.0)
+            )
+            metrics["policy_kind"] = "softmax"
 
     return EvalReport(metrics=metrics, weekly_actual=a, weekly_pred=p)
