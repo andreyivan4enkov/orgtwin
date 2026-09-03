@@ -24,10 +24,7 @@ from typing import Any, Optional
 import numpy as np
 import pandas as pd
 
-from orgtwin.policy.softmax import (
-    action_names_vectorized,
-    prepare_trace_frame,
-)
+from orgtwin.policy.softmax import prepare_trace_frame
 
 
 @dataclass
