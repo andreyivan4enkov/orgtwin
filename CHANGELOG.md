@@ -11,6 +11,42 @@
 
 ---
 
+## [0.7.0] — 2026-09-03
+
+### Русский
+
+#### Добавлено
+- Единый entrypoint: `scripts/run_experiment.py --config configs/experiments/vX.Y.Z.json`.
+- Логика прогона: `src/orgtwin/experiment/run.py`; конфиги `configs/experiments/`.
+- Архив старых скриптов: `scripts/legacy/`.
+- Реестр долга: `reports/TECH_DEBT.md` (RU+中文): timing отдельно, Python-циклы FEP, один донор.
+
+#### Не закрыто в 0.7.0 (зафиксировано в TECH_DEBT)
+- Векторизация EFE на весь батч.
+- Второй донор.
+- Время как следствие FEP (не отдельный Ridge).
+
+#### Протестировано
+- Прогон рецепта `softmax_fep_ab` через новый entrypoint → `reports/run_v0.7.0.*` (числа в отчёте прогона).
+
+### 中文
+
+#### 新增
+- 统一入口：`scripts/run_experiment.py --config configs/experiments/vX.Y.Z.json`。
+- 跑数逻辑：`src/orgtwin/experiment/run.py`；配置 `configs/experiments/`。
+- 旧脚本归档：`scripts/legacy/`。
+- 技术债：`reports/TECH_DEBT.md`（俄/中）：独立 timing、FEP Python 循环、单一数据源。
+
+#### 0.7.0 未关闭（见 TECH_DEBT）
+- 全批次 EFE 向量化。
+- 第二数据源。
+- 时延作为 FEP 结果（非独立 Ridge）。
+
+#### 已测试
+- 经新入口跑 `softmax_fep_ab` → `reports/run_v0.7.0.*`。
+
+---
+
 ## [0.6.0] — 2026-09-03
 
 ### Русский

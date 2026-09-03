@@ -291,3 +291,31 @@
 
 ### Артефакты
 - `reports/run_v0.6.0.md`, `run_v0.6.0_full.json`
+
+
+---
+
+## v0.7.0 — run_experiment (2026-09-03T13:06:31.788853+00:00)
+
+### Изменения
+- Единый entrypoint; конфиг: `configs/experiments/v0.7.0.json`
+- Рецепт: softmax_fep_ab
+
+### Holdout
+- winner_next=fep_habit_only; winner_weekly=softmax
+- comparison={"next_step_accuracy": {"softmax": 0.5503704040358133, "fep_habit_only": 0.5508157978457483, "fep_full_efe": 0.5483797663954916, "fep_0_5_0_crooked": 0.4660455392446485}, "top3_accuracy": {"softmax": 0.911221197109485, "fep_habit_only": 0.9018770167704404, "fep_full_efe": 0.9055856019633687}, "weekly_events_corr": {"softmax": 0.9215900380017684, "fep_habit_only": 0.8611119681301113, "fep_full_efe": 0.8610396814331969, "fep_0_5_0_crooked": 0.8675680432440032}, "cross_entropy": {"softmax": 1.0443371175280967, "fep_habit_only": 1.2496977476252735, "fep_full_efe": 1.358448069756907}, "sim_wall_sec": {"softmax": 8.045155938001699, "fep_habit_only": 6.210717144000228, "fep_full_efe": 10.540984439001477}}
+
+### Решения
+- Антипаттерн копий run_v*.py закрыт: один entrypoint + configs/experiments/
+- TECH_DEBT.md: timing отдельно, Python-циклы FEP, один донор BPIC2012
+- Прогон через scripts/run_experiment.py --config (версия 0.7.0)
+- package_version=0.7.0
+- Softmax: откат прунинга DECLINED: ['APPLICATION:O_DECLINED|COMPLETE', 'OFFER:O_DECLINED|COMPLETE']
+- FEP habit selected: {'mode': 'habit_only', 'gamma': 1.0, 'risk_w': 0.0, 'amb_w': 0.0, 'habit_w': 1.0, 'fit_acc': 0.57524}
+- FEP full selected: {'mode': 'full_efe', 'gamma': 2.0, 'risk_w': 0.25, 'amb_w': 0.25, 'habit_w': 1.0, 'fit_acc': 0.5742}
+- Сравнение с артефактом: reports/holdout_metrics_v0.5.0.json
+- Победитель next-step: fep_habit_only
+- Победитель weekly_corr: softmax
+
+### Артефакты
+- `reports/run_v0.7.0.md`, `run_v0.7.0_full.json`
