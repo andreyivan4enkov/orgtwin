@@ -1,0 +1,13 @@
+{
+  "status": "ok",
+  "n": 141893,
+  "ridge_alpha": 1.0,
+  "fit_mae_sec": 37706.2375314762,
+  "fit_log_mae": 1.4391240904531186,
+  "fit_spearman": 0.8528739183633671,
+  "baseline_median_agent_action_spearman": 0.7964418199062618,
+  "baseline_median_agent_action_log_mae": 1.4511036614403356,
+  "dt_min_sec": 0.0,
+  "dt_max_sec": 2592000.0,
+  "note": "Обучаем dt текущего события; симуляция использует predict после выбора Action"
+}

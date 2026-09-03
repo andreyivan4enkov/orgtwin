@@ -1,0 +1,487 @@
+{
+  "112": {
+    "role_id": "APPLICATION",
+    "event_count": 26070,
+    "n_rules": 56,
+    "top_rules": [
+      {
+        "action": "A_SUBMITTED|COMPLETE",
+        "when": "prev_activity=∅|amount_bin=2",
+        "p": 1.0,
+        "n": 2024
+      },
+      {
+        "action": "A_PARTLYSUBMITTED|COMPLETE",
+        "when": "prev_activity=A_SUBMITTED|amount_bin=2",
+        "p": 1.0,
+        "n": 2024
+      },
+      {
+        "action": "A_SUBMITTED|COMPLETE",
+        "when": "prev_activity=∅|amount_bin=3",
+        "p": 1.0,
+        "n": 1863
+      },
+      {
+        "action": "A_PARTLYSUBMITTED|COMPLETE",
+        "when": "prev_activity=A_SUBMITTED|amount_bin=3",
+        "p": 1.0,
+        "n": 1863
+      },
+      {
+        "action": "A_SUBMITTED|COMPLETE",
+        "when": "prev_activity=∅|amount_bin=0",
+        "p": 1.0,
+        "n": 1821
+      },
+      {
+        "action": "A_PARTLYSUBMITTED|COMPLETE",
+        "when": "prev_activity=A_SUBMITTED|amount_bin=0",
+        "p": 1.0,
+        "n": 1821
+      },
+      {
+        "action": "A_SUBMITTED|COMPLETE",
+        "when": "prev_activity=∅|amount_bin=1",
+        "p": 1.0,
+        "n": 1719
+      },
+      {
+        "action": "A_PARTLYSUBMITTED|COMPLETE",
+        "when": "prev_activity=A_SUBMITTED|amount_bin=1",
+        "p": 1.0,
+        "n": 1719
+      },
+      {
+        "action": "W_Afhandelen leads|SCHEDULE",
+        "when": "prev_activity=A_PARTLYSUBMITTED|amount_bin=2",
+        "p": 0.3755,
+        "n": 760
+      },
+      {
+        "action": "A_PREACCEPTED|COMPLETE",
+        "when": "prev_activity=A_PARTLYSUBMITTED|amount_bin=3",
+        "p": 0.3859,
+        "n": 719
+      },
+      {
+        "action": "W_Completeren aanvraag|SCHEDULE",
+        "when": "prev_activity=A_PREACCEPTED|amount_bin=3",
+        "p": 1.0,
+        "n": 719
+      },
+      {
+        "action": "A_PREACCEPTED|COMPLETE",
+        "when": "prev_activity=A_PARTLYSUBMITTED|amount_bin=0",
+        "p": 0.3844,
+        "n": 700
+      },
+      {
+        "action": "W_Completeren aanvraag|SCHEDULE",
+        "when": "prev_activity=A_PREACCEPTED|amount_bin=0",
+        "p": 1.0,
+        "n": 700
+      },
+      {
+        "action": "A_PREACCEPTED|COMPLETE",
+        "when": "prev_activity=A_PARTLYSUBMITTED|amount_bin=1",
+        "p": 0.3997,
+        "n": 687
+      },
+      {
+        "action": "W_Completeren aanvraag|SCHEDULE",
+        "when": "prev_activity=A_PREACCEPTED|amount_bin=1",
+        "p": 1.0,
+        "n": 687
+      }
+    ]
+  },
+  "UNKNOWN": {
+    "role_id": "WORKITEM",
+    "event_count": 15689,
+    "n_rules": 145,
+    "top_rules": [
+      {
+        "action": "W_Nabellen offertes|COMPLETE",
+        "when": "prev_activity=W_Nabellen offertes|amount_bin=0",
+        "p": 0.4627,
+        "n": 627
+      },
+      {
+        "action": "W_Completeren aanvraag|START",
+        "when": "prev_activity=W_Completeren aanvraag|amount_bin=3",
+        "p": 0.4537,
+        "n": 603
+      },
+      {
+        "action": "W_Nabellen offertes|COMPLETE",
+        "when": "prev_activity=W_Nabellen offertes|amount_bin=3",
+        "p": 0.473,
+        "n": 596
+      },
+      {
+        "action": "W_Completeren aanvraag|START",
+        "when": "prev_activity=W_Completeren aanvraag|amount_bin=0",
+        "p": 0.4516,
+        "n": 593
+      },
+      {
+        "action": "W_Completeren aanvraag|START",
+        "when": "prev_activity=W_Completeren aanvraag|amount_bin=2",
+        "p": 0.4506,
+        "n": 588
+      },
+      {
+        "action": "W_Nabellen offertes|COMPLETE",
+        "when": "prev_activity=W_Nabellen offertes|amount_bin=1",
+        "p": 0.4655,
+        "n": 587
+      },
+      {
+        "action": "W_Nabellen offertes|START",
+        "when": "prev_activity=W_Nabellen offertes|amount_bin=0",
+        "p": 0.4214,
+        "n": 571
+      },
+      {
+        "action": "W_Nabellen offertes|COMPLETE",
+        "when": "prev_activity=W_Nabellen offertes|amount_bin=2",
+        "p": 0.4564,
+        "n": 550
+      },
+      {
+        "action": "W_Nabellen offertes|START",
+        "when": "prev_activity=W_Nabellen offertes|amount_bin=1",
+        "p": 0.4195,
+        "n": 529
+      },
+      {
+        "action": "W_Completeren aanvraag|START",
+        "when": "prev_activity=W_Completeren aanvraag|amount_bin=1",
+        "p": 0.4588,
+        "n": 512
+      },
+      {
+        "action": "W_Nabellen offertes|START",
+        "when": "prev_activity=W_Nabellen offertes|amount_bin=3",
+        "p": 0.3992,
+        "n": 503
+      },
+      {
+        "action": "W_Nabellen offertes|START",
+        "when": "prev_activity=W_Nabellen offertes|amount_bin=2",
+        "p": 0.4091,
+        "n": 493
+      },
+      {
+        "action": "W_Completeren aanvraag|COMPLETE",
+        "when": "prev_activity=W_Completeren aanvraag|amount_bin=3",
+        "p": 0.3687,
+        "n": 490
+      },
+      {
+        "action": "W_Completeren aanvraag|COMPLETE",
+        "when": "prev_activity=W_Completeren aanvraag|amount_bin=2",
+        "p": 0.3663,
+        "n": 478
+      },
+      {
+        "action": "W_Completeren aanvraag|COMPLETE",
+        "when": "prev_activity=W_Completeren aanvraag|amount_bin=0",
+        "p": 0.3625,
+        "n": 476
+      }
+    ]
+  },
+  "11189": {
+    "role_id": "WORKITEM",
+    "event_count": 6127,
+    "n_rules": 197,
+    "top_rules": [
+      {
+        "action": "W_Nabellen offertes|COMPLETE",
+        "when": "prev_activity=W_Nabellen offertes|amount_bin=1",
+        "p": 0.4564,
+        "n": 199
+      },
+      {
+        "action": "W_Nabellen offertes|COMPLETE",
+        "when": "prev_activity=W_Nabellen offertes|amount_bin=2",
+        "p": 0.469,
+        "n": 189
+      },
+      {
+        "action": "W_Completeren aanvraag|START",
+        "when": "prev_activity=W_Completeren aanvraag|amount_bin=0",
+        "p": 0.3677,
+        "n": 182
+      },
+      {
+        "action": "W_Completeren aanvraag|START",
+        "when": "prev_activity=W_Completeren aanvraag|amount_bin=2",
+        "p": 0.3798,
+        "n": 169
+      },
+      {
+        "action": "W_Nabellen offertes|COMPLETE",
+        "when": "prev_activity=W_Nabellen offertes|amount_bin=0",
+        "p": 0.4478,
+        "n": 163
+      },
+      {
+        "action": "W_Completeren aanvraag|START",
+        "when": "prev_activity=W_Completeren aanvraag|amount_bin=3",
+        "p": 0.3852,
+        "n": 161
+      },
+      {
+        "action": "W_Nabellen offertes|START",
+        "when": "prev_activity=W_Nabellen offertes|amount_bin=1",
+        "p": 0.3326,
+        "n": 145
+      },
+      {
+        "action": "W_Completeren aanvraag|START",
+        "when": "prev_activity=W_Completeren aanvraag|amount_bin=1",
+        "p": 0.3496,
+        "n": 143
+      },
+      {
+        "action": "W_Nabellen offertes|START",
+        "when": "prev_activity=W_Nabellen offertes|amount_bin=2",
+        "p": 0.3548,
+        "n": 143
+      },
+      {
+        "action": "W_Completeren aanvraag|COMPLETE",
+        "when": "prev_activity=W_Completeren aanvraag|amount_bin=3",
+        "p": 0.3325,
+        "n": 139
+      },
+      {
+        "action": "W_Nabellen offertes|COMPLETE",
+        "when": "prev_activity=W_Nabellen offertes|amount_bin=3",
+        "p": 0.4349,
+        "n": 137
+      },
+      {
+        "action": "W_Completeren aanvraag|COMPLETE",
+        "when": "prev_activity=W_Completeren aanvraag|amount_bin=0",
+        "p": 0.2727,
+        "n": 135
+      },
+      {
+        "action": "W_Completeren aanvraag|COMPLETE",
+        "when": "prev_activity=W_Completeren aanvraag|amount_bin=2",
+        "p": 0.3011,
+        "n": 134
+      },
+      {
+        "action": "W_Nabellen offertes|START",
+        "when": "prev_activity=W_Nabellen offertes|amount_bin=0",
+        "p": 0.3159,
+        "n": 115
+      },
+      {
+        "action": "W_Nabellen offertes|START",
+        "when": "prev_activity=W_Nabellen offertes|amount_bin=3",
+        "p": 0.3492,
+        "n": 110
+      }
+    ]
+  },
+  "11181": {
+    "role_id": "WORKITEM",
+    "event_count": 4757,
+    "n_rules": 189,
+    "top_rules": [
+      {
+        "action": "W_Completeren aanvraag|START",
+        "when": "prev_activity=W_Completeren aanvraag|amount_bin=3",
+        "p": 0.4332,
+        "n": 253
+      },
+      {
+        "action": "W_Nabellen offertes|COMPLETE",
+        "when": "prev_activity=W_Nabellen offertes|amount_bin=3",
+        "p": 0.4899,
+        "n": 219
+      },
+      {
+        "action": "W_Completeren aanvraag|COMPLETE",
+        "when": "prev_activity=W_Completeren aanvraag|amount_bin=3",
+        "p": 0.3699,
+        "n": 216
+      },
+      {
+        "action": "W_Nabellen offertes|COMPLETE",
+        "when": "prev_activity=W_Nabellen offertes|amount_bin=0",
+        "p": 0.4826,
+        "n": 208
+      },
+      {
+        "action": "W_Nabellen offertes|COMPLETE",
+        "when": "prev_activity=W_Nabellen offertes|amount_bin=1",
+        "p": 0.4814,
+        "n": 194
+      },
+      {
+        "action": "W_Nabellen offertes|COMPLETE",
+        "when": "prev_activity=W_Nabellen offertes|amount_bin=2",
+        "p": 0.496,
+        "n": 188
+      },
+      {
+        "action": "W_Completeren aanvraag|START",
+        "when": "prev_activity=W_Completeren aanvraag|amount_bin=2",
+        "p": 0.4196,
+        "n": 180
+      },
+      {
+        "action": "W_Completeren aanvraag|START",
+        "when": "prev_activity=W_Completeren aanvraag|amount_bin=0",
+        "p": 0.4173,
+        "n": 174
+      },
+      {
+        "action": "W_Nabellen offertes|START",
+        "when": "prev_activity=W_Nabellen offertes|amount_bin=3",
+        "p": 0.3803,
+        "n": 170
+      },
+      {
+        "action": "W_Nabellen offertes|START",
+        "when": "prev_activity=W_Nabellen offertes|amount_bin=0",
+        "p": 0.3921,
+        "n": 169
+      },
+      {
+        "action": "W_Nabellen offertes|START",
+        "when": "prev_activity=W_Nabellen offertes|amount_bin=1",
+        "p": 0.4194,
+        "n": 169
+      },
+      {
+        "action": "W_Completeren aanvraag|COMPLETE",
+        "when": "prev_activity=W_Completeren aanvraag|amount_bin=2",
+        "p": 0.38,
+        "n": 163
+      },
+      {
+        "action": "W_Completeren aanvraag|COMPLETE",
+        "when": "prev_activity=W_Completeren aanvraag|amount_bin=0",
+        "p": 0.3717,
+        "n": 155
+      },
+      {
+        "action": "W_Completeren aanvraag|START",
+        "when": "prev_activity=W_Completeren aanvraag|amount_bin=1",
+        "p": 0.4265,
+        "n": 148
+      },
+      {
+        "action": "W_Nabellen offertes|START",
+        "when": "prev_activity=W_Nabellen offertes|amount_bin=2",
+        "p": 0.3879,
+        "n": 147
+      }
+    ]
+  },
+  "10138": {
+    "role_id": "WORKITEM",
+    "event_count": 4684,
+    "n_rules": 267,
+    "top_rules": [
+      {
+        "action": "W_Valideren aanvraag|START",
+        "when": "prev_activity=W_Nabellen offertes|amount_bin=1",
+        "p": 0.9775,
+        "n": 174
+      },
+      {
+        "action": "W_Valideren aanvraag|START",
+        "when": "prev_activity=W_Nabellen offertes|amount_bin=0",
+        "p": 0.9452,
+        "n": 138
+      },
+      {
+        "action": "W_Valideren aanvraag|START",
+        "when": "prev_activity=W_Nabellen offertes|amount_bin=2",
+        "p": 0.9145,
+        "n": 107
+      },
+      {
+        "action": "W_Valideren aanvraag|START",
+        "when": "prev_activity=W_Valideren aanvraag|amount_bin=2",
+        "p": 0.2799,
+        "n": 103
+      },
+      {
+        "action": "W_Valideren aanvraag|COMPLETE",
+        "when": "prev_activity=W_Nabellen incomplete dossiers|amount_bin=1",
+        "p": 0.4826,
+        "n": 97
+      },
+      {
+        "action": "W_Nabellen incomplete dossiers|SCHEDULE",
+        "when": "prev_activity=W_Valideren aanvraag|amount_bin=1",
+        "p": 0.2105,
+        "n": 88
+      },
+      {
+        "action": "W_Valideren aanvraag|COMPLETE",
+        "when": "prev_activity=W_Nabellen incomplete dossiers|amount_bin=0",
+        "p": 0.4645,
+        "n": 85
+      },
+      {
+        "action": "W_Valideren aanvraag|START",
+        "when": "prev_activity=W_Valideren aanvraag|amount_bin=0",
+        "p": 0.2156,
+        "n": 83
+      },
+      {
+        "action": "W_Valideren aanvraag|START",
+        "when": "prev_activity=W_Valideren aanvraag|amount_bin=1",
+        "p": 0.1938,
+        "n": 81
+      },
+      {
+        "action": "W_Valideren aanvraag|START",
+        "when": "prev_activity=W_Nabellen offertes|amount_bin=3",
+        "p": 0.8696,
+        "n": 80
+      },
+      {
+        "action": "W_Valideren aanvraag|COMPLETE",
+        "when": "prev_activity=W_Valideren aanvraag|amount_bin=2",
+        "p": 0.2065,
+        "n": 76
+      },
+      {
+        "action": "W_Valideren aanvraag|COMPLETE",
+        "when": "prev_activity=W_Valideren aanvraag|amount_bin=1",
+        "p": 0.1818,
+        "n": 76
+      },
+      {
+        "action": "W_Nabellen incomplete dossiers|SCHEDULE",
+        "when": "prev_activity=W_Valideren aanvraag|amount_bin=0",
+        "p": 0.1922,
+        "n": 74
+      },
+      {
+        "action": "W_Valideren aanvraag|START",
+        "when": "prev_activity=W_Valideren aanvraag|amount_bin=3",
+        "p": 0.2633,
+        "n": 74
+      },
+      {
+        "action": "O_ACCEPTED|COMPLETE",
+        "when": "prev_activity=W_Valideren aanvraag|amount_bin=1",
+        "p": 0.1722,
+        "n": 72
+      }
+    ]
+  }
+}

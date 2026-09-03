@@ -1,0 +1,31 @@
+{
+  "weekly_events_mae": 2929.0833333333335,
+  "weekly_events_mape": 0.4382610347047489,
+  "weekly_events_corr": 0.8573853156611383,
+  "case_duration_log_mae": 3.889239435050548,
+  "case_duration_spearman": 0.22446562987699406,
+  "n_cases_compared": 5658,
+  "top20_action_overlap": 15,
+  "sim_events": 86234,
+  "hold_events": 112847,
+  "terminal_share_actual": {
+    "A_CANCELLED": 0.009756573059097716,
+    "A_DECLINED": 0.028738025822573926,
+    "A_APPROVED": 0.008117185215380117,
+    "A_REGISTERED": 0.008117185215380117
+  },
+  "terminal_share_pred": {
+    "A_CANCELLED": 0.018878864485005913,
+    "A_DECLINED": 0.03180879931349584,
+    "A_APPROVED": 0.003362942690818007,
+    "A_REGISTERED": 0.0027483359231857503
+  },
+  "holdout_next_step_accuracy": 0.5503704040358133,
+  "holdout_next_step_top3": 0.911221197109485,
+  "holdout_next_step_ce": 1.0443371175280967,
+  "holdout_next_step_n": 110015,
+  "holdout_free_energy_proxy": 1.0949036017340623,
+  "sim_case_duration_spearman": 0.22446562987699406,
+  "sim_wall_sec": 11.018476180997823,
+  "disabled_agents": []
+}

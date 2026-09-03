@@ -1,0 +1,12 @@
+{
+  "n_samples": 149330,
+  "n_actions": 36,
+  "n_agents": 65,
+  "cross_entropy": 0.9778702307840653,
+  "policy_entropy_nats": 1.0109650157400059,
+  "lambda_entropy": 0.05,
+  "free_energy_proxy": 1.0284184815710655,
+  "fit_action_accuracy": 0.5626866671131052,
+  "fail_rate_proxy": 0.4373133328868948,
+  "loss_audit_form": "L ≈ E[fail] + λ H(policy) ≈ fail_rate + λ * entropy"
+}

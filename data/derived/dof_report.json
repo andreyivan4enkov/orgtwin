@@ -1,0 +1,112 @@
+{
+  "donor_id": "BPIC2012",
+  "n_automata": 65,
+  "n_information_atoms": 8,
+  "n_actions_catalog": 36,
+  "n_handover_edges": 1694,
+  "roles": {
+    "APPLICATION": {
+      "n_automata": 4,
+      "sensor_keys": [
+        "prev_activity",
+        "amount_bin",
+        "case:AMOUNT_REQ",
+        "case:concept:name"
+      ],
+      "n_actions": 16,
+      "action_names": [
+        "A_ACCEPTED|COMPLETE",
+        "A_APPROVED|COMPLETE",
+        "A_CANCELLED|COMPLETE",
+        "A_DECLINED|COMPLETE",
+        "A_FINALIZED|COMPLETE",
+        "A_PARTLYSUBMITTED|COMPLETE",
+        "A_PREACCEPTED|COMPLETE",
+        "A_REGISTERED|COMPLETE",
+        "A_SUBMITTED|COMPLETE",
+        "O_CANCELLED|COMPLETE",
+        "O_CREATED|COMPLETE",
+        "O_SELECTED|COMPLETE",
+        "O_SENT|COMPLETE",
+        "W_Afhandelen leads|SCHEDULE",
+        "W_Beoordelen fraude|SCHEDULE",
+        "W_Completeren aanvraag|SCHEDULE"
+      ],
+      "bits_budget_max_action": 1,
+      "shannon_upper_bits": 4.0,
+      "total_events": 27152
+    },
+    "OFFER": {
+      "n_automata": 6,
+      "sensor_keys": [
+        "prev_activity",
+        "amount_bin",
+        "case:AMOUNT_REQ",
+        "case:concept:name"
+      ],
+      "n_actions": 10,
+      "action_names": [
+        "A_ACCEPTED|COMPLETE",
+        "A_CANCELLED|COMPLETE",
+        "A_DECLINED|COMPLETE",
+        "A_FINALIZED|COMPLETE",
+        "A_PREACCEPTED|COMPLETE",
+        "O_CANCELLED|COMPLETE",
+        "O_CREATED|COMPLETE",
+        "O_SELECTED|COMPLETE",
+        "O_SENT_BACK|COMPLETE",
+        "O_SENT|COMPLETE"
+      ],
+      "bits_budget_max_action": 1,
+      "shannon_upper_bits": 3.321928094887362,
+      "total_events": 4027
+    },
+    "WORKITEM": {
+      "n_automata": 55,
+      "sensor_keys": [
+        "prev_activity",
+        "amount_bin",
+        "case:AMOUNT_REQ",
+        "case:concept:name"
+      ],
+      "n_actions": 32,
+      "action_names": [
+        "A_ACCEPTED|COMPLETE",
+        "A_ACTIVATED|COMPLETE",
+        "A_APPROVED|COMPLETE",
+        "A_CANCELLED|COMPLETE",
+        "A_DECLINED|COMPLETE",
+        "A_FINALIZED|COMPLETE",
+        "A_PREACCEPTED|COMPLETE",
+        "A_REGISTERED|COMPLETE",
+        "O_ACCEPTED|COMPLETE",
+        "O_CANCELLED|COMPLETE",
+        "O_CREATED|COMPLETE",
+        "O_DECLINED|COMPLETE",
+        "O_SELECTED|COMPLETE",
+        "O_SENT_BACK|COMPLETE",
+        "O_SENT|COMPLETE",
+        "W_Afhandelen leads|COMPLETE",
+        "W_Afhandelen leads|START",
+        "W_Beoordelen fraude|COMPLETE",
+        "W_Beoordelen fraude|SCHEDULE",
+        "W_Beoordelen fraude|START",
+        "W_Completeren aanvraag|COMPLETE",
+        "W_Completeren aanvraag|SCHEDULE",
+        "W_Completeren aanvraag|START",
+        "W_Nabellen incomplete dossiers|COMPLETE",
+        "W_Nabellen incomplete dossiers|SCHEDULE",
+        "W_Nabellen incomplete dossiers|START",
+        "W_Nabellen offertes|COMPLETE",
+        "W_Nabellen offertes|SCHEDULE",
+        "W_Nabellen offertes|START",
+        "W_Valideren aanvraag|COMPLETE",
+        "W_Valideren aanvraag|SCHEDULE",
+        "W_Valideren aanvraag|START"
+      ],
+      "bits_budget_max_action": 1,
+      "shannon_upper_bits": 5.0,
+      "total_events": 118151
+    }
+  }
+}

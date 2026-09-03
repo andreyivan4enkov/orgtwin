@@ -1,0 +1,426 @@
+{
+  "version": "0.4.0",
+  "timestamp_utc": "2026-09-03T12:14:47.253019+00:00",
+  "config": {
+    "donor_id": "BPIC2012",
+    "donor_doi": "10.4121/uuid:3926db30-f712-4394-aebc-75976070e91f",
+    "split": {
+      "fit_months": 3,
+      "holdout_months": 2,
+      "target_fit_months": 7,
+      "target_holdout_months": 3
+    },
+    "policy": {
+      "lambda_entropy": 0.05,
+      "max_iter": 250,
+      "C": 1.0,
+      "random_state": 42,
+      "solver": "saga",
+      "tol": 0.001,
+      "amount_quantiles": [
+        0.0,
+        0.25,
+        0.5,
+        0.75,
+        1.0
+      ],
+      "prune_min_support": 30,
+      "terminal_prefixes": [
+        "A_CANCELLED",
+        "A_DECLINED",
+        "A_APPROVED",
+        "A_REGISTERED"
+      ]
+    },
+    "timing": {
+      "dt_min_sec": 0.0,
+      "dt_max_sec": 2592000.0,
+      "default_latency_sec": 3600.0,
+      "latency_noise_low": 1.0,
+      "latency_noise_high": 1.0,
+      "ridge_alpha": 1.0,
+      "min_train_dt_samples": 100
+    },
+    "sim": {
+      "max_steps_per_case": 40,
+      "seed": 42
+    },
+    "eval": {
+      "top_k_actions": 20,
+      "next_step_top_k": 3
+    }
+  },
+  "split_meta": {
+    "t0": "2011-09-30 22:38:44.546000+00:00",
+    "t1": "2012-03-14 15:04:54.681000+00:00",
+    "fit_end": "2011-12-30 22:38:44.546000+00:00",
+    "hold_end": "2012-02-29 22:38:44.546000+00:00",
+    "fit_cases": 7427,
+    "hold_cases": 5658,
+    "fit_events": 149330,
+    "hold_events": 112847,
+    "fit_months": 3,
+    "holdout_months": 2
+  },
+  "train_policy": {
+    "n_samples": 149330,
+    "n_actions": 36,
+    "n_agents": 65,
+    "cross_entropy": 0.9777343820189112,
+    "policy_entropy_nats": 1.0113296841193136,
+    "lambda_entropy": 0.05,
+    "free_energy_proxy": 1.028300866224877,
+    "fit_action_accuracy": 0.5625594321301814,
+    "fail_rate_proxy": 0.43744056786981855,
+    "loss_audit_form": "L ≈ E[fail] + λ H(policy) ≈ fail_rate + λ * entropy"
+  },
+  "train_timing": {
+    "status": "ok",
+    "n": 141893,
+    "ridge_alpha": 1.0,
+    "fit_mae_sec": 37706.2375314762,
+    "fit_log_mae": 1.4391240904531186,
+    "fit_spearman": 0.8528739183633671,
+    "baseline_median_agent_action_spearman": 0.7964418199062618,
+    "baseline_median_agent_action_log_mae": 1.4511036614403356,
+    "dt_min_sec": 0.0,
+    "dt_max_sec": 2592000.0,
+    "note": "Обучаем dt текущего события; симуляция использует predict после выбора Action"
+  },
+  "train_case_duration": {
+    "status": "case_level_head",
+    "n": 7427,
+    "fit_spearman": 0.22392207385780277,
+    "fit_log_mae": 3.884647139297548,
+    "note": "Не сумма dt; отдельный регрессор длительности кейса"
+  },
+  "prune": {
+    "pruned_actions_by_role": {
+      "APPLICATION": [
+        "A_ACTIVATED|COMPLETE",
+        "O_DECLINED|COMPLETE",
+        "W_Completeren aanvraag|COMPLETE"
+      ],
+      "OFFER": [
+        "O_DECLINED|COMPLETE"
+      ],
+      "WORKITEM": [
+        "W_Afhandelen leads|SCHEDULE",
+        "W_Wijzigen contractgegevens|SCHEDULE"
+      ]
+    },
+    "shannon_upper_bits_after": {
+      "APPLICATION": 4.0,
+      "OFFER": 3.321928094887362,
+      "WORKITEM": 5.0
+    },
+    "lambda_entropy": 0.05
+  },
+  "dof": {
+    "donor_id": "BPIC2012",
+    "n_automata": 65,
+    "n_information_atoms": 8,
+    "n_actions_catalog": 36,
+    "n_handover_edges": 1694,
+    "roles": {
+      "APPLICATION": {
+        "n_automata": 4,
+        "sensor_keys": [
+          "prev_activity",
+          "amount_bin",
+          "case:AMOUNT_REQ",
+          "case:concept:name"
+        ],
+        "n_actions": 17,
+        "action_names": [
+          "A_ACCEPTED|COMPLETE",
+          "A_APPROVED|COMPLETE",
+          "A_CANCELLED|COMPLETE",
+          "A_DECLINED|COMPLETE",
+          "A_FINALIZED|COMPLETE",
+          "A_PARTLYSUBMITTED|COMPLETE",
+          "A_PREACCEPTED|COMPLETE",
+          "A_REGISTERED|COMPLETE",
+          "A_SUBMITTED|COMPLETE",
+          "O_CANCELLED|COMPLETE",
+          "O_CREATED|COMPLETE",
+          "O_DECLINED|COMPLETE",
+          "O_SELECTED|COMPLETE",
+          "O_SENT|COMPLETE",
+          "W_Afhandelen leads|SCHEDULE",
+          "W_Beoordelen fraude|SCHEDULE",
+          "W_Completeren aanvraag|SCHEDULE"
+        ],
+        "bits_budget_max_action": 1,
+        "shannon_upper_bits": 4.087462841250339,
+        "total_events": 27152
+      },
+      "OFFER": {
+        "n_automata": 6,
+        "sensor_keys": [
+          "prev_activity",
+          "amount_bin",
+          "case:AMOUNT_REQ",
+          "case:concept:name"
+        ],
+        "n_actions": 11,
+        "action_names": [
+          "A_ACCEPTED|COMPLETE",
+          "A_CANCELLED|COMPLETE",
+          "A_DECLINED|COMPLETE",
+          "A_FINALIZED|COMPLETE",
+          "A_PREACCEPTED|COMPLETE",
+          "O_CANCELLED|COMPLETE",
+          "O_CREATED|COMPLETE",
+          "O_DECLINED|COMPLETE",
+          "O_SELECTED|COMPLETE",
+          "O_SENT_BACK|COMPLETE",
+          "O_SENT|COMPLETE"
+        ],
+        "bits_budget_max_action": 1,
+        "shannon_upper_bits": 3.4594316186372973,
+        "total_events": 4027
+      },
+      "WORKITEM": {
+        "n_automata": 55,
+        "sensor_keys": [
+          "prev_activity",
+          "amount_bin",
+          "case:AMOUNT_REQ",
+          "case:concept:name"
+        ],
+        "n_actions": 32,
+        "action_names": [
+          "A_ACCEPTED|COMPLETE",
+          "A_ACTIVATED|COMPLETE",
+          "A_APPROVED|COMPLETE",
+          "A_CANCELLED|COMPLETE",
+          "A_DECLINED|COMPLETE",
+          "A_FINALIZED|COMPLETE",
+          "A_PREACCEPTED|COMPLETE",
+          "A_REGISTERED|COMPLETE",
+          "O_ACCEPTED|COMPLETE",
+          "O_CANCELLED|COMPLETE",
+          "O_CREATED|COMPLETE",
+          "O_DECLINED|COMPLETE",
+          "O_SELECTED|COMPLETE",
+          "O_SENT_BACK|COMPLETE",
+          "O_SENT|COMPLETE",
+          "W_Afhandelen leads|COMPLETE",
+          "W_Afhandelen leads|START",
+          "W_Beoordelen fraude|COMPLETE",
+          "W_Beoordelen fraude|SCHEDULE",
+          "W_Beoordelen fraude|START",
+          "W_Completeren aanvraag|COMPLETE",
+          "W_Completeren aanvraag|SCHEDULE",
+          "W_Completeren aanvraag|START",
+          "W_Nabellen incomplete dossiers|COMPLETE",
+          "W_Nabellen incomplete dossiers|SCHEDULE",
+          "W_Nabellen incomplete dossiers|START",
+          "W_Nabellen offertes|COMPLETE",
+          "W_Nabellen offertes|SCHEDULE",
+          "W_Nabellen offertes|START",
+          "W_Valideren aanvraag|COMPLETE",
+          "W_Valideren aanvraag|SCHEDULE",
+          "W_Valideren aanvraag|START"
+        ],
+        "bits_budget_max_action": 1,
+        "shannon_upper_bits": 5.0,
+        "total_events": 118151
+      }
+    }
+  },
+  "runs": {
+    "baseline_raw": {
+      "metrics": {
+        "weekly_events_mae": 2286.0666666666666,
+        "weekly_events_mape": 2.985994022354768,
+        "weekly_events_corr": 0.9215900380017684,
+        "case_duration_log_mae": 4.863790194258958,
+        "case_duration_spearman": 0.002365111923376657,
+        "n_cases_compared": 5658,
+        "top20_action_overlap": 15,
+        "sim_events": 86234,
+        "hold_events": 112847,
+        "terminal_share_actual": {
+          "A_CANCELLED": 0.009756573059097716,
+          "A_DECLINED": 0.028738025822573926,
+          "A_APPROVED": 0.008117185215380117,
+          "A_REGISTERED": 0.008117185215380117
+        },
+        "terminal_share_pred": {
+          "A_CANCELLED": 0.018878864485005913,
+          "A_DECLINED": 0.03180879931349584,
+          "A_APPROVED": 0.003362942690818007,
+          "A_REGISTERED": 0.0027483359231857503
+        },
+        "holdout_next_step_accuracy": 0.5503704040358133,
+        "holdout_next_step_top3": 0.911221197109485,
+        "holdout_next_step_ce": 1.0443371175280967,
+        "holdout_next_step_n": 110015,
+        "holdout_free_energy_proxy": 1.0949036017340623,
+        "sim_case_duration_spearman": 0.002365111923376657,
+        "sim_wall_sec": 10.433176411999739,
+        "disabled_agents": []
+      },
+      "sim_meta": {
+        "max_steps_per_case": 40,
+        "n_cases": 5658,
+        "n_hit_max_steps": 760,
+        "n_terminal_stop": 4898,
+        "timing_used": true,
+        "batch_encode": true,
+        "calibrate_duration": false,
+        "latency_noise": [
+          1.0,
+          1.0
+        ],
+        "seed": 42
+      },
+      "wall_sec": 10.433176411999739
+    },
+    "calibrated": {
+      "metrics": {
+        "weekly_events_mae": 2929.0833333333335,
+        "weekly_events_mape": 0.4382610347047489,
+        "weekly_events_corr": 0.8573853156611383,
+        "case_duration_log_mae": 3.889239435050548,
+        "case_duration_spearman": 0.22446562987699406,
+        "n_cases_compared": 5658,
+        "top20_action_overlap": 15,
+        "sim_events": 86234,
+        "hold_events": 112847,
+        "terminal_share_actual": {
+          "A_CANCELLED": 0.009756573059097716,
+          "A_DECLINED": 0.028738025822573926,
+          "A_APPROVED": 0.008117185215380117,
+          "A_REGISTERED": 0.008117185215380117
+        },
+        "terminal_share_pred": {
+          "A_CANCELLED": 0.018878864485005913,
+          "A_DECLINED": 0.03180879931349584,
+          "A_APPROVED": 0.003362942690818007,
+          "A_REGISTERED": 0.0027483359231857503
+        },
+        "holdout_next_step_accuracy": 0.5503704040358133,
+        "holdout_next_step_top3": 0.911221197109485,
+        "holdout_next_step_ce": 1.0443371175280967,
+        "holdout_next_step_n": 110015,
+        "holdout_free_energy_proxy": 1.0949036017340623,
+        "sim_case_duration_spearman": 0.22446562987699406,
+        "sim_wall_sec": 11.018476180997823,
+        "disabled_agents": []
+      },
+      "sim_meta": {
+        "max_steps_per_case": 40,
+        "n_cases": 5658,
+        "n_hit_max_steps": 760,
+        "n_terminal_stop": 4898,
+        "timing_used": true,
+        "batch_encode": true,
+        "calibrate_duration": true,
+        "latency_noise": [
+          1.0,
+          1.0
+        ],
+        "seed": 42,
+        "calibration": "scale_dt_to_case_head",
+        "n_scaled": 5658,
+        "n_skipped": 0,
+        "scale_median": 1.7927042361446088,
+        "scale_p10": 0.0790844926087603,
+        "scale_p90": 610.6452825448658,
+        "note": "Не чистая эмерджентность; явная калибровка под case-level head"
+      },
+      "wall_sec": 11.018476180997823
+    },
+    "stress_top3_calibrated": {
+      "metrics": {
+        "weekly_events_mae": 2165.25,
+        "weekly_events_mape": 0.424716244525918,
+        "weekly_events_corr": 0.8419775498757414,
+        "case_duration_log_mae": 3.889239435050548,
+        "case_duration_spearman": 0.21967442231721024,
+        "n_cases_compared": 5658,
+        "top20_action_overlap": 14,
+        "sim_events": 107006,
+        "hold_events": 112847,
+        "terminal_share_actual": {
+          "A_CANCELLED": 0.009756573059097716,
+          "A_DECLINED": 0.028738025822573926,
+          "A_APPROVED": 0.008117185215380117,
+          "A_REGISTERED": 0.008117185215380117
+        },
+        "terminal_share_pred": {
+          "A_CANCELLED": 0.008887352111096574,
+          "A_DECLINED": 0.019933461675046258,
+          "A_APPROVED": 0.006700558847167449,
+          "A_REGISTERED": 0.005560435863409529
+        },
+        "holdout_next_step_accuracy": 0.5503704040358133,
+        "holdout_next_step_top3": 0.911221197109485,
+        "holdout_next_step_ce": 1.0443371175280967,
+        "holdout_next_step_n": 110015,
+        "holdout_free_energy_proxy": 1.0949036017340623,
+        "sim_case_duration_spearman": 0.21967442231721024,
+        "sim_wall_sec": 13.44012197399934,
+        "disabled_agents": [
+          "112",
+          "UNKNOWN",
+          "11189"
+        ]
+      },
+      "sim_meta": {
+        "max_steps_per_case": 40,
+        "n_cases": 5658,
+        "n_hit_max_steps": 1262,
+        "n_terminal_stop": 4396,
+        "timing_used": true,
+        "batch_encode": true,
+        "calibrate_duration": true,
+        "latency_noise": [
+          1.0,
+          1.0
+        ],
+        "seed": 42,
+        "calibration": "scale_dt_to_case_head",
+        "n_scaled": 5658,
+        "n_skipped": 0,
+        "scale_median": 0.5765154667246426,
+        "scale_p10": 0.04185341319447563,
+        "scale_p90": 2517.6142718066035,
+        "note": "Не чистая эмерджентность; явная калибровка под case-level head"
+      },
+      "wall_sec": 13.44012197399934
+    }
+  },
+  "stress_delta": {
+    "sim_events_delta": 20772,
+    "weekly_corr_stress": 0.8419775498757414,
+    "dur_spearman_stress": 0.21967442231721024,
+    "hit_max_stress": 1262,
+    "hit_max_base": 760
+  },
+  "decisions": [
+    "Релиз OrgTwin 0.4.0: батч-encode, калибровка dt→case-head, stress top-3 агентов",
+    "Старые run_v0/v1/v2 не перезаписываем",
+    "solver=saga (A/B lbfgs отложен на 0.4.1)",
+    "Откат прунинга DECLINED: ['APPLICATION:O_DECLINED|COMPLETE', 'OFFER:O_DECLINED|COMPLETE']",
+    "Стресс stress_top3_calibrated: disabled=['112', 'UNKNOWN', '11189']",
+    "Калибровка подняла duration Spearman до 0.224 (не эмерджентность — зафиксировано)",
+    "Батч-сима baseline_raw wall=10.4s",
+    "Стресс delta: {'sim_events_delta': 20772, 'weekly_corr_stress': 0.8419775498757414, 'dur_spearman_stress': 0.21967442231721024, 'hit_max_stress': 1262, 'hit_max_base': 760}"
+  ],
+  "failures": [
+    {
+      "id": "SPLIT_NOT_7_3",
+      "severity": "critical_limitation",
+      "detail": "split 3+2, цель 7+3"
+    },
+    {
+      "id": "PRUNE_DECLINED_ROLLED_BACK",
+      "severity": "decision",
+      "detail": "Восстановлены на мембране: ['APPLICATION:O_DECLINED|COMPLETE', 'OFFER:O_DECLINED|COMPLETE'] (риск PRUNE_MAY_BIAS_TERMINALS из 0.3.0)"
+    }
+  ]
+}

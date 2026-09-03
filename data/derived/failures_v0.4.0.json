@@ -1,0 +1,12 @@
+[
+  {
+    "id": "SPLIT_NOT_7_3",
+    "severity": "critical_limitation",
+    "detail": "split 3+2, цель 7+3"
+  },
+  {
+    "id": "PRUNE_DECLINED_ROLLED_BACK",
+    "severity": "decision",
+    "detail": "Восстановлены на мембране: ['APPLICATION:O_DECLINED|COMPLETE', 'OFFER:O_DECLINED|COMPLETE'] (риск PRUNE_MAY_BIAS_TERMINALS из 0.3.0)"
+  }
+]

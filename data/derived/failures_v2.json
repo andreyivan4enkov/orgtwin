@@ -1,0 +1,27 @@
+[
+  {
+    "id": "SPLIT_NOT_7_3",
+    "severity": "critical_limitation",
+    "detail": "Донор ~5.5 мес → используем 3+2, не целевые 7+3"
+  },
+  {
+    "id": "PRUNE_MAY_BIAS_TERMINALS",
+    "severity": "risk",
+    "detail": "Срезаны Action: {'APPLICATION': ['A_ACTIVATED|COMPLETE', 'O_DECLINED|COMPLETE', 'W_Completeren aanvraag|COMPLETE'], 'OFFER': ['O_DECLINED|COMPLETE'], 'WORKITEM': ['W_Afhandelen leads|SCHEDULE', 'W_Wijzigen contractgegevens|SCHEDULE']} — риск смещения исходов"
+  },
+  {
+    "id": "MAX_STEPS_80_ABORTED",
+    "severity": "incident",
+    "detail": "Прогон max_steps=80 прерван: wall-time (поштучный softmax encode на каждом шаге). Частичный результат max_steps=40: dur_spearman≈-0.001, hit_max=738/5658, next_acc≈0.55. В финальном v2 оставляем только max_steps=40 + case-level duration head."
+  },
+  {
+    "id": "EMERGENT_DURATION_SPEARMAN_BELOW_0_2",
+    "severity": "failure",
+    "detail": "Эмерджентная сумма dt: Spearman=-0.0010959483106119821. Case-level head Spearman=0.2292521383306908. Вывод: хороший event-dt ≠ хороший case wall-clock через симулированную траекторию Action."
+  },
+  {
+    "id": "WEEKLY_CORR_BELOW_0_9",
+    "severity": "failure",
+    "detail": "weekly_events_corr=0.873 < целевых 0.9 (v1 было 0.955 — возможная регрессия от saga/прунинга/смены latency; не тюнилось)."
+  }
+]

@@ -1,0 +1,11 @@
+{
+  "weekly_events_mae": 12387.166666666666,
+  "weekly_events_mape": 7.387251860736235,
+  "weekly_events_corr": -0.48309666841017634,
+  "case_duration_mae_sec": 932596.1638857864,
+  "case_duration_mape": 7012.71466740733,
+  "n_cases_compared": 5658,
+  "top20_action_overlap": 16,
+  "sim_events": 97965,
+  "hold_events": 112847
+}
