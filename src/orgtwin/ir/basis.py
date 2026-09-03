@@ -1,16 +1,10 @@
 """
 Базис IR: Information + Action.
 
-Философия: компания — организм. Глобальный порядок не навязывается
-центральным регламентом, а эмерджирует из локальных взаимодействий агентов.
-Любой контур (продажи, склад, найм, финансы) — проекция одного базиса.
-
-Две примитивные структуры:
-- Information — что записано (состояние / сенсорная проекция мембраны)
-- Action — какая мутация информации допустима при каких предусловиях
-
-Марковское одеяло роли = (сенсорная проекция Information, допустимые Action).
-1 агент = 1 NeuroAutomaton; эмерджентность = динамика многих автоматов.
+- Information — поле/атом состояния в событийном следе
+- Action — допустимая мутация Information при предусловиях
+- Membrane роли = сенсоры + допустимые Action
+- 1 org:resource = 1 NeuroAutomaton
 """
 
 from __future__ import annotations
@@ -32,22 +26,18 @@ class InformationAtom:
 
 @dataclass(frozen=True)
 class Action:
-    """
-    Мутация информации: предусловие → изменение полей Information.
-
-    bits: размерность выбора на мембране (Poka-Yoke / когнитивный бюджет).
-    """
+    """Мутация информации: предусловие → изменение полей Information."""
 
     name: str
     preconditions: tuple[str, ...]  # ключи Information / предикаты, нужные до действия
     writes: tuple[str, ...]  # какие InformationAtom мутируются
-    bits: int = 1
+    bits: int = 1  # верхняя оценка log2(|допустимых Action|) на мембране роли
     lifecycle: Optional[str] = None  # start|complete|schedule|...
 
 
 @dataclass
 class Membrane:
-    """Марковское одеяло роли: сенсоры (Information) + активные (Action)."""
+    """Мембрана роли: сенсоры (Information) + допустимые Action."""
 
     role_id: str
     sensors: tuple[InformationAtom, ...]

@@ -1,8 +1,7 @@
-# Прогон v1 — softmax-организм (BPIC2012)
+# Прогон v1 — softmax (BPIC2012)
 
-## Философия
-Компания = организм. Порядок эмерджентен из локальных мутаций **Information** через **Action**.
-Политика агента — классический softmax (мультиномиальная логистика), не таблица частот.
+## Суть
+Локальные политики P(Action|Information, agent); симуляция holdout.
 
 ## Донор
 - BPI Challenge 2012 (один институт)
@@ -12,7 +11,7 @@
 
 ## Обучение политики
 - Модель: One-Hot(prev_activity, amount_bin, agent) → softmax(Action)
-- Loss (аудит): L ≈ E[fail] + λH → CE + λ·entropy
+- Loss-прокси: L ≈ E[fail] + λH → CE + λ·entropy
 - Fit accuracy: **0.563**
 - Fit CE: 0.978, F≈1.028
 - Прунинг редких Action: {"APPLICATION": ["A_ACTIVATED|COMPLETE", "O_DECLINED|COMPLETE", "W_Completeren aanvraag|COMPLETE"], "OFFER": ["O_DECLINED|COMPLETE"], "WORKITEM": ["W_Afhandelen leads|SCHEDULE", "W_Wijzigen contractgegevens|SCHEDULE"]}
