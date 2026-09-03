@@ -1,0 +1,656 @@
+{
+  "version": "0.6.0",
+  "timestamp_utc": "2026-09-03T12:56:53.904571+00:00",
+  "config": {
+    "donor_id": "BPIC2012",
+    "donor_doi": "10.4121/uuid:3926db30-f712-4394-aebc-75976070e91f",
+    "split": {
+      "fit_months": 3,
+      "holdout_months": 2,
+      "target_fit_months": 7,
+      "target_holdout_months": 3
+    },
+    "policy": {
+      "lambda_entropy": 0.05,
+      "max_iter": 250,
+      "C": 1.0,
+      "random_state": 42,
+      "solver": "saga",
+      "tol": 0.001,
+      "amount_quantiles": [
+        0.0,
+        0.25,
+        0.5,
+        0.75,
+        1.0
+      ],
+      "prune_min_support": 30,
+      "terminal_prefixes": [
+        "A_CANCELLED",
+        "A_DECLINED",
+        "A_APPROVED",
+        "A_REGISTERED"
+      ]
+    },
+    "fep": {
+      "dirichlet_alpha": 0.5,
+      "gamma_precision": 4.0,
+      "preference_power": 1.0,
+      "habit_weight": 1.0,
+      "ambiguity_weight": 0.0,
+      "risk_weight": 0.0,
+      "empty_transition_entropy": 3.0,
+      "mode": "habit_only",
+      "tune_on_fit": true,
+      "tune_eval_max_rows": 25000
+    },
+    "timing": {
+      "dt_min_sec": 0.0,
+      "dt_max_sec": 2592000.0,
+      "default_latency_sec": 3600.0,
+      "latency_noise_low": 1.0,
+      "latency_noise_high": 1.0,
+      "ridge_alpha": 1.0,
+      "min_train_dt_samples": 100
+    },
+    "sim": {
+      "max_steps_per_case": 40,
+      "seed": 42
+    },
+    "eval": {
+      "top_k_actions": 20,
+      "next_step_top_k": 3
+    }
+  },
+  "split_meta": {
+    "t0": "2011-09-30 22:38:44.546000+00:00",
+    "t1": "2012-03-14 15:04:54.681000+00:00",
+    "fit_end": "2011-12-30 22:38:44.546000+00:00",
+    "hold_end": "2012-02-29 22:38:44.546000+00:00",
+    "fit_cases": 7427,
+    "hold_cases": 5658,
+    "fit_events": 149330,
+    "hold_events": 112847,
+    "fit_months": 3,
+    "holdout_months": 2
+  },
+  "prune_softmax": {
+    "pruned_actions_by_role": {
+      "APPLICATION": [
+        "A_ACTIVATED|COMPLETE",
+        "O_DECLINED|COMPLETE",
+        "W_Completeren aanvraag|COMPLETE"
+      ],
+      "OFFER": [
+        "O_DECLINED|COMPLETE"
+      ],
+      "WORKITEM": [
+        "W_Afhandelen leads|SCHEDULE",
+        "W_Wijzigen contractgegevens|SCHEDULE"
+      ]
+    },
+    "shannon_upper_bits_after": {
+      "APPLICATION": 4.0,
+      "OFFER": 3.321928094887362,
+      "WORKITEM": 5.0
+    },
+    "lambda_entropy": 0.05
+  },
+  "tune_habit_grid": [
+    {
+      "mode": "habit_only",
+      "gamma": 1.0,
+      "risk_w": 0.0,
+      "amb_w": 0.0,
+      "habit_w": 1.0,
+      "fit_acc": 0.57524,
+      "fit_top3": 0.93544,
+      "fit_ce": 1.0880483360909579,
+      "n_eval": 25000
+    },
+    {
+      "mode": "habit_only",
+      "gamma": 2.0,
+      "risk_w": 0.0,
+      "amb_w": 0.0,
+      "habit_w": 1.0,
+      "fit_acc": 0.57524,
+      "fit_top3": 0.93544,
+      "fit_ce": 1.0411156773455188,
+      "n_eval": 25000
+    },
+    {
+      "mode": "habit_only",
+      "gamma": 4.0,
+      "risk_w": 0.0,
+      "amb_w": 0.0,
+      "habit_w": 1.0,
+      "fit_acc": 0.57524,
+      "fit_top3": 0.93544,
+      "fit_ce": 1.4492092722608905,
+      "n_eval": 25000
+    },
+    {
+      "mode": "habit_only",
+      "gamma": 8.0,
+      "risk_w": 0.0,
+      "amb_w": 0.0,
+      "habit_w": 1.0,
+      "fit_acc": 0.57524,
+      "fit_top3": 0.93544,
+      "fit_ce": 2.452258040051472,
+      "n_eval": 25000
+    }
+  ],
+  "tune_full_grid": [
+    {
+      "mode": "full_efe",
+      "gamma": 2.0,
+      "risk_w": 0.25,
+      "amb_w": 0.25,
+      "habit_w": 1.0,
+      "fit_acc": 0.5742,
+      "fit_top3": 0.9332,
+      "fit_ce": 1.1607507151301353,
+      "n_eval": 25000
+    },
+    {
+      "mode": "full_efe",
+      "gamma": 2.0,
+      "risk_w": 0.5,
+      "amb_w": 0.5,
+      "habit_w": 1.0,
+      "fit_acc": 0.56368,
+      "fit_top3": 0.9242,
+      "fit_ce": 1.32089919732452,
+      "n_eval": 25000
+    },
+    {
+      "mode": "full_efe",
+      "gamma": 2.0,
+      "risk_w": 1.0,
+      "amb_w": 0.25,
+      "habit_w": 1.0,
+      "fit_acc": 0.56784,
+      "fit_top3": 0.91948,
+      "fit_ce": 1.442026135427737,
+      "n_eval": 25000
+    },
+    {
+      "mode": "full_efe",
+      "gamma": 2.0,
+      "risk_w": 0.25,
+      "amb_w": 1.0,
+      "habit_w": 1.0,
+      "fit_acc": 0.55284,
+      "fit_top3": 0.91904,
+      "fit_ce": 1.411486411964951,
+      "n_eval": 25000
+    },
+    {
+      "mode": "full_efe",
+      "gamma": 4.0,
+      "risk_w": 0.25,
+      "amb_w": 0.25,
+      "habit_w": 1.0,
+      "fit_acc": 0.5742,
+      "fit_top3": 0.9332,
+      "fit_ce": 1.7642876366029625,
+      "n_eval": 25000
+    },
+    {
+      "mode": "full_efe",
+      "gamma": 4.0,
+      "risk_w": 0.5,
+      "amb_w": 0.5,
+      "habit_w": 1.0,
+      "fit_acc": 0.56368,
+      "fit_top3": 0.9242,
+      "fit_ce": 2.1378132503517433,
+      "n_eval": 25000
+    },
+    {
+      "mode": "full_efe",
+      "gamma": 4.0,
+      "risk_w": 1.0,
+      "amb_w": 0.25,
+      "habit_w": 1.0,
+      "fit_acc": 0.56784,
+      "fit_top3": 0.91948,
+      "fit_ce": 2.3902729758814543,
+      "n_eval": 25000
+    },
+    {
+      "mode": "full_efe",
+      "gamma": 4.0,
+      "risk_w": 0.25,
+      "amb_w": 1.0,
+      "habit_w": 1.0,
+      "fit_acc": 0.55284,
+      "fit_top3": 0.91904,
+      "fit_ce": 2.357027281380154,
+      "n_eval": 25000
+    }
+  ],
+  "arms": {
+    "softmax": {
+      "policy_kind": "softmax",
+      "wall_sec": 10.491805066001689,
+      "fep_cfg": null,
+      "train_metrics": {
+        "n_samples": 149330,
+        "n_actions": 36,
+        "n_agents": 65,
+        "cross_entropy": 0.9777343820189112,
+        "policy_entropy_nats": 1.0113296841193136,
+        "lambda_entropy": 0.05,
+        "free_energy_proxy": 1.028300866224877,
+        "fit_action_accuracy": 0.5625594321301814,
+        "fail_rate_proxy": 0.43744056786981855,
+        "loss_audit_form": "L ≈ E[fail] + λ H(policy) ≈ fail_rate + λ * entropy"
+      },
+      "metrics_raw": {
+        "weekly_events_mae": 2286.0666666666666,
+        "weekly_events_mape": 2.985994022354768,
+        "weekly_events_corr": 0.9215900380017684,
+        "case_duration_log_mae": 4.863790194258958,
+        "case_duration_spearman": 0.002365111923376657,
+        "n_cases_compared": 5658,
+        "top20_action_overlap": 15,
+        "sim_events": 86234,
+        "hold_events": 112847,
+        "terminal_share_actual": {
+          "A_CANCELLED": 0.009756573059097716,
+          "A_DECLINED": 0.028738025822573926,
+          "A_APPROVED": 0.008117185215380117,
+          "A_REGISTERED": 0.008117185215380117
+        },
+        "terminal_share_pred": {
+          "A_CANCELLED": 0.018878864485005913,
+          "A_DECLINED": 0.03180879931349584,
+          "A_APPROVED": 0.003362942690818007,
+          "A_REGISTERED": 0.0027483359231857503
+        },
+        "holdout_next_step_accuracy": 0.5503704040358133,
+        "holdout_next_step_top3": 0.911221197109485,
+        "holdout_next_step_ce": 1.0443371175280967,
+        "holdout_next_step_n": 110015,
+        "holdout_free_energy_proxy": 1.0949036017340623,
+        "policy_kind": "softmax",
+        "sim_case_duration_spearman": 0.002365111923376657,
+        "sim_wall_sec": 10.491805066001689
+      },
+      "metrics_cal": {
+        "weekly_events_mae": 2929.0833333333335,
+        "weekly_events_mape": 0.4382610347047489,
+        "weekly_events_corr": 0.8573853156611383,
+        "case_duration_log_mae": 3.889239435050548,
+        "case_duration_spearman": 0.22446562987699406,
+        "n_cases_compared": 5658,
+        "top20_action_overlap": 15,
+        "sim_events": 86234,
+        "hold_events": 112847,
+        "terminal_share_actual": {
+          "A_CANCELLED": 0.009756573059097716,
+          "A_DECLINED": 0.028738025822573926,
+          "A_APPROVED": 0.008117185215380117,
+          "A_REGISTERED": 0.008117185215380117
+        },
+        "terminal_share_pred": {
+          "A_CANCELLED": 0.018878864485005913,
+          "A_DECLINED": 0.03180879931349584,
+          "A_APPROVED": 0.003362942690818007,
+          "A_REGISTERED": 0.0027483359231857503
+        },
+        "holdout_next_step_accuracy": 0.5503704040358133,
+        "holdout_next_step_top3": 0.911221197109485,
+        "holdout_next_step_ce": 1.0443371175280967,
+        "holdout_next_step_n": 110015,
+        "holdout_free_energy_proxy": 1.0949036017340623,
+        "policy_kind": "softmax",
+        "sim_case_duration_spearman": 0.22446562987699406
+      },
+      "sim_meta": {
+        "max_steps_per_case": 40,
+        "n_cases": 5658,
+        "n_hit_max_steps": 760,
+        "n_terminal_stop": 4898,
+        "timing_used": true,
+        "batch_encode": true,
+        "policy_kind": "softmax",
+        "calibrate_duration": false,
+        "latency_noise": [
+          1.0,
+          1.0
+        ],
+        "seed": 42
+      }
+    },
+    "fep_habit_only": {
+      "policy_kind": "fep_habit_only",
+      "wall_sec": 5.832241016996704,
+      "fep_cfg": {
+        "dirichlet_alpha": 0.5,
+        "gamma_precision": 1.0,
+        "preference_power": 1.0,
+        "habit_weight": 1.0,
+        "ambiguity_weight": 0.0,
+        "risk_weight": 0.0,
+        "empty_transition_entropy": 3.0,
+        "mode": "habit_only"
+      },
+      "train_metrics": {
+        "n_samples": 149330,
+        "n_actions": 36,
+        "n_outcomes": 23,
+        "n_agents": 65,
+        "n_habit_agent_contexts": 2766,
+        "n_habit_role_contexts": 193,
+        "n_trans_agent": 7881,
+        "n_trans_ctx": 553,
+        "fit_action_accuracy": 0.574125,
+        "fit_top3_accuracy": 0.9358,
+        "generative_cross_entropy": 1.0890827828982106,
+        "variational_free_energy_nats": 1.4549487233859466,
+        "mean_G_truth": 1.109540872016188,
+        "mean_risk": 0.0,
+        "mean_ambiguity": 0.0,
+        "mean_habit_term": -1.109540872016188,
+        "fep_cfg": {
+          "mode": "habit_only",
+          "dirichlet_alpha": 0.5,
+          "gamma_precision": 4.0,
+          "preference_power": 1.0,
+          "habit_weight": 1.0,
+          "ambiguity_weight": 0.0,
+          "risk_weight": 0.0,
+          "empty_transition_entropy": 3.0
+        },
+        "parity_fixes": [
+          "habit_key=(prev,amount_bin,agent) + backoff role/global",
+          "transition backoff agent→ctx",
+          "C(o|prev,amount_bin,role)",
+          "tune on fit only if tune=True"
+        ],
+        "loss_form": "G=w_r·KL(q(o'|a)||C)+w_a·H(q)−w_h·ln P_habit; π∝exp(−γG)",
+        "note": "0.6: agent-level habit; 0.5 был role-level habit (непаритет с softmax)",
+        "tune_selected": {
+          "mode": "habit_only",
+          "gamma": 1.0,
+          "risk_w": 0.0,
+          "amb_w": 0.0,
+          "habit_w": 1.0,
+          "fit_acc": 0.57524
+        }
+      },
+      "metrics_raw": {
+        "weekly_events_mae": 4802.25,
+        "weekly_events_mape": 0.5386804738417453,
+        "weekly_events_corr": 0.8611119681301113,
+        "case_duration_log_mae": 5.35991194398589,
+        "case_duration_spearman": 0.010410552738971401,
+        "n_cases_compared": 5658,
+        "top20_action_overlap": 18,
+        "sim_events": 55500,
+        "hold_events": 112847,
+        "terminal_share_actual": {
+          "A_CANCELLED": 0.009756573059097716,
+          "A_DECLINED": 0.028738025822573926,
+          "A_APPROVED": 0.008117185215380117,
+          "A_REGISTERED": 0.008117185215380117
+        },
+        "terminal_share_pred": {
+          "A_CANCELLED": 0.030810810810810812,
+          "A_DECLINED": 0.04877477477477477,
+          "A_APPROVED": 0.009351351351351352,
+          "A_REGISTERED": 0.009189189189189189
+        },
+        "holdout_next_step_accuracy": 0.5508157978457483,
+        "holdout_next_step_top3": 0.9018770167704404,
+        "holdout_next_step_ce": 1.2496977476252735,
+        "holdout_next_step_n": 110015,
+        "holdout_mean_G_truth": 1.2657916834548446,
+        "holdout_variational_FE": 1.2496977476252735,
+        "policy_kind": "fep_habit_only",
+        "sim_case_duration_spearman": 0.010410552738971401,
+        "sim_wall_sec": 5.832241016996704
+      },
+      "metrics_cal": {
+        "weekly_events_mae": 4808.416666666667,
+        "weekly_events_mape": 0.5466200414678607,
+        "weekly_events_corr": 0.8551746722656027,
+        "case_duration_log_mae": 3.889239435050548,
+        "case_duration_spearman": 0.22428206402400455,
+        "n_cases_compared": 5658,
+        "top20_action_overlap": 18,
+        "sim_events": 55500,
+        "hold_events": 112847,
+        "terminal_share_actual": {
+          "A_CANCELLED": 0.009756573059097716,
+          "A_DECLINED": 0.028738025822573926,
+          "A_APPROVED": 0.008117185215380117,
+          "A_REGISTERED": 0.008117185215380117
+        },
+        "terminal_share_pred": {
+          "A_CANCELLED": 0.030810810810810812,
+          "A_DECLINED": 0.04877477477477477,
+          "A_APPROVED": 0.009351351351351352,
+          "A_REGISTERED": 0.009189189189189189
+        },
+        "holdout_next_step_accuracy": 0.5508157978457483,
+        "holdout_next_step_top3": 0.9018770167704404,
+        "holdout_next_step_ce": 1.2496977476252735,
+        "holdout_next_step_n": 110015,
+        "holdout_mean_G_truth": 1.2657916834548446,
+        "holdout_variational_FE": 1.2496977476252735,
+        "policy_kind": "fep_habit_only",
+        "sim_case_duration_spearman": 0.22428206402400455
+      },
+      "sim_meta": {
+        "max_steps_per_case": 40,
+        "n_cases": 5658,
+        "n_hit_max_steps": 212,
+        "n_terminal_stop": 5446,
+        "timing_used": true,
+        "batch_encode": true,
+        "policy_kind": "fep_habit_only",
+        "calibrate_duration": false,
+        "latency_noise": [
+          1.0,
+          1.0
+        ],
+        "seed": 42
+      }
+    },
+    "fep_full_efe": {
+      "policy_kind": "fep_full_efe",
+      "wall_sec": 10.05562153700157,
+      "fep_cfg": {
+        "dirichlet_alpha": 0.5,
+        "gamma_precision": 2.0,
+        "preference_power": 1.0,
+        "habit_weight": 1.0,
+        "ambiguity_weight": 0.25,
+        "risk_weight": 0.25,
+        "empty_transition_entropy": 3.0,
+        "mode": "full_efe"
+      },
+      "train_metrics": {
+        "n_samples": 149330,
+        "n_actions": 36,
+        "n_outcomes": 23,
+        "n_agents": 65,
+        "n_habit_agent_contexts": 2766,
+        "n_habit_role_contexts": 193,
+        "n_trans_agent": 7881,
+        "n_trans_ctx": 553,
+        "fit_action_accuracy": 0.573025,
+        "fit_top3_accuracy": 0.933375,
+        "generative_cross_entropy": 1.164041827454522,
+        "variational_free_energy_nats": 1.4549487233859466,
+        "mean_G_truth": 1.6357246375363,
+        "mean_risk": 0.8022596472554822,
+        "mean_ambiguity": 1.3024754148249669,
+        "mean_habit_term": -1.109540872016188,
+        "fep_cfg": {
+          "mode": "habit_only",
+          "dirichlet_alpha": 0.5,
+          "gamma_precision": 4.0,
+          "preference_power": 1.0,
+          "habit_weight": 1.0,
+          "ambiguity_weight": 0.0,
+          "risk_weight": 0.0,
+          "empty_transition_entropy": 3.0
+        },
+        "parity_fixes": [
+          "habit_key=(prev,amount_bin,agent) + backoff role/global",
+          "transition backoff agent→ctx",
+          "C(o|prev,amount_bin,role)",
+          "tune on fit only if tune=True"
+        ],
+        "loss_form": "G=w_r·KL(q(o'|a)||C)+w_a·H(q)−w_h·ln P_habit; π∝exp(−γG)",
+        "note": "0.6: agent-level habit; 0.5 был role-level habit (непаритет с softmax)",
+        "tune_selected": {
+          "mode": "full_efe",
+          "gamma": 2.0,
+          "risk_w": 0.25,
+          "amb_w": 0.25,
+          "habit_w": 1.0,
+          "fit_acc": 0.5742
+        }
+      },
+      "metrics_raw": {
+        "weekly_events_mae": 2681.9166666666665,
+        "weekly_events_mape": 0.43265066548819914,
+        "weekly_events_corr": 0.8610396814331969,
+        "case_duration_log_mae": 5.111638501549369,
+        "case_duration_spearman": 0.020189035993951956,
+        "n_cases_compared": 5658,
+        "top20_action_overlap": 15,
+        "sim_events": 91286,
+        "hold_events": 112847,
+        "terminal_share_actual": {
+          "A_CANCELLED": 0.009756573059097716,
+          "A_DECLINED": 0.028738025822573926,
+          "A_APPROVED": 0.008117185215380117,
+          "A_REGISTERED": 0.008117185215380117
+        },
+        "terminal_share_pred": {
+          "A_CANCELLED": 0.019422474421050325,
+          "A_DECLINED": 0.022599303288565607,
+          "A_APPROVED": 0.0025195539294086714,
+          "A_REGISTERED": 0.002749600157745985
+        },
+        "holdout_next_step_accuracy": 0.5483797663954916,
+        "holdout_next_step_top3": 0.9055856019633687,
+        "holdout_next_step_ce": 1.358448069756907,
+        "holdout_next_step_n": 110015,
+        "holdout_mean_G_truth": 1.8761429898973783,
+        "holdout_variational_FE": 1.358448069756907,
+        "policy_kind": "fep_full_efe",
+        "sim_case_duration_spearman": 0.020189035993951956,
+        "sim_wall_sec": 10.05562153700157
+      },
+      "metrics_cal": {
+        "weekly_events_mae": 2751.9166666666665,
+        "weekly_events_mape": 0.4857198828221156,
+        "weekly_events_corr": 0.8468538273922799,
+        "case_duration_log_mae": 3.889239435050548,
+        "case_duration_spearman": 0.22907934750048392,
+        "n_cases_compared": 5658,
+        "top20_action_overlap": 15,
+        "sim_events": 91286,
+        "hold_events": 112847,
+        "terminal_share_actual": {
+          "A_CANCELLED": 0.009756573059097716,
+          "A_DECLINED": 0.028738025822573926,
+          "A_APPROVED": 0.008117185215380117,
+          "A_REGISTERED": 0.008117185215380117
+        },
+        "terminal_share_pred": {
+          "A_CANCELLED": 0.019422474421050325,
+          "A_DECLINED": 0.022599303288565607,
+          "A_APPROVED": 0.0025195539294086714,
+          "A_REGISTERED": 0.002749600157745985
+        },
+        "holdout_next_step_accuracy": 0.5483797663954916,
+        "holdout_next_step_top3": 0.9055856019633687,
+        "holdout_next_step_ce": 1.358448069756907,
+        "holdout_next_step_n": 110015,
+        "holdout_mean_G_truth": 1.8761429898973783,
+        "holdout_variational_FE": 1.358448069756907,
+        "policy_kind": "fep_full_efe",
+        "sim_case_duration_spearman": 0.22907934750048392
+      },
+      "sim_meta": {
+        "max_steps_per_case": 40,
+        "n_cases": 5658,
+        "n_hit_max_steps": 1341,
+        "n_terminal_stop": 4317,
+        "timing_used": true,
+        "batch_encode": true,
+        "policy_kind": "fep_full_efe",
+        "calibrate_duration": false,
+        "latency_noise": [
+          1.0,
+          1.0
+        ],
+        "seed": 42
+      }
+    }
+  },
+  "comparison": {
+    "next_step_accuracy": {
+      "softmax": 0.5503704040358133,
+      "fep_habit_only": 0.5508157978457483,
+      "fep_full_efe": 0.5483797663954916,
+      "fep_0_5_0_crooked": 0.4660455392446485
+    },
+    "top3_accuracy": {
+      "softmax": 0.911221197109485,
+      "fep_habit_only": 0.9018770167704404,
+      "fep_full_efe": 0.9055856019633687,
+      "fep_0_5_0_crooked": 0.8465118392946417
+    },
+    "weekly_events_corr": {
+      "softmax": 0.9215900380017684,
+      "fep_habit_only": 0.8611119681301113,
+      "fep_full_efe": 0.8610396814331969,
+      "fep_0_5_0_crooked": 0.8675680432440032
+    },
+    "cross_entropy": {
+      "softmax": 1.0443371175280967,
+      "fep_habit_only": 1.2496977476252735,
+      "fep_full_efe": 1.358448069756907
+    },
+    "sim_wall_sec": {
+      "softmax": 10.491805066001689,
+      "fep_habit_only": 5.832241016996704,
+      "fep_full_efe": 10.05562153700157
+    },
+    "delta_habit_minus_softmax_next": 0.0004453938099350241,
+    "delta_full_minus_softmax_next": -0.001990637640321702,
+    "delta_habit_minus_crooked_0_5_next": 0.08477025860109982
+  },
+  "winner_next_step": "fep_habit_only",
+  "winner_weekly": "softmax",
+  "decisions": [
+    "Релиз OrgTwin 0.6.0: FEP с agent-level habit + тюнинг на fit vs Softmax",
+    "Holdout не используется для выбора гиперпараметров FEP",
+    "0.5.0 FEP (role-level) сохранён в reports/run_v0.5.0.* как кривой baseline",
+    "Softmax: откат прунинга DECLINED: ['APPLICATION:O_DECLINED|COMPLETE', 'OFFER:O_DECLINED|COMPLETE']",
+    "FEP habit selected: {'mode': 'habit_only', 'gamma': 1.0, 'risk_w': 0.0, 'amb_w': 0.0, 'habit_w': 1.0, 'fit_acc': 0.57524}",
+    "FEP full selected: {'mode': 'full_efe', 'gamma': 2.0, 'risk_w': 0.25, 'amb_w': 0.25, 'habit_w': 1.0, 'fit_acc': 0.5742}",
+    "В отчёт включены метрики FEP 0.5.0 (role-level) из артефакта",
+    "Победитель next-step: fep_habit_only",
+    "Победитель weekly_corr: softmax",
+    "FEP habit_only близок к softmax по next-step (Δ=+0.0004)"
+  ],
+  "failures": [
+    {
+      "id": "SPLIT_NOT_7_3",
+      "severity": "critical_limitation",
+      "detail": "split 3+2, цель 7+3"
+    }
+  ]
+}

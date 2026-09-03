@@ -58,7 +58,8 @@ def _batch_sample_actions(
     """Сэмпл Action: FEP (EFE) или softmax (батч-encode)."""
     if not agents:
         return []
-    if getattr(policy, "policy_kind", "softmax") == "fep_efe":
+    kind = getattr(policy, "policy_kind", "softmax")
+    if isinstance(kind, str) and kind.startswith("fep"):
         return batch_sample_actions_fep(policy, prevs, amount_bins, agents, rng)  # type: ignore[arg-type]
 
     assert isinstance(policy, SoftmaxPolicyBundle)
@@ -185,8 +186,11 @@ def disable_agents(policy: PolicyBundle, agent_ids: set[str]) -> PolicyBundle:
     p.train_metrics = dict(policy.train_metrics)
     p.train_metrics["stress_disabled_agents"] = sorted(agent_ids)
     if isinstance(p, FEPPolicyBundle):
+        from orgtwin.policy.fep import clear_fep_caches
+
         p._cache_pi = {}
         p._cache_G = {}
+        clear_fep_caches(p)
     return p
 
 

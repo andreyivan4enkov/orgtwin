@@ -169,12 +169,13 @@ def main() -> None:
     t2 = time.perf_counter()
     fep_cfg = FEPConfig(
         dirichlet_alpha=cfg.fep.dirichlet_alpha,
-        gamma_precision=cfg.fep.gamma_precision,
+        gamma_precision=2.0,  # как в зафиксированном прогоне 0.5.0
         preference_power=cfg.fep.preference_power,
-        habit_weight=cfg.fep.habit_weight,
-        ambiguity_weight=cfg.fep.ambiguity_weight,
-        risk_weight=cfg.fep.risk_weight,
-        empty_transition_entropy=cfg.fep.empty_transition_entropy,
+        habit_weight=1.0,
+        ambiguity_weight=1.0,
+        risk_weight=1.0,
+        empty_transition_entropy=3.0,
+        mode="full_efe",  # 0.5.0 был full EFE с равными весами (role-level habit — в коде ≥0.6 уже agent-level)
     )
     fep_pol = train_fep_policies(
         fit, fep_cfg=fep_cfg, amount_bin_edges=softmax_pol.amount_bin_edges

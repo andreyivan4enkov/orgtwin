@@ -260,3 +260,34 @@
 
 ### Артефакты
 - `reports/run_v0.5.0.md`, `run_v0.5.0_full.json`
+
+
+---
+
+## v0.6.0 — FEP parity vs Softmax (2026-09-03T12:56:53.904571+00:00)
+
+### Изменения
+- FEP: habit (prev,amount_bin,**agent**) + backoff; C(o|ctx); тюнинг на fit
+- Руки: softmax, fep_habit_only, fep_full_efe; сравнение с 0.5.0 crooked
+
+### Holdout next-step
+- SM=0.5503704040358133 habit=0.5508157978457483 full=0.5483797663954916 crooked05=0.4660455392446485
+- winner=fep_habit_only; weekly_winner=softmax
+
+### Решения
+- Релиз OrgTwin 0.6.0: FEP с agent-level habit + тюнинг на fit vs Softmax
+- Holdout не используется для выбора гиперпараметров FEP
+- 0.5.0 FEP (role-level) сохранён в reports/run_v0.5.0.* как кривой baseline
+- Softmax: откат прунинга DECLINED: ['APPLICATION:O_DECLINED|COMPLETE', 'OFFER:O_DECLINED|COMPLETE']
+- FEP habit selected: {'mode': 'habit_only', 'gamma': 1.0, 'risk_w': 0.0, 'amb_w': 0.0, 'habit_w': 1.0, 'fit_acc': 0.57524}
+- FEP full selected: {'mode': 'full_efe', 'gamma': 2.0, 'risk_w': 0.25, 'amb_w': 0.25, 'habit_w': 1.0, 'fit_acc': 0.5742}
+- В отчёт включены метрики FEP 0.5.0 (role-level) из артефакта
+- Победитель next-step: fep_habit_only
+- Победитель weekly_corr: softmax
+- FEP habit_only близок к softmax по next-step (Δ=+0.0004)
+
+### Неудачи
+- **SPLIT_NOT_7_3**: split 3+2, цель 7+3
+
+### Артефакты
+- `reports/run_v0.6.0.md`, `run_v0.6.0_full.json`

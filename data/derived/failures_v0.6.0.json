@@ -1,0 +1,7 @@
+[
+  {
+    "id": "SPLIT_NOT_7_3",
+    "severity": "critical_limitation",
+    "detail": "split 3+2, цель 7+3"
+  }
+]

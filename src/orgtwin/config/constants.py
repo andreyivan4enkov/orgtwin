@@ -78,12 +78,15 @@ class FEPPolicyConfig:
     """Ожидаемая свободная энергия (Friston); см. policy/fep.py."""
 
     dirichlet_alpha: float = 0.5
-    gamma_precision: float = 2.0
+    gamma_precision: float = 4.0
     preference_power: float = 1.0
     habit_weight: float = 1.0
-    ambiguity_weight: float = 1.0
-    risk_weight: float = 1.0
+    ambiguity_weight: float = 0.0
+    risk_weight: float = 0.0
     empty_transition_entropy: float = 3.0
+    mode: str = "habit_only"
+    tune_on_fit: bool = True
+    tune_eval_max_rows: int = 25000
 
 
 @dataclass(frozen=True)

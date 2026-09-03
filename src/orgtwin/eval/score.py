@@ -98,7 +98,7 @@ def evaluate(
     }
 
     if policy is not None:
-        if getattr(policy, "policy_kind", "softmax") == "fep_efe":
+        if getattr(policy, "policy_kind", "softmax").startswith("fep"):
             ns = next_step_accuracy_fep(policy, hold)  # type: ignore[arg-type]
             metrics["holdout_next_step_accuracy"] = ns["accuracy"]
             metrics["holdout_next_step_top3"] = ns["top3_accuracy"]
@@ -106,7 +106,7 @@ def evaluate(
             metrics["holdout_next_step_n"] = ns["n"]
             metrics["holdout_mean_G_truth"] = ns.get("mean_G_truth")
             metrics["holdout_variational_FE"] = ns["cross_entropy"]  # q=δ(role)
-            metrics["policy_kind"] = "fep_efe"
+            metrics["policy_kind"] = getattr(policy, "policy_kind", "fep")
         else:
             ns = next_step_accuracy(policy, hold)  # type: ignore[arg-type]
             metrics["holdout_next_step_accuracy"] = ns["accuracy"]

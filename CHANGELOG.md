@@ -11,6 +11,48 @@
 
 ---
 
+## [0.6.0] — 2026-09-03
+
+### Русский
+
+#### Добавлено / исправлено
+- FEP: habit `(prev, amount_bin, agent)` + backoff role/global (паритет с agent в softmax).
+- Переходы и предпочтения `C(o|prev,amount_bin,role)`.
+- Тюнинг `(γ, веса)` только на **fit**; руки `habit_only` и `full_efe`.
+- Скрипт `scripts/run_v0_6_0.py`, артефакты `reports/run_v0.6.0.*`.
+
+#### Протестировано (holdout, raw)
+| | Softmax | FEP habit_only | FEP full_efe | FEP 0.5.0 (role) |
+|--|---------|----------------|--------------|------------------|
+| next-step | 0.5504 | **0.5508** | 0.5484 | 0.4660 |
+| top-3 | **0.9112** | 0.9019 | 0.9056 | 0.8465 |
+| weekly_corr | **0.9216** | 0.8611 | 0.8610 | 0.8676 |
+
+Выбор на fit: habit γ=1.0; full γ=2.0, w_r/a/h=0.25/0.25/1.0.  
+Победитель next-step: **fep_habit_only**; weekly: **softmax**.  
+Δ habit−0.5.0 next: **+0.0848**. Тег: `v0.6.0`.
+
+### 中文
+
+#### 新增 / 修复
+- FEP：habit `(prev, amount_bin, agent)` + role/global 回退（与 softmax 的 agent 特征对齐）。
+- 转移与偏好 `C(o|prev,amount_bin,role)`。
+- 仅在 **fit** 上调 `(γ, 权重)`；分支 `habit_only` 与 `full_efe`。
+- 脚本 `scripts/run_v0_6_0.py`，产物 `reports/run_v0.6.0.*`。
+
+#### 已测试（holdout，raw）
+| | Softmax | FEP habit_only | FEP full_efe | FEP 0.5.0 (role) |
+|--|---------|----------------|--------------|------------------|
+| next-step | 0.5504 | **0.5508** | 0.5484 | 0.4660 |
+| top-3 | **0.9112** | 0.9019 | 0.9056 | 0.8465 |
+| weekly_corr | **0.9216** | 0.8611 | 0.8610 | 0.8676 |
+
+fit 选定：habit γ=1.0；full γ=2.0，w=0.25/0.25/1.0。  
+next-step 胜者：**fep_habit_only**；weekly：**softmax**。  
+habit 相对 0.5.0 next：**+0.0848**。标签：`v0.6.0`。
+
+---
+
 ## [0.5.0] — 2026-09-03
 
 ### Русский

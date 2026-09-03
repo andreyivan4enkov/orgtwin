@@ -29,7 +29,7 @@ OrgTwin 基于单一组织的事件日志建模：智能体（`org:resource`）�
 
 **版本规则：** 每次实验对应新的 semver；不回写旧的 `reports/run_v*`。
 
-Текущая версия / 当前版本: **0.5.0** (`VERSION`, [CHANGELOG.md](CHANGELOG.md)).
+Текущая версия / 当前版本: **0.6.0** (`VERSION`, [CHANGELOG.md](CHANGELOG.md)).
 
 ---
 
@@ -43,7 +43,8 @@ OrgTwin 基于单一组织的事件日志建模：智能体（`org:resource`）�
 | 0.2.0 | softmax | **0.551** | **0.911** | **0.955** | |
 | 0.3.0 | softmax + Ridge(dt) | **0.550** | **0.911** | **0.873** | sum(dt) Spearman ≈ 0; case-head ≈ 0.229 |
 | 0.4.0 | softmax + батч-сима | **0.550** | **0.911** | **0.922** (raw) | калибровка dur Spearman **0.224**; стресс top-3 |
-| 0.5.0 | A/B softmax vs FEP | SM **0.550** / FEP **0.466** | SM **0.911** / FEP **0.847** | SM **0.922** / FEP **0.868** | победитель: softmax |
+| 0.5.0 | softmax vs FEP (role habit) | SM **0.550** / FEP **0.466** | SM **0.911** / FEP **0.847** | SM **0.922** / FEP **0.868** | FEP без паритета agent |
+| 0.6.0 | softmax vs FEP (agent habit) | SM **0.550** / habit **0.551** / full **0.548** | SM **0.911** / h **0.902** / f **0.906** | SM **0.922** / h·f **0.861** | FEP 0.5→habit next **+0.085** |
 
 ---
 
@@ -53,7 +54,7 @@ OrgTwin 基于单一组织的事件日志建模：智能体（`org:resource`）�
 python3 -m venv .venv
 .venv/bin/pip install -e .
 .venv/bin/python scripts/download_bpic2012.py   # если нет data/raw/*.xes
-.venv/bin/python scripts/run_v0_5_0.py          # A/B Softmax vs FEP
+.venv/bin/python scripts/run_v0_6_0.py          # Softmax vs FEP (parity)
 ```
 
 Журнал / 日志: `reports/LAB_JOURNAL.md`.
