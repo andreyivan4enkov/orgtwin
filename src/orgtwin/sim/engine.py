@@ -36,9 +36,9 @@ class SimResult:
 
 
 def _amount_bin_for_row(bundle: PolicyBundle, row: pd.Series) -> str:
-    amount_col = "case:AMOUNT_REQ" if "case:AMOUNT_REQ" in row.index else (
-        "AMOUNT_REQ" if "AMOUNT_REQ" in row.index else None
-    )
+    from orgtwin.policy.softmax import _resolve_context_col
+
+    amount_col = _resolve_context_col(row.to_frame().T)
     if amount_col is None or bundle.amount_bin_edges is None:
         return "0"
     val = pd.to_numeric(row.get(amount_col), errors="coerce")
@@ -66,10 +66,14 @@ def _batch_sample_actions(
     rows = pd.DataFrame(
         {
             "prev_activity": [str(p if p is not None else "∅") for p in prevs],
+            "prev2_activity": ["∅"] * len(agents),
             "amount_bin": [str(a if a is not None else "0") for a in amount_bins],
             "agent": [str(a) for a in agents],
         }
     )
+    for col in policy.feature_cols:
+        if col not in rows.columns:
+            rows[col] = "∅"
     X = policy.encoder.transform(rows[policy.feature_cols].astype(str))
     proba = policy.model.predict_proba(X)
     out: list[str] = []
@@ -209,6 +213,20 @@ def simulate_batch(
     calibrate_duration: bool = False,
 ) -> SimResult:
     cfg = cfg or DEFAULT
+    if cfg.sim.queue_mode:
+        from orgtwin.sim.queue_des import simulate_queue
+
+        if calibrate_duration or target_durations:
+            raise ValueError(
+                "queue_mode несовместим с calibrate_duration/case-head — используйте длину очереди"
+            )
+        return simulate_queue(
+            seed_cases,
+            policy,
+            cfg=cfg,
+            max_steps_per_case=max_steps_per_case,
+            seed=seed,
+        )
     max_steps = max_steps_per_case if max_steps_per_case is not None else cfg.sim.max_steps_per_case
     seed = cfg.sim.seed if seed is None else seed
     rng = np.random.default_rng(seed)

@@ -1,0 +1,37 @@
+{
+  "version": "0.8.9",
+  "contour": "diagnostic",
+  "require_package_version": "0.10.0",
+  "recipe": "agent_rules",
+  "donor": {
+    "id": "BPIC2012",
+    "doi": "10.4121/uuid:3926db30-f712-4394-aebc-75976070e91f",
+    "xes_path": "data/raw/BPI_Challenge_2012.xes"
+  },
+  "notes_ru": "0.8.9: BPIC2012; глобальная сводка мутаций Information по всем directed рёбрам (не только top-15).",
+  "decisions_seed": [
+    "Сводка mutation по всем ненулевым рёбрам: доля, mass, tertile handover_count.",
+    "Контур diagnostic: agent_rules (счётчики + A/B softmax по CE)."
+  ],
+  "experiment": {
+    "donor_id": "BPIC2012",
+    "donor_doi": "10.4121/uuid:3926db30-f712-4394-aebc-75976070e91f",
+    "split": {
+      "fit_months": 3,
+      "holdout_months": 2,
+      "target_fit_months": 7,
+      "target_holdout_months": 3
+    },
+    "donor_adapt": {
+      "agent_column": "org:resource",
+      "context_column": "",
+      "role_mode": "activity_prefix",
+      "count_min_support": 3,
+      "compare_softmax": true,
+      "run_sim": false
+    },
+    "policy": {
+      "prune_min_support": 0
+    }
+  }
+}

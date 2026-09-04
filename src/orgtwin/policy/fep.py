@@ -63,15 +63,10 @@ class FEPPolicyBundle:
     _cache_G: dict = field(default_factory=dict, repr=False)
 
 
-def _infer_roles(df: pd.DataFrame) -> dict[str, str]:
-    from collections import Counter, defaultdict as dd
+def _infer_roles(df: pd.DataFrame, role_mode: str = "activity_prefix") -> dict[str, str]:
+    from orgtwin.ingest.xes_loader import infer_roles_from_frame
 
-    from orgtwin.ingest.xes_loader import infer_role
-
-    votes: dict[str, Counter] = dd(Counter)
-    for agent, act in zip(df["org:resource"].astype(str), df["concept:name"].astype(str)):
-        votes[agent][infer_role(act)] += 1
-    return {a: c.most_common(1)[0][0] for a, c in votes.items()}
+    return infer_roles_from_frame(df, role_mode=role_mode)
 
 
 def _dirichlet_mean(counts: np.ndarray, alpha: float) -> np.ndarray:
@@ -416,10 +411,15 @@ def train_fep_policies(
     tune: bool = False,
     tune_grid: list[FEPConfig] | None = None,
     tune_eval_max_rows: int = 25000,
+    agent_col: Optional[str] = None,
+    context_col: Optional[str] = None,
+    role_mode: str = "activity_prefix",
 ) -> FEPPolicyBundle:
     cfg = fep_cfg or FEPConfig()
-    framed, edges = prepare_trace_frame(fit_df, amount_bin_edges=amount_bin_edges)
-    agent_to_role = _infer_roles(framed)
+    framed, edges = prepare_trace_frame(
+        fit_df, amount_bin_edges=amount_bin_edges, agent_col=agent_col, context_col=context_col
+    )
+    agent_to_role = _infer_roles(framed, role_mode=role_mode)
     framed["role_id"] = framed["agent"].map(agent_to_role).fillna("UNKNOWN")
     framed = framed.sort_values(["case:concept:name", "time:timestamp"]).copy()
     framed["next_activity"] = framed.groupby("case:concept:name")["concept:name"].shift(-1)

@@ -98,7 +98,8 @@ def evaluate(
     }
 
     if policy is not None:
-        if getattr(policy, "policy_kind", "softmax").startswith("fep"):
+        kind = getattr(policy, "policy_kind", "softmax")
+        if kind.startswith("fep"):
             ns = next_step_accuracy_fep(policy, hold)  # type: ignore[arg-type]
             metrics["holdout_next_step_accuracy"] = ns["accuracy"]
             metrics["holdout_next_step_top3"] = ns["top3_accuracy"]
@@ -106,7 +107,16 @@ def evaluate(
             metrics["holdout_next_step_n"] = ns["n"]
             metrics["holdout_mean_G_truth"] = ns.get("mean_G_truth")
             metrics["holdout_variational_FE"] = ns["cross_entropy"]  # q=δ(role)
-            metrics["policy_kind"] = getattr(policy, "policy_kind", "fep")
+            metrics["policy_kind"] = kind
+        elif kind == "counts":
+            from orgtwin.policy.counts import next_step_accuracy_counts
+
+            ns = next_step_accuracy_counts(policy, hold)
+            metrics["holdout_next_step_accuracy"] = ns["accuracy"]
+            metrics["holdout_next_step_top3"] = ns["top3_accuracy"]
+            metrics["holdout_next_step_ce"] = ns["cross_entropy"]
+            metrics["holdout_next_step_n"] = ns["n"]
+            metrics["policy_kind"] = "counts"
         else:
             ns = next_step_accuracy(policy, hold)  # type: ignore[arg-type]
             metrics["holdout_next_step_accuracy"] = ns["accuracy"]

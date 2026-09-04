@@ -16,6 +16,7 @@ import numpy as np
 import pandas as pd
 
 from orgtwin.config.constants import (
+    DonorAdaptConfig,
     EvalConfig,
     ExperimentConfig,
     FEPPolicyConfig,
@@ -24,8 +25,12 @@ from orgtwin.config.constants import (
     SplitConfig,
     TimingConfig,
 )
+from orgtwin.diag.entity_field import diagnose_entity_field
+from orgtwin.diag.edge_field import diagnose_edge_field
+from orgtwin.diag.local_minima import diagnose_local_minima
+from orgtwin.policy.counts import next_step_accuracy_counts, train_count_policies
 from orgtwin.eval.score import actual_case_durations, evaluate
-from orgtwin.ingest.xes_loader import fit_holdout_split, load_event_table
+from orgtwin.ingest.xes_loader import filter_event_table, fit_holdout_split, load_event_table, subsample_case_split
 from orgtwin.policy.fep import (
     FEPConfig,
     default_fep_tune_grid,
@@ -40,6 +45,15 @@ from orgtwin.policy.timing import (
     train_timing_model,
 )
 from orgtwin.sim.engine import simulate_batch
+from orgtwin.contours import (
+    CONTOUR_DIAGNOSTIC,
+    CONTOUR_SIMULATOR,
+    derived_root,
+    infer_contour,
+    journal_path,
+    reports_root,
+    validate_contour_recipe,
+)
 
 
 def _cfg_from_dict(d: dict) -> ExperimentConfig:
@@ -59,6 +73,9 @@ def _cfg_from_dict(d: dict) -> ExperimentConfig:
         timing=TimingConfig(**{k: v for k, v in exp.get("timing", {}).items() if k in TimingConfig.__dataclass_fields__}),
         sim=SimConfig(**{k: v for k, v in exp.get("sim", {}).items() if k in SimConfig.__dataclass_fields__}),
         eval=EvalConfig(**{k: v for k, v in exp.get("eval", {}).items() if k in EvalConfig.__dataclass_fields__}),
+        donor_adapt=DonorAdaptConfig(
+            **{k: v for k, v in exp.get("donor_adapt", {}).items() if k in DonorAdaptConfig.__dataclass_fields__}
+        ),
     )
 
 
@@ -121,30 +138,62 @@ def _sim_arm(name: str, hold, policy, timing, case_head, cfg: ExperimentConfig) 
     }
 
 
-def run_softmax_fep_ab(root: Path, recipe: dict, package_version: str) -> dict:
-    """Рецепт: Softmax vs FEP habit_only vs FEP full_efe (как 0.6.0)."""
+def run_softmax_fep_ab(root: Path, recipe: dict, package_version: str, contour: str) -> dict:
+    """Рецепт: Softmax vs FEP habit_only vs FEP full_efe (контур simulator)."""
     ver = str(recipe["version"])
     cfg = _cfg_from_dict(recipe)
     xes = root / recipe["donor"]["xes_path"]
-    derived = root / "data" / "derived"
-    reports = root / "reports"
+    derived = derived_root(root, contour)
+    reports = reports_root(root, contour)
     derived.mkdir(parents=True, exist_ok=True)
     reports.mkdir(parents=True, exist_ok=True)
 
     failures: list[dict] = []
     decisions: list[str] = list(recipe.get("decisions_seed", []))
-    decisions.append(f"Прогон через scripts/run_experiment.py --config (версия {ver})")
+    decisions.append(f"Контур={contour}; scripts/run_simulator.py (версия {ver})")
     decisions.append(f"package_version={package_version}")
+
+    adapt = cfg.donor_adapt
+    donor_opts = recipe.get("donor", {})
 
     print(f"OrgTwin experiment {ver} (package {package_version})")
     print("Загрузка XES…")
     t0 = time.perf_counter()
-    df = load_event_table(xes)
+    df = load_event_table(xes, agent_col=adapt.agent_column or None)
     print(f"  событий={len(df)} ({time.perf_counter()-t0:.1f}s)")
+
+    filter_meta: dict = {}
+    time_from = donor_opts.get("time_filter_from")
+    drop_agents = donor_opts.get("drop_agents")
+    if time_from or drop_agents:
+        df, filter_meta = filter_event_table(
+            df,
+            time_from=time_from,
+            drop_agents=tuple(drop_agents) if drop_agents else None,
+        )
+        decisions.append(f"Фильтр донора: {filter_meta}")
+        print(f"  после фильтра: событий={len(df)}")
 
     fit, hold, split_meta = fit_holdout_split(
         df, fit_months=cfg.split.fit_months, holdout_months=cfg.split.holdout_months
     )
+    subsample_meta: dict = {}
+    fit_max = donor_opts.get("subsample_fit_cases")
+    hold_max = donor_opts.get("subsample_hold_cases")
+    if fit_max or hold_max:
+        fit, hold, subsample_meta = subsample_case_split(
+            fit,
+            hold,
+            fit_max=fit_max,
+            hold_max=hold_max,
+            seed=int(donor_opts.get("subsample_seed", cfg.sim.seed)),
+        )
+        decisions.append(f"Subsample кейсов: {subsample_meta}")
+        split_meta = {**split_meta, **subsample_meta}
+        print(
+            f"  subsample: fit_cases={subsample_meta.get('fit_cases')} "
+            f"hold_cases={subsample_meta.get('hold_cases')}"
+        )
     failures.append(
         {
             "id": "SPLIT_NOT_7_3",
@@ -163,6 +212,9 @@ def run_softmax_fep_ab(root: Path, recipe: dict, package_version: str) -> dict:
         solver=cfg.policy.solver,
         tol=cfg.policy.tol,
         C=cfg.policy.C,
+        agent_col=adapt.agent_column or None,
+        context_col=adapt.context_column or None,
+        role_mode=adapt.role_mode,
     )
     prune_info = prune_membrane_actions(
         softmax_pol,
@@ -189,6 +241,9 @@ def run_softmax_fep_ab(root: Path, recipe: dict, package_version: str) -> dict:
         fep_cfg=FEPConfig(mode="habit_only", gamma_precision=cfg.fep.gamma_precision),
         amount_bin_edges=softmax_pol.amount_bin_edges,
         tune=False,
+        agent_col=adapt.agent_column or None,
+        context_col=adapt.context_column or None,
+        role_mode=adapt.role_mode,
     )
     grid = default_fep_tune_grid()
     habit_grid = [c for c in grid if c.mode == "habit_only"]
@@ -270,11 +325,12 @@ def run_softmax_fep_ab(root: Path, recipe: dict, package_version: str) -> dict:
 
     payload = {
         "version": ver,
+        "contour": contour,
         "recipe": recipe.get("recipe", "softmax_fep_ab"),
         "timestamp_utc": datetime.now(timezone.utc).isoformat(),
         "config_path": recipe.get("_config_path"),
         "config": cfg.to_dict(),
-        "split_meta": split_meta,
+        "split_meta": {**split_meta, "donor_filter": filter_meta},
         "prune_softmax": prune_info,
         "tune_habit_grid": habit_rows,
         "tune_full_grid": full_rows,
@@ -320,9 +376,9 @@ def run_softmax_fep_ab(root: Path, recipe: dict, package_version: str) -> dict:
 
     md = _render_md(payload)
     (reports / f"run_v{ver}.md").write_text(md, encoding="utf-8")
-    _append_journal(reports / "LAB_JOURNAL.md", payload)
+    _append_journal(journal_path(root, contour), payload)
     print(md)
-    print(f"\nГотово → reports/run_v{ver}.md")
+    print(f"\nГотово → reports/{contour}/run_v{ver}.md")
     return payload
 
 
@@ -390,7 +446,7 @@ def _append_journal(path: Path, payload: dict) -> None:
 - Рецепт: {payload.get('recipe')}
 
 ### Holdout
-- winner_next={payload['winner_next_step']}; winner_weekly={payload['winner_weekly']}
+- winner_next={payload.get('winner_next_step')}; winner_weekly={payload.get('winner_weekly')}
 - comparison={json.dumps(payload['comparison'], ensure_ascii=False)}
 
 ### Решения
@@ -403,7 +459,383 @@ def _append_journal(path: Path, payload: dict) -> None:
         f.write(block)
 
 
-def run_from_config(root: Path, config_path: Path, package_version: str) -> dict:
+def run_agent_rules(root: Path, recipe: dict, package_version: str, contour: str) -> dict:
+    """
+    Контур diagnostic: счётчики; softmax только если CE лучше.
+    Диагностика локальных минимумов. Без FEP/сима/timing.
+    """
+    ver = str(recipe["version"])
+    cfg = _cfg_from_dict(recipe)
+    adapt = cfg.donor_adapt
+    xes = root / recipe["donor"]["xes_path"]
+    derived = derived_root(root, contour)
+    reports = reports_root(root, contour)
+    derived.mkdir(parents=True, exist_ok=True)
+    reports.mkdir(parents=True, exist_ok=True)
+
+    decisions: list[str] = list(recipe.get("decisions_seed", []))
+    decisions.append(f"Контур={contour}; scripts/run_diagnostic.py (версия {ver})")
+    decisions.append(f"package_version={package_version}")
+    decisions.append("FEP / case-head / stress top-3 / prune_min_support вне критического пути")
+    decisions.append("λ не входит в обучение; softmax — только A/B по CE holdout")
+
+    ctx = adapt.context_column or None
+    agent_col = adapt.agent_column
+    prep = {"agent_col": agent_col, "context_col": ctx}
+
+    print(f"OrgTwin experiment {ver} (package {package_version}) recipe=agent_rules")
+    print(f"Донор {cfg.donor_id}; агент={agent_col}; контекст={ctx or 'авто'}; роль={adapt.role_mode}")
+    t0 = time.perf_counter()
+    df = load_event_table(xes, agent_col=agent_col)
+    print(f"  событий={len(df)} ({time.perf_counter()-t0:.1f}s)")
+
+    fit, hold, split_meta = fit_holdout_split(
+        df, fit_months=cfg.split.fit_months, holdout_months=cfg.split.holdout_months
+    )
+    failures: list[dict] = []
+    if cfg.split.fit_months != cfg.split.target_fit_months or cfg.split.holdout_months != cfg.split.target_holdout_months:
+        failures.append(
+            {
+                "id": "SPLIT_NOT_TARGET",
+                "severity": "limitation",
+                "detail": f"split {cfg.split.fit_months}+{cfg.split.holdout_months}, цель {cfg.split.target_fit_months}+{cfg.split.target_holdout_months}",
+            }
+        )
+
+    print("Обучение счётчиков (backoff)…")
+    t1 = time.perf_counter()
+    counts_pol = train_count_policies(
+        fit,
+        agent_col=agent_col,
+        context_col=ctx,
+        role_mode=adapt.role_mode,
+        min_support=adapt.count_min_support,
+    )
+    print(
+        f"  fit_acc={counts_pol.train_metrics['fit_action_accuracy']:.3f} "
+        f"CE={counts_pol.train_metrics['cross_entropy']:.3f} ({time.perf_counter()-t1:.1f}s)"
+    )
+
+    ns_counts = next_step_accuracy_counts(counts_pol, hold, **prep)
+    policies = {
+        "counts": {
+            "holdout": ns_counts,
+            "train": counts_pol.train_metrics,
+            "kind": "counts",
+        }
+    }
+
+    ns_sm = None
+    if adapt.compare_softmax:
+        print("A/B softmax (не критический путь)…")
+        t2 = time.perf_counter()
+        sm = train_softmax_policies(
+            fit,
+            lambda_entropy=cfg.policy.lambda_entropy,
+            max_iter=cfg.policy.max_iter,
+            random_state=cfg.policy.random_state,
+            solver=cfg.policy.solver,
+            tol=cfg.policy.tol,
+            C=cfg.policy.C,
+            agent_col=agent_col,
+            context_col=ctx,
+            role_mode=adapt.role_mode,
+        )
+        from orgtwin.policy.softmax import next_step_accuracy as ns_softmax
+
+        ns_sm = ns_softmax(sm, hold, **prep)
+        policies["softmax"] = {"holdout": ns_sm, "train": sm.train_metrics, "kind": "softmax"}
+        print(
+            f"  softmax holdout acc={ns_sm['accuracy']:.3f} CE={ns_sm['cross_entropy']:.3f} "
+            f"({time.perf_counter()-t2:.1f}s)"
+        )
+
+    ce_counts = ns_counts.get("cross_entropy") or 1e9
+    winner = "counts"
+    if ns_sm is not None:
+        ce_sm = ns_sm.get("cross_entropy") or 1e9
+        if ce_sm + 1e-6 < ce_counts:
+            winner = "softmax"
+            decisions.append(
+                f"Softmax CE holdout лучше счётчиков ({ce_sm:.4f} < {ce_counts:.4f}) — политика = softmax"
+            )
+        else:
+            decisions.append(
+                f"Счётчики не хуже softmax по CE holdout ({ce_counts:.4f} vs {ce_sm:.4f}) — политика = counts"
+            )
+    else:
+        decisions.append("Политика = counts (softmax выключен)")
+
+    print("Диагностика локальных минимумов…")
+    diag = diagnose_local_minima(
+        fit,
+        agent_col=agent_col,
+        context_col=ctx,
+        role_mode=adapt.role_mode,
+        amount_bin_edges=counts_pol.amount_bin_edges,
+        min_input_support=adapt.min_input_support,
+        min_unique_action_support=adapt.min_unique_action_support,
+        unique_share=adapt.unique_share,
+        top1_stuck_threshold=adapt.top1_stuck_threshold,
+    )
+    n_exclusive = sum(len(v) for v in diag["uncovered_frequent_actions_if_agent_removed"].values())
+    decisions.append(
+        f"Диагностика: агентов={diag['n_agents']}, "
+        f"незаменимых частых действий (уник. носитель)={n_exclusive}"
+    )
+    print("Диагностика directed edges…")
+    edge_field = diagnose_edge_field(
+        fit,
+        agent_col=agent_col,
+        context_col=ctx,
+    )
+    print("Диагностика entity-edge layer…")
+    entity_field = diagnose_entity_field(
+        fit,
+        agent_col=agent_col,
+        context_col=ctx,
+        role_mode=adapt.role_mode,
+    )
+    decisions.append(
+        f"Directed edges: E={edge_field['n_directed_edges_nonzero']} "
+        f"из {edge_field['n_directed_edges_possible']} возможных"
+    )
+    decisions.append(
+        f"Entity field: сущностей={entity_field['n_entities']}, "
+        f"рёбер={entity_field['n_edges']}, типов={entity_field['edge_type_counts']}"
+    )
+    if adapt.run_sim:
+        failures.append(
+            {
+                "id": "SIM_SKIPPED_BY_DESIGN",
+                "severity": "info",
+                "detail": "run_sim=true запрошен, но recipe agent_rules не гоняет нагрузку (нет слота занятости)",
+            }
+        )
+        decisions.append("Симуляция нагрузки не запускалась: нет занятости / входного потока как рычага")
+
+    comparison = {
+        "next_step_accuracy": {k: v["holdout"]["accuracy"] for k, v in policies.items()},
+        "top3_accuracy": {k: v["holdout"]["top3_accuracy"] for k, v in policies.items()},
+        "cross_entropy": {k: v["holdout"]["cross_entropy"] for k, v in policies.items()},
+        "n": {k: v["holdout"]["n"] for k, v in policies.items()},
+    }
+
+    payload = {
+        "version": ver,
+        "contour": contour,
+        "recipe": "agent_rules",
+        "timestamp_utc": datetime.now(timezone.utc).isoformat(),
+        "config_path": recipe.get("_config_path"),
+        "config": cfg.to_dict(),
+        "split_meta": split_meta,
+        "policies": {
+            k: {"kind": v["kind"], "train": v["train"], "holdout": v["holdout"]} for k, v in policies.items()
+        },
+        "comparison": comparison,
+        "winner_policy": winner,
+        "winner_next_step": winner,
+        "winner_weekly": None,
+        "local_minima_summary": {
+            "n_agents": diag["n_agents"],
+            "n_agents_with_exclusive_actions": len(diag["uncovered_frequent_actions_if_agent_removed"]),
+            "exclusive_action_items": n_exclusive,
+            "top_stuck_agents": [
+                {
+                    "agent_id": a["agent_id"],
+                    "n_events": a["n_events"],
+                    "mean_H_bits_typical_input": a["mean_H_bits_typical_input"],
+                    "stuck_event_fraction": a["stuck_event_fraction"],
+                    "n_distinct_actions": a["n_distinct_actions"],
+                    "n_role_actions": a["n_role_actions"],
+                    "unused_role_actions_n": a["unused_role_actions_n"],
+                    "exclusive_n": len(a["exclusive_frequent_actions"]),
+                }
+                for a in diag["agents"][:15]
+            ],
+        },
+        "edge_field_summary": {
+            "n_agents": edge_field["n_agents"],
+            "n_directed_edges_nonzero": edge_field["n_directed_edges_nonzero"],
+            "n_directed_edges_possible": edge_field["n_directed_edges_possible"],
+            "density_directed": edge_field["density_directed"],
+            "top_edges": edge_field["top_edges"][:15],
+            "top_agents": edge_field["agents"][:15],
+            "mutation": edge_field.get("mutation", {}),
+        },
+        "entity_field_summary": {
+            "n_entities": entity_field["n_entities"],
+            "n_edges": entity_field["n_edges"],
+            "entity_type_counts": entity_field["entity_type_counts"],
+            "edge_type_counts": entity_field["edge_type_counts"],
+            "top_edges_by_type": {
+                k: v[:8] for k, v in entity_field["top_edges_by_type"].items()
+            },
+        },
+        "decisions": decisions,
+        "failures": failures,
+        "notes_ru": recipe.get("notes_ru", ""),
+    }
+
+    (reports / f"run_v{ver}_full.json").write_text(
+        json.dumps(payload, ensure_ascii=False, indent=2, default=str), encoding="utf-8"
+    )
+    (reports / f"holdout_metrics_v{ver}.json").write_text(
+        json.dumps({"comparison": comparison, "winner": winner}, ensure_ascii=False, indent=2, default=str),
+        encoding="utf-8",
+    )
+    (derived / f"local_minima_v{ver}.json").write_text(
+        json.dumps(diag, ensure_ascii=False, indent=2, default=str), encoding="utf-8"
+    )
+    (derived / f"edge_field_v{ver}.json").write_text(
+        json.dumps(edge_field, ensure_ascii=False, indent=2, default=str), encoding="utf-8"
+    )
+    (derived / f"entity_field_v{ver}.json").write_text(
+        json.dumps(entity_field, ensure_ascii=False, indent=2, default=str), encoding="utf-8"
+    )
+    (derived / f"failures_v{ver}.json").write_text(
+        json.dumps(failures, ensure_ascii=False, indent=2), encoding="utf-8"
+    )
+    (derived / f"experiment_config_v{ver}.json").write_text(
+        json.dumps(cfg.to_dict(), ensure_ascii=False, indent=2), encoding="utf-8"
+    )
+
+    md = _render_agent_rules_md(payload)
+    (reports / f"run_v{ver}.md").write_text(md, encoding="utf-8")
+    _append_journal(journal_path(root, contour), payload)
+    print(md)
+    print(f"\nГотово → reports/{contour}/run_v{ver}.md")
+    return payload
+
+
+def _render_agent_rules_md(payload: dict) -> str:
+    c = payload["comparison"]
+    arms = list(c.get("next_step_accuracy", {}).keys())
+
+    def fmt(x):
+        if x is None:
+            return "—"
+        if isinstance(x, float):
+            return f"{x:.4f}"
+        return str(x)
+
+    header = "| Метрика | " + " | ".join(arms) + " |"
+    sep = "|---------|" + "|".join(["------"] * len(arms)) + "|"
+    rows = []
+    for metric, key in (("next-step", "next_step_accuracy"), ("top-3", "top3_accuracy"), ("CE", "cross_entropy")):
+        rows.append("| " + metric + " | " + " | ".join(fmt(c.get(key, {}).get(a)) for a in arms) + " |")
+
+    stuck = payload.get("local_minima_summary", {}).get("top_stuck_agents", [])[:8]
+    stuck_lines = []
+    for a in stuck:
+        h = a.get("mean_H_bits_typical_input")
+        sf = a.get("stuck_event_fraction")
+        stuck_lines.append(
+            f"- `{a['agent_id']}`: n={a['n_events']}, H≈{fmt(h) if isinstance(h, float) else h}, "
+            f"stuck_frac={fmt(sf) if isinstance(sf, float) else sf}, "
+            f"действий {a['n_distinct_actions']}/{a['n_role_actions']}, "
+            f"уник. частых={a['exclusive_n']}"
+        )
+    efs = payload.get("edge_field_summary", {})
+    top_edges = efs.get("top_edges", [])[:8]
+    edge_lines = []
+    for e in top_edges:
+        top_changed = ""
+        if e.get("top_changed_fields"):
+            first = e["top_changed_fields"][0]
+            top_changed = f", top_changed={first['field']}"
+        edge_lines.append(
+            f"- `{e['from_agent']} → {e['to_agent']}`: n={e['handover_count']}, "
+            f"Pout={fmt(e['p_out'])}, Pin={fmt(e['p_in'])}, "
+            f"asym={fmt(e['asymmetry_out_minus_reverse'])}, "
+            f"H_from={fmt(e['from_route_entropy_bits'])}{top_changed}"
+        )
+    mut = efs.get("mutation") or {}
+    mut_fields = mut.get("top_changed_fields_global") or []
+    mut_field_s = ", ".join(f"`{x['field']}` ({x['count']})" for x in mut_fields[:6]) or "—"
+    mut_edges = mut.get("top_mutating_edges_by_mass") or []
+    mut_edge_lines = []
+    for me in mut_edges[:6]:
+        tf = (me.get("top_changed_fields") or [{}])[0].get("field", "—")
+        mut_edge_lines.append(
+            f"- `{me['from_agent']} → {me['to_agent']}`: n={me['handover_count']}, "
+            f"avg_n={fmt(me['avg_n_changed_fields_before_handover'])}, "
+            f"mass={fmt(me['mutation_mass'])}, top={tf}"
+        )
+    bin_lines = []
+    for b in mut.get("bins_by_handover_count") or []:
+        bin_lines.append(
+            f"- `{b['bin']}` (n={b['handover_count_lo']}…{b['handover_count_hi']}): "
+            f"рёбер {b['n_edges_with_changed_fields']}/{b['n_edges']}, "
+            f"доля={fmt(b['share_edges_with_changed_fields'])}"
+        )
+    ef = payload.get("entity_field_summary", {})
+    entity_lines = []
+    for edge_type, items in ef.get("top_edges_by_type", {}).items():
+        if not items:
+            continue
+        first = items[0]
+        entity_lines.append(
+            f"- `{edge_type}`: топ `{first['from_id']} → {first['to_id']}` "
+            f"(n={first['count']}, p={fmt(first['p_out_type'])})"
+        )
+
+    return f"""# OrgTwin v{payload['version']}
+
+{payload.get('notes_ru') or 'Рецепт agent_rules: локальные правила + holdout next-step.'}
+
+Рецепт: `{payload.get('recipe')}`. Конфиг: `{payload.get('config_path')}`.
+Политика (по CE holdout): **{payload['winner_policy']}**.
+
+## Holdout next-step
+{header}
+{sep}
+{chr(10).join(rows)}
+
+## Локальные минимумы (fit)
+Агентов: {payload['local_minima_summary']['n_agents']}; с незаменимыми частыми действиями: {payload['local_minima_summary']['n_agents_with_exclusive_actions']}.
+
+{chr(10).join(stuck_lines) if stuck_lines else '—'}
+
+## Directed Edge Field (fit)
+Агентов: {efs.get('n_agents')}; рёбер: {efs.get('n_directed_edges_nonzero')} / {efs.get('n_directed_edges_possible')}; плотность: {fmt(efs.get('density_directed'))}.
+
+{chr(10).join(edge_lines) if edge_lines else '—'}
+
+## Мутации Information на всех рёбрах (fit)
+Кандидатов полей: {mut.get('n_candidate_fields', 0)}.  
+Рёбер с мутацией: {mut.get('n_edges_with_changed_fields', 0)} / {mut.get('n_edges', 0)} (доля {fmt(mut.get('share_edges_with_changed_fields'))}).  
+Handover с мутацией: {mut.get('handover_with_changed_fields', 0)} / {mut.get('handover_total', 0)} (доля {fmt(mut.get('share_handovers_with_changed_fields'))}).  
+Взвешенное среднее числа полей: {fmt(mut.get('weighted_avg_n_changed_fields'))}.  
+Глобальный топ полей: {mut_field_s}.
+
+Топ рёбер по mutation_mass (avg_n × n):
+{chr(10).join(mut_edge_lines) if mut_edge_lines else '— (на ненулевых рёбрах Information не меняется)'}
+
+По tertile handover_count:
+{chr(10).join(bin_lines) if bin_lines else '—'}
+
+## Entity-Edge Layer (fit)
+Сущностей: {ef.get('n_entities')}; рёбер: {ef.get('n_edges')}.  
+Типы сущностей: {ef.get('entity_type_counts')}.  
+Типы рёбер: {ef.get('edge_type_counts')}.
+
+{chr(10).join(entity_lines) if entity_lines else '—'}
+
+## Решения
+{chr(10).join('- ' + d for d in payload['decisions'])}
+
+## Ограничения
+{chr(10).join('- **' + f['id'] + '**: ' + f['detail'] for f in payload['failures']) or '—'}
+"""
+
+
+def run_from_config(
+    root: Path,
+    config_path: Path,
+    package_version: str,
+    expected_contour: str | None = None,
+) -> dict:
     recipe = json.loads(config_path.read_text(encoding="utf-8"))
     req = recipe.get("require_package_version")
     if req and req != package_version:
@@ -411,12 +843,15 @@ def run_from_config(root: Path, config_path: Path, package_version: str) -> dict
             f"VERSION mismatch: config require_package_version={req}, package={package_version}. "
             "Обновите VERSION/pyproject или уберите require_package_version для архивного конфига."
         )
-    # относительный путь конфига для отчёта
+    contour = validate_contour_recipe(recipe, expected=expected_contour)
+    recipe["contour"] = contour
     try:
         recipe["_config_path"] = str(config_path.relative_to(root))
     except ValueError:
         recipe["_config_path"] = str(config_path)
     recipe_name = recipe.get("recipe", "softmax_fep_ab")
     if recipe_name == "softmax_fep_ab":
-        return run_softmax_fep_ab(root, recipe, package_version)
+        return run_softmax_fep_ab(root, recipe, package_version, contour)
+    if recipe_name == "agent_rules":
+        return run_agent_rules(root, recipe, package_version, contour)
     raise SystemExit(f"Неизвестный recipe: {recipe_name}")

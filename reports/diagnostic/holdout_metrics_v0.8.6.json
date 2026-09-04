@@ -1,0 +1,21 @@
+{
+  "comparison": {
+    "next_step_accuracy": {
+      "counts": 0.7187039764359352,
+      "softmax": 0.7207658321060383
+    },
+    "top3_accuracy": {
+      "counts": 0.9944035346097202,
+      "softmax": 0.9958762886597938
+    },
+    "cross_entropy": {
+      "counts": 0.6885138818354957,
+      "softmax": 0.6470277832273592
+    },
+    "n": {
+      "counts": 3395,
+      "softmax": 3395
+    }
+  },
+  "winner": "softmax"
+}

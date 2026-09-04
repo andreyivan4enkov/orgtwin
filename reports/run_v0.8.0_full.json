@@ -1,0 +1,325 @@
+{
+  "version": "0.8.0",
+  "recipe": "agent_rules",
+  "timestamp_utc": "2026-09-03T13:51:25.316960+00:00",
+  "config_path": "configs/experiments/v0.8.0.json",
+  "config": {
+    "donor_id": "HOSPITAL2011",
+    "donor_doi": "10.4121/uuid:d9769f3d-0ab0-4fb8-803b-0d1120ffcf54",
+    "split": {
+      "fit_months": 7,
+      "holdout_months": 3,
+      "target_fit_months": 7,
+      "target_holdout_months": 3
+    },
+    "policy": {
+      "lambda_entropy": 0.05,
+      "max_iter": 250,
+      "C": 1.0,
+      "random_state": 42,
+      "solver": "saga",
+      "tol": 0.001,
+      "amount_quantiles": [
+        0.0,
+        0.25,
+        0.5,
+        0.75,
+        1.0
+      ],
+      "prune_min_support": 0,
+      "terminal_prefixes": [
+        "A_CANCELLED",
+        "A_DECLINED",
+        "A_APPROVED",
+        "A_REGISTERED"
+      ]
+    },
+    "fep": {
+      "dirichlet_alpha": 0.5,
+      "gamma_precision": 4.0,
+      "preference_power": 1.0,
+      "habit_weight": 1.0,
+      "ambiguity_weight": 0.0,
+      "risk_weight": 0.0,
+      "empty_transition_entropy": 3.0,
+      "mode": "habit_only",
+      "tune_on_fit": true,
+      "tune_eval_max_rows": 25000
+    },
+    "timing": {
+      "dt_min_sec": 0.0,
+      "dt_max_sec": 2592000.0,
+      "default_latency_sec": 3600.0,
+      "latency_noise_low": 1.0,
+      "latency_noise_high": 1.0,
+      "ridge_alpha": 1.0,
+      "min_train_dt_samples": 100
+    },
+    "sim": {
+      "max_steps_per_case": 40,
+      "seed": 42
+    },
+    "eval": {
+      "top_k_actions": 20,
+      "next_step_top_k": 3
+    },
+    "donor_adapt": {
+      "agent_column": "org:group",
+      "context_column": "case:Age",
+      "role_mode": "specialism",
+      "count_min_support": 3,
+      "compare_softmax": true,
+      "run_sim": false,
+      "min_input_support": 20,
+      "min_unique_action_support": 30,
+      "unique_share": 0.8,
+      "top1_stuck_threshold": 0.8
+    }
+  },
+  "split_meta": {
+    "t0": "2005-01-02 23:00:00+00:00",
+    "t1": "2008-03-19 23:00:00+00:00",
+    "fit_end": "2005-08-02 23:00:00+00:00",
+    "hold_end": "2005-11-02 23:00:00+00:00",
+    "fit_cases": 354,
+    "hold_cases": 127,
+    "fit_events": 42880,
+    "hold_events": 13210,
+    "fit_months": 7,
+    "holdout_months": 3
+  },
+  "policies": {
+    "counts": {
+      "kind": "counts",
+      "train": {
+        "n_samples": 42880,
+        "n_actions": 420,
+        "n_agents": 33,
+        "n_tables": 2629,
+        "min_support": 3,
+        "fit_action_accuracy": 0.6465951492537313,
+        "fit_top3_accuracy": 0.8885960820895522,
+        "cross_entropy": 1.086921985384575,
+        "backoff": "apc → ap → a → global",
+        "loss_audit_form": "эмпирический P(action|info,agent); CE на fit"
+      },
+      "holdout": {
+        "n": 13202,
+        "accuracy": 0.6243750946826239,
+        "top3_accuracy": 0.849871231631571,
+        "cross_entropy": 2.2233572535629285
+      }
+    },
+    "softmax": {
+      "kind": "softmax",
+      "train": {
+        "n_samples": 42880,
+        "n_actions": 420,
+        "n_agents": 33,
+        "cross_entropy": 1.2101113937747179,
+        "policy_entropy_nats": 1.5105349088962918,
+        "lambda_entropy": 0.05,
+        "free_energy_proxy": 1.2856381392195324,
+        "fit_action_accuracy": 0.6458022388059701,
+        "fail_rate_proxy": 0.3541977611940299,
+        "loss_audit_form": "L ≈ E[fail] + λ H(policy) ≈ fail_rate + λ * entropy"
+      },
+      "holdout": {
+        "n": 13202,
+        "accuracy": 0.629450083320709,
+        "top3_accuracy": 0.861687623087411,
+        "cross_entropy": 1.2965110799102615
+      }
+    }
+  },
+  "comparison": {
+    "next_step_accuracy": {
+      "counts": 0.6243750946826239,
+      "softmax": 0.629450083320709
+    },
+    "top3_accuracy": {
+      "counts": 0.849871231631571,
+      "softmax": 0.861687623087411
+    },
+    "cross_entropy": {
+      "counts": 2.2233572535629285,
+      "softmax": 1.2965110799102615
+    },
+    "n": {
+      "counts": 13202,
+      "softmax": 13202
+    }
+  },
+  "winner_policy": "softmax",
+  "winner_next_step": "softmax",
+  "winner_weekly": null,
+  "local_minima_summary": {
+    "n_agents": 33,
+    "n_agents_with_exclusive_actions": 13,
+    "exclusive_action_items": 61,
+    "top_stuck_agents": [
+      {
+        "agent_id": "Hyper Pressure Tank",
+        "n_events": 30,
+        "mean_H_bits_typical_input": 0.0,
+        "stuck_event_fraction": 1.0,
+        "n_distinct_actions": 1,
+        "n_role_actions": 3,
+        "unused_role_actions_n": 2,
+        "exclusive_n": 1
+      },
+      {
+        "agent_id": "ICU Adults",
+        "n_events": 65,
+        "mean_H_bits_typical_input": NaN,
+        "stuck_event_fraction": NaN,
+        "n_distinct_actions": 14,
+        "n_role_actions": 24,
+        "unused_role_actions_n": 10,
+        "exclusive_n": 0
+      },
+      {
+        "agent_id": "Pharmacy Laboratory",
+        "n_events": 117,
+        "mean_H_bits_typical_input": 0.0,
+        "stuck_event_fraction": 1.0,
+        "n_distinct_actions": 3,
+        "n_role_actions": 168,
+        "unused_role_actions_n": 165,
+        "exclusive_n": 1
+      },
+      {
+        "agent_id": "Internal Specialisms clinic",
+        "n_events": 755,
+        "mean_H_bits_typical_input": 0.8119635279655604,
+        "stuck_event_fraction": 0.7819148936170213,
+        "n_distinct_actions": 11,
+        "n_role_actions": 13,
+        "unused_role_actions_n": 2,
+        "exclusive_n": 1
+      },
+      {
+        "agent_id": "Lab Experimental Immunology",
+        "n_events": 1,
+        "mean_H_bits_typical_input": NaN,
+        "stuck_event_fraction": NaN,
+        "n_distinct_actions": 1,
+        "n_role_actions": 168,
+        "unused_role_actions_n": 167,
+        "exclusive_n": 0
+      },
+      {
+        "agent_id": "Lab Hematology",
+        "n_events": 2,
+        "mean_H_bits_typical_input": NaN,
+        "stuck_event_fraction": NaN,
+        "n_distinct_actions": 1,
+        "n_role_actions": 168,
+        "unused_role_actions_n": 167,
+        "exclusive_n": 0
+      },
+      {
+        "agent_id": "Medical Microbiology",
+        "n_events": 1166,
+        "mean_H_bits_typical_input": 0.9536767833272828,
+        "stuck_event_fraction": 0.23261117445838084,
+        "n_distinct_actions": 15,
+        "n_role_actions": 15,
+        "unused_role_actions_n": 0,
+        "exclusive_n": 4
+      },
+      {
+        "agent_id": "Anesthesiology",
+        "n_events": 1,
+        "mean_H_bits_typical_input": NaN,
+        "stuck_event_fraction": NaN,
+        "n_distinct_actions": 1,
+        "n_role_actions": 24,
+        "unused_role_actions_n": 23,
+        "exclusive_n": 0
+      },
+      {
+        "agent_id": "Anesthesiology clinic",
+        "n_events": 9,
+        "mean_H_bits_typical_input": NaN,
+        "stuck_event_fraction": NaN,
+        "n_distinct_actions": 1,
+        "n_role_actions": 24,
+        "unused_role_actions_n": 23,
+        "exclusive_n": 0
+      },
+      {
+        "agent_id": "Cardiovascular clinics",
+        "n_events": 52,
+        "mean_H_bits_typical_input": 0.0,
+        "stuck_event_fraction": 1.0,
+        "n_distinct_actions": 3,
+        "n_role_actions": 3,
+        "unused_role_actions_n": 0,
+        "exclusive_n": 0
+      },
+      {
+        "agent_id": "Day Centre - treatment",
+        "n_events": 5,
+        "mean_H_bits_typical_input": NaN,
+        "stuck_event_fraction": NaN,
+        "n_distinct_actions": 5,
+        "n_role_actions": 82,
+        "unused_role_actions_n": 77,
+        "exclusive_n": 0
+      },
+      {
+        "agent_id": "Day Centre - ward",
+        "n_events": 6,
+        "mean_H_bits_typical_input": NaN,
+        "stuck_event_fraction": NaN,
+        "n_distinct_actions": 2,
+        "n_role_actions": 82,
+        "unused_role_actions_n": 80,
+        "exclusive_n": 0
+      },
+      {
+        "agent_id": "Diet Studies",
+        "n_events": 77,
+        "mean_H_bits_typical_input": 0.5075868716184456,
+        "stuck_event_fraction": 1.0,
+        "n_distinct_actions": 2,
+        "n_role_actions": 2,
+        "unused_role_actions_n": 0,
+        "exclusive_n": 1
+      },
+      {
+        "agent_id": "Emergency room",
+        "n_events": 4,
+        "mean_H_bits_typical_input": NaN,
+        "stuck_event_fraction": NaN,
+        "n_distinct_actions": 3,
+        "n_role_actions": 13,
+        "unused_role_actions_n": 10,
+        "exclusive_n": 0
+      },
+      {
+        "agent_id": "Endoscopy",
+        "n_events": 11,
+        "mean_H_bits_typical_input": NaN,
+        "stuck_event_fraction": NaN,
+        "n_distinct_actions": 5,
+        "n_role_actions": 5,
+        "unused_role_actions_n": 0,
+        "exclusive_n": 0
+      }
+    ]
+  },
+  "decisions": [
+    "Срез обвязки: FEP / case-head / stress / prune вне критического пути",
+    "Второй организм: HOSPITAL2011, не склеивать с BPIC2012",
+    "Прогон recipe=agent_rules через run_experiment.py (версия 0.8.0)",
+    "package_version=0.8.0",
+    "FEP / case-head / stress top-3 / prune_min_support вне критического пути",
+    "λ не входит в обучение; softmax — только A/B по CE holdout",
+    "Softmax CE holdout лучше счётчиков (1.2965 < 2.2234) — политика = softmax",
+    "Диагностика: агентов=33, незаменимых частых действий (уник. носитель)=61"
+  ],
+  "failures": [],
+  "notes_ru": "0.8.0: ядро = локальные правила P(действие|видимое,агент). Донор — Hospital log (BPIC2011), один NL academic hospital. Агент = org:group (отделение, не физлицо). Split 7+3 мес от начала лога. Softmax только A/B по CE. Без FEP, без калибровки длительности, без стресса top-3, без прунинга 30."
+}

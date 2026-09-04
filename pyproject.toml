@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "orgtwin"
-version = "0.7.0"
+version = "0.11.0"
 description = "OrgTwin — цифровой двойник операционного организма компании (Information/Action, агентная симуляция In Silico)"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -17,6 +17,8 @@ dependencies = [
   "numpy>=1.24.0",
   "scikit-learn>=1.3.0",
   "scipy>=1.10.0",
+  "fastapi>=0.110.0",
+  "uvicorn[standard]>=0.27.0",
 ]
 
 [project.urls]

@@ -1,0 +1,3312 @@
+{
+  "version": "0.8.1",
+  "contour": "diagnostic",
+  "recipe": "agent_rules",
+  "timestamp_utc": "2026-09-03T15:09:10.408053+00:00",
+  "config_path": "configs/experiments/v0.8.1.json",
+  "config": {
+    "donor_id": "SEPSIS2016",
+    "donor_doi": "10.4121/uuid:915d2bfb-7e84-49ad-a286-dc35f063a460",
+    "split": {
+      "fit_months": 7,
+      "holdout_months": 3,
+      "target_fit_months": 7,
+      "target_holdout_months": 3
+    },
+    "policy": {
+      "lambda_entropy": 0.05,
+      "max_iter": 250,
+      "C": 1.0,
+      "random_state": 42,
+      "solver": "saga",
+      "tol": 0.001,
+      "amount_quantiles": [
+        0.0,
+        0.25,
+        0.5,
+        0.75,
+        1.0
+      ],
+      "prune_min_support": 0,
+      "terminal_prefixes": [
+        "A_CANCELLED",
+        "A_DECLINED",
+        "A_APPROVED",
+        "A_REGISTERED"
+      ]
+    },
+    "fep": {
+      "dirichlet_alpha": 0.5,
+      "gamma_precision": 4.0,
+      "preference_power": 1.0,
+      "habit_weight": 1.0,
+      "ambiguity_weight": 0.0,
+      "risk_weight": 0.0,
+      "empty_transition_entropy": 3.0,
+      "mode": "habit_only",
+      "tune_on_fit": true,
+      "tune_eval_max_rows": 25000
+    },
+    "timing": {
+      "dt_min_sec": 0.0,
+      "dt_max_sec": 2592000.0,
+      "default_latency_sec": 3600.0,
+      "latency_noise_low": 1.0,
+      "latency_noise_high": 1.0,
+      "ridge_alpha": 1.0,
+      "min_train_dt_samples": 100
+    },
+    "sim": {
+      "max_steps_per_case": 40,
+      "seed": 42,
+      "queue_mode": false,
+      "agent_capacity": 1,
+      "input_flow_multiplier": 1.0,
+      "max_sim_horizon_sec": null
+    },
+    "eval": {
+      "top_k_actions": 20,
+      "next_step_top_k": 3
+    },
+    "donor_adapt": {
+      "agent_column": "org:group",
+      "context_column": "Age",
+      "role_mode": "agent",
+      "count_min_support": 3,
+      "compare_softmax": true,
+      "run_sim": false,
+      "min_input_support": 15,
+      "min_unique_action_support": 20,
+      "unique_share": 0.75,
+      "top1_stuck_threshold": 0.85
+    }
+  },
+  "split_meta": {
+    "t0": "2013-11-07 07:18:29+00:00",
+    "t1": "2015-06-05 10:25:11+00:00",
+    "fit_end": "2014-06-07 07:18:29+00:00",
+    "hold_end": "2014-09-07 07:18:29+00:00",
+    "fit_cases": 489,
+    "hold_cases": 211,
+    "fit_events": 6950,
+    "hold_events": 3396,
+    "fit_months": 7,
+    "holdout_months": 3
+  },
+  "policies": {
+    "counts": {
+      "kind": "counts",
+      "train": {
+        "n_samples": 6950,
+        "n_actions": 16,
+        "n_agents": 25,
+        "n_tables": 343,
+        "min_support": 3,
+        "fit_action_accuracy": 0.737410071942446,
+        "fit_top3_accuracy": 0.9969784172661871,
+        "cross_entropy": 0.5944299442024441,
+        "backoff": "apc → ap → a → global",
+        "loss_audit_form": "эмпирический P(action|info,agent); CE на fit"
+      },
+      "holdout": {
+        "n": 3395,
+        "accuracy": 0.7187039764359352,
+        "top3_accuracy": 0.9944035346097202,
+        "cross_entropy": 0.6885138818354957
+      }
+    },
+    "softmax": {
+      "kind": "softmax",
+      "train": {
+        "n_samples": 6950,
+        "n_actions": 16,
+        "n_agents": 25,
+        "cross_entropy": 0.6117933000846001,
+        "policy_entropy_nats": 0.6883220368649603,
+        "lambda_entropy": 0.05,
+        "free_energy_proxy": 0.6462094019278481,
+        "fit_action_accuracy": 0.7375539568345324,
+        "fail_rate_proxy": 0.2624460431654676,
+        "loss_audit_form": "L ≈ E[fail] + λ H(policy) ≈ fail_rate + λ * entropy"
+      },
+      "holdout": {
+        "n": 3395,
+        "accuracy": 0.7207658321060383,
+        "top3_accuracy": 0.9958762886597938,
+        "cross_entropy": 0.6470277832273592
+      }
+    }
+  },
+  "comparison": {
+    "next_step_accuracy": {
+      "counts": 0.7187039764359352,
+      "softmax": 0.7207658321060383
+    },
+    "top3_accuracy": {
+      "counts": 0.9944035346097202,
+      "softmax": 0.9958762886597938
+    },
+    "cross_entropy": {
+      "counts": 0.6885138818354957,
+      "softmax": 0.6470277832273592
+    },
+    "n": {
+      "counts": 3395,
+      "softmax": 3395
+    }
+  },
+  "winner_policy": "softmax",
+  "winner_next_step": "softmax",
+  "winner_weekly": null,
+  "local_minima_summary": {
+    "n_agents": 25,
+    "n_agents_with_exclusive_actions": 5,
+    "exclusive_action_items": 11,
+    "top_stuck_agents": [
+      {
+        "agent_id": "C",
+        "n_events": 491,
+        "mean_H_bits_typical_input": 0.0,
+        "stuck_event_fraction": 1.0,
+        "n_distinct_actions": 1,
+        "n_role_actions": 1,
+        "unused_role_actions_n": 0,
+        "exclusive_n": 1
+      },
+      {
+        "agent_id": "?",
+        "n_events": 152,
+        "mean_H_bits_typical_input": 0.0,
+        "stuck_event_fraction": 1.0,
+        "n_distinct_actions": 1,
+        "n_role_actions": 1,
+        "unused_role_actions_n": 0,
+        "exclusive_n": 1
+      },
+      {
+        "agent_id": "F",
+        "n_events": 95,
+        "mean_H_bits_typical_input": 0.0,
+        "stuck_event_fraction": 1.0,
+        "n_distinct_actions": 1,
+        "n_role_actions": 1,
+        "unused_role_actions_n": 0,
+        "exclusive_n": 0
+      },
+      {
+        "agent_id": "O",
+        "n_events": 74,
+        "mean_H_bits_typical_input": 0.0,
+        "stuck_event_fraction": 1.0,
+        "n_distinct_actions": 1,
+        "n_role_actions": 1,
+        "unused_role_actions_n": 0,
+        "exclusive_n": 0
+      },
+      {
+        "agent_id": "G",
+        "n_events": 70,
+        "mean_H_bits_typical_input": 0.0,
+        "stuck_event_fraction": 1.0,
+        "n_distinct_actions": 1,
+        "n_role_actions": 1,
+        "unused_role_actions_n": 0,
+        "exclusive_n": 0
+      },
+      {
+        "agent_id": "I",
+        "n_events": 58,
+        "mean_H_bits_typical_input": 0.0,
+        "stuck_event_fraction": 1.0,
+        "n_distinct_actions": 1,
+        "n_role_actions": 1,
+        "unused_role_actions_n": 0,
+        "exclusive_n": 0
+      },
+      {
+        "agent_id": "M",
+        "n_events": 48,
+        "mean_H_bits_typical_input": 0.0,
+        "stuck_event_fraction": 1.0,
+        "n_distinct_actions": 1,
+        "n_role_actions": 1,
+        "unused_role_actions_n": 0,
+        "exclusive_n": 0
+      },
+      {
+        "agent_id": "E",
+        "n_events": 362,
+        "mean_H_bits_typical_input": 0.7597643574437652,
+        "stuck_event_fraction": 0.7938718662952646,
+        "n_distinct_actions": 5,
+        "n_role_actions": 5,
+        "unused_role_actions_n": 0,
+        "exclusive_n": 2
+      },
+      {
+        "agent_id": "A",
+        "n_events": 1596,
+        "mean_H_bits_typical_input": 0.5422737983153503,
+        "stuck_event_fraction": 0.6957070707070707,
+        "n_distinct_actions": 4,
+        "n_role_actions": 4,
+        "unused_role_actions_n": 0,
+        "exclusive_n": 4
+      },
+      {
+        "agent_id": "B",
+        "n_events": 3640,
+        "mean_H_bits_typical_input": 1.3095006106073324,
+        "stuck_event_fraction": 0.0,
+        "n_distinct_actions": 3,
+        "n_role_actions": 3,
+        "unused_role_actions_n": 0,
+        "exclusive_n": 3
+      },
+      {
+        "agent_id": "D",
+        "n_events": 16,
+        "mean_H_bits_typical_input": NaN,
+        "stuck_event_fraction": NaN,
+        "n_distinct_actions": 1,
+        "n_role_actions": 1,
+        "unused_role_actions_n": 0,
+        "exclusive_n": 0
+      },
+      {
+        "agent_id": "H",
+        "n_events": 26,
+        "mean_H_bits_typical_input": NaN,
+        "stuck_event_fraction": NaN,
+        "n_distinct_actions": 1,
+        "n_role_actions": 1,
+        "unused_role_actions_n": 0,
+        "exclusive_n": 0
+      },
+      {
+        "agent_id": "J",
+        "n_events": 13,
+        "mean_H_bits_typical_input": NaN,
+        "stuck_event_fraction": NaN,
+        "n_distinct_actions": 2,
+        "n_role_actions": 2,
+        "unused_role_actions_n": 0,
+        "exclusive_n": 0
+      },
+      {
+        "agent_id": "K",
+        "n_events": 9,
+        "mean_H_bits_typical_input": NaN,
+        "stuck_event_fraction": NaN,
+        "n_distinct_actions": 1,
+        "n_role_actions": 1,
+        "unused_role_actions_n": 0,
+        "exclusive_n": 0
+      },
+      {
+        "agent_id": "L",
+        "n_events": 111,
+        "mean_H_bits_typical_input": 0.29715355636330165,
+        "stuck_event_fraction": 0.66,
+        "n_distinct_actions": 4,
+        "n_role_actions": 4,
+        "unused_role_actions_n": 0,
+        "exclusive_n": 0
+      }
+    ]
+  },
+  "edge_field_summary": {
+    "n_agents": 25,
+    "n_directed_edges_nonzero": 144,
+    "n_directed_edges_possible": 600,
+    "density_directed": 0.24,
+    "top_edges": [
+      {
+        "from_agent": "A",
+        "to_agent": "C",
+        "handover_count": 438,
+        "case_count": 438,
+        "from_event_count": 1596,
+        "to_event_count": 491,
+        "p_out": 0.4010989010989011,
+        "p_in": 0.8975409836065574,
+        "p_reverse_out": 0.8,
+        "asymmetry_out_minus_reverse": -0.3989010989010989,
+        "lift_vs_global_in": 2.6811160151324085,
+        "from_out_degree_nonzero": 21,
+        "to_in_degree_nonzero": 4,
+        "from_route_entropy_bits": 2.3877677120358283,
+        "edge_rank_from": 1,
+        "top_action_pairs": [
+          {
+            "pair": "ER Registration|complete => ER Triage|complete",
+            "count": 420,
+            "share_on_edge": 0.958904109589041
+          },
+          {
+            "pair": "IV Liquid|complete => ER Triage|complete",
+            "count": 13,
+            "share_on_edge": 0.02968036529680365
+          },
+          {
+            "pair": "IV Antibiotics|complete => ER Triage|complete",
+            "count": 4,
+            "share_on_edge": 0.0091324200913242
+          },
+          {
+            "pair": "ER Sepsis Triage|complete => ER Triage|complete",
+            "count": 1,
+            "share_on_edge": 0.00228310502283105
+          }
+        ],
+        "top_contexts": [
+          {
+            "input": "∅||1",
+            "count": 124,
+            "share_on_edge": 0.2831050228310502
+          },
+          {
+            "input": "∅||2",
+            "count": 107,
+            "share_on_edge": 0.24429223744292236
+          },
+          {
+            "input": "∅||0",
+            "count": 106,
+            "share_on_edge": 0.2420091324200913
+          },
+          {
+            "input": "∅||3",
+            "count": 66,
+            "share_on_edge": 0.1506849315068493
+          },
+          {
+            "input": "ER Registration||1",
+            "count": 12,
+            "share_on_edge": 0.0273972602739726
+          }
+        ],
+        "top_prev_actions": [
+          {
+            "action": "ER Registration|complete",
+            "count": 420
+          },
+          {
+            "action": "IV Liquid|complete",
+            "count": 13
+          },
+          {
+            "action": "IV Antibiotics|complete",
+            "count": 4
+          },
+          {
+            "action": "ER Sepsis Triage|complete",
+            "count": 1
+          }
+        ],
+        "top_next_actions": [
+          {
+            "action": "ER Triage|complete",
+            "count": 438
+          }
+        ]
+      },
+      {
+        "from_agent": "A",
+        "to_agent": "B",
+        "handover_count": 401,
+        "case_count": 380,
+        "from_event_count": 1596,
+        "to_event_count": 3640,
+        "p_out": 0.36721611721611724,
+        "p_in": 0.44017563117453345,
+        "p_reverse_out": 0.35368663594470046,
+        "asymmetry_out_minus_reverse": 0.013529481271416788,
+        "lift_vs_global_in": 1.31488361620085,
+        "from_out_degree_nonzero": 21,
+        "to_in_degree_nonzero": 23,
+        "from_route_entropy_bits": 2.3877677120358283,
+        "edge_rank_from": 2,
+        "top_action_pairs": [
+          {
+            "pair": "ER Sepsis Triage|complete => Leucocytes|complete",
+            "count": 111,
+            "share_on_edge": 0.27680798004987534
+          },
+          {
+            "pair": "ER Sepsis Triage|complete => CRP|complete",
+            "count": 86,
+            "share_on_edge": 0.2144638403990025
+          },
+          {
+            "pair": "ER Sepsis Triage|complete => LacticAcid|complete",
+            "count": 72,
+            "share_on_edge": 0.17955112219451372
+          },
+          {
+            "pair": "IV Antibiotics|complete => Leucocytes|complete",
+            "count": 30,
+            "share_on_edge": 0.07481296758104738
+          },
+          {
+            "pair": "IV Antibiotics|complete => CRP|complete",
+            "count": 23,
+            "share_on_edge": 0.057356608478802994
+          }
+        ],
+        "top_contexts": [
+          {
+            "input": "ER Triage||1",
+            "count": 273,
+            "share_on_edge": 0.6807980049875312
+          },
+          {
+            "input": "IV Liquid||1",
+            "count": 58,
+            "share_on_edge": 0.14463840399002495
+          },
+          {
+            "input": "ER Sepsis Triage||1",
+            "count": 42,
+            "share_on_edge": 0.10473815461346633
+          },
+          {
+            "input": "Admission NC||1",
+            "count": 10,
+            "share_on_edge": 0.02493765586034913
+          },
+          {
+            "input": "∅||0",
+            "count": 7,
+            "share_on_edge": 0.017456359102244388
+          }
+        ],
+        "top_prev_actions": [
+          {
+            "action": "ER Sepsis Triage|complete",
+            "count": 269
+          },
+          {
+            "action": "IV Antibiotics|complete",
+            "count": 67
+          },
+          {
+            "action": "IV Liquid|complete",
+            "count": 49
+          },
+          {
+            "action": "ER Registration|complete",
+            "count": 16
+          }
+        ],
+        "top_next_actions": [
+          {
+            "action": "Leucocytes|complete",
+            "count": 167
+          },
+          {
+            "action": "CRP|complete",
+            "count": 135
+          },
+          {
+            "action": "LacticAcid|complete",
+            "count": 99
+          }
+        ]
+      },
+      {
+        "from_agent": "C",
+        "to_agent": "A",
+        "handover_count": 392,
+        "case_count": 392,
+        "from_event_count": 491,
+        "to_event_count": 1596,
+        "p_out": 0.8,
+        "p_in": 0.5513361462728551,
+        "p_reverse_out": 0.4010989010989011,
+        "asymmetry_out_minus_reverse": 0.3989010989010989,
+        "lift_vs_global_in": 3.670323488045007,
+        "from_out_degree_nonzero": 3,
+        "to_in_degree_nonzero": 7,
+        "from_route_entropy_bits": 0.9062600355763661,
+        "edge_rank_from": 1,
+        "top_action_pairs": [
+          {
+            "pair": "ER Triage|complete => ER Sepsis Triage|complete",
+            "count": 382,
+            "share_on_edge": 0.9744897959183674
+          },
+          {
+            "pair": "ER Triage|complete => IV Liquid|complete",
+            "count": 7,
+            "share_on_edge": 0.017857142857142856
+          },
+          {
+            "pair": "ER Triage|complete => ER Registration|complete",
+            "count": 3,
+            "share_on_edge": 0.007653061224489796
+          }
+        ],
+        "top_contexts": [
+          {
+            "input": "ER Registration||1",
+            "count": 366,
+            "share_on_edge": 0.9336734693877551
+          },
+          {
+            "input": "IV Liquid||1",
+            "count": 9,
+            "share_on_edge": 0.02295918367346939
+          },
+          {
+            "input": "LacticAcid||1",
+            "count": 6,
+            "share_on_edge": 0.015306122448979591
+          },
+          {
+            "input": "Leucocytes||1",
+            "count": 4,
+            "share_on_edge": 0.01020408163265306
+          },
+          {
+            "input": "CRP||1",
+            "count": 3,
+            "share_on_edge": 0.007653061224489796
+          }
+        ],
+        "top_prev_actions": [
+          {
+            "action": "ER Triage|complete",
+            "count": 392
+          }
+        ],
+        "top_next_actions": [
+          {
+            "action": "ER Sepsis Triage|complete",
+            "count": 382
+          },
+          {
+            "action": "IV Liquid|complete",
+            "count": 7
+          },
+          {
+            "action": "ER Registration|complete",
+            "count": 3
+          }
+        ]
+      },
+      {
+        "from_agent": "B",
+        "to_agent": "A",
+        "handover_count": 307,
+        "case_count": 299,
+        "from_event_count": 3640,
+        "to_event_count": 1596,
+        "p_out": 0.35368663594470046,
+        "p_in": 0.4317862165963432,
+        "p_reverse_out": 0.36721611721611724,
+        "asymmetry_out_minus_reverse": -0.013529481271416788,
+        "lift_vs_global_in": 1.6226804591443218,
+        "from_out_degree_nonzero": 23,
+        "to_in_degree_nonzero": 7,
+        "from_route_entropy_bits": 2.8827960251265363,
+        "edge_rank_from": 1,
+        "top_action_pairs": [
+          {
+            "pair": "LacticAcid|complete => IV Liquid|complete",
+            "count": 53,
+            "share_on_edge": 0.17263843648208468
+          },
+          {
+            "pair": "Leucocytes|complete => IV Liquid|complete",
+            "count": 47,
+            "share_on_edge": 0.15309446254071662
+          },
+          {
+            "pair": "CRP|complete => IV Liquid|complete",
+            "count": 42,
+            "share_on_edge": 0.13680781758957655
+          },
+          {
+            "pair": "LacticAcid|complete => IV Antibiotics|complete",
+            "count": 39,
+            "share_on_edge": 0.1270358306188925
+          },
+          {
+            "pair": "CRP|complete => IV Antibiotics|complete",
+            "count": 36,
+            "share_on_edge": 0.11726384364820847
+          }
+        ],
+        "top_contexts": [
+          {
+            "input": "Leucocytes||1",
+            "count": 116,
+            "share_on_edge": 0.3778501628664495
+          },
+          {
+            "input": "CRP||1",
+            "count": 113,
+            "share_on_edge": 0.36807817589576547
+          },
+          {
+            "input": "LacticAcid||1",
+            "count": 73,
+            "share_on_edge": 0.23778501628664495
+          },
+          {
+            "input": "IV Liquid||1",
+            "count": 2,
+            "share_on_edge": 0.006514657980456026
+          },
+          {
+            "input": "ER Sepsis Triage||1",
+            "count": 1,
+            "share_on_edge": 0.003257328990228013
+          }
+        ],
+        "top_prev_actions": [
+          {
+            "action": "LacticAcid|complete",
+            "count": 116
+          },
+          {
+            "action": "Leucocytes|complete",
+            "count": 97
+          },
+          {
+            "action": "CRP|complete",
+            "count": 94
+          }
+        ],
+        "top_next_actions": [
+          {
+            "action": "IV Liquid|complete",
+            "count": 142
+          },
+          {
+            "action": "IV Antibiotics|complete",
+            "count": 99
+          },
+          {
+            "action": "ER Sepsis Triage|complete",
+            "count": 57
+          },
+          {
+            "action": "ER Registration|complete",
+            "count": 9
+          }
+        ]
+      },
+      {
+        "from_agent": "B",
+        "to_agent": "E",
+        "handover_count": 288,
+        "case_count": 288,
+        "from_event_count": 3640,
+        "to_event_count": 362,
+        "p_out": 0.3317972350230415,
+        "p_in": 0.7955801104972375,
+        "p_reverse_out": 0.013071895424836602,
+        "asymmetry_out_minus_reverse": 0.31872533959820487,
+        "lift_vs_global_in": 2.989841382997683,
+        "from_out_degree_nonzero": 23,
+        "to_in_degree_nonzero": 15,
+        "from_route_entropy_bits": 2.8827960251265363,
+        "edge_rank_from": 2,
+        "top_action_pairs": [
+          {
+            "pair": "CRP|complete => Release A|complete",
+            "count": 142,
+            "share_on_edge": 0.4930555555555556
+          },
+          {
+            "pair": "Leucocytes|complete => Release A|complete",
+            "count": 107,
+            "share_on_edge": 0.3715277777777778
+          },
+          {
+            "pair": "CRP|complete => Release B|complete",
+            "count": 12,
+            "share_on_edge": 0.041666666666666664
+          },
+          {
+            "pair": "Leucocytes|complete => Release B|complete",
+            "count": 6,
+            "share_on_edge": 0.020833333333333332
+          },
+          {
+            "pair": "CRP|complete => Release C|complete",
+            "count": 5,
+            "share_on_edge": 0.017361111111111112
+          }
+        ],
+        "top_contexts": [
+          {
+            "input": "Leucocytes||1",
+            "count": 150,
+            "share_on_edge": 0.5208333333333334
+          },
+          {
+            "input": "CRP||1",
+            "count": 117,
+            "share_on_edge": 0.40625
+          },
+          {
+            "input": "Admission NC||1",
+            "count": 17,
+            "share_on_edge": 0.059027777777777776
+          },
+          {
+            "input": "LacticAcid||1",
+            "count": 2,
+            "share_on_edge": 0.006944444444444444
+          },
+          {
+            "input": "Admission IC||1",
+            "count": 1,
+            "share_on_edge": 0.003472222222222222
+          }
+        ],
+        "top_prev_actions": [
+          {
+            "action": "CRP|complete",
+            "count": 166
+          },
+          {
+            "action": "Leucocytes|complete",
+            "count": 119
+          },
+          {
+            "action": "LacticAcid|complete",
+            "count": 3
+          }
+        ],
+        "top_next_actions": [
+          {
+            "action": "Release A|complete",
+            "count": 250
+          },
+          {
+            "action": "Release B|complete",
+            "count": 20
+          },
+          {
+            "action": "Release C|complete",
+            "count": 8
+          },
+          {
+            "action": "Release D|complete",
+            "count": 7
+          },
+          {
+            "action": "Release E|complete",
+            "count": 3
+          }
+        ]
+      },
+      {
+        "from_agent": "E",
+        "to_agent": "?",
+        "handover_count": 151,
+        "case_count": 151,
+        "from_event_count": 362,
+        "to_event_count": 152,
+        "p_out": 0.9869281045751634,
+        "p_in": 0.993421052631579,
+        "p_reverse_out": 0.0,
+        "asymmetry_out_minus_reverse": 0.9869281045751634,
+        "lift_vs_global_in": 21.17999656002752,
+        "from_out_degree_nonzero": 2,
+        "to_in_degree_nonzero": 2,
+        "from_route_entropy_bits": 0.10053087773783527,
+        "edge_rank_from": 1,
+        "top_action_pairs": [
+          {
+            "pair": "Release A|complete => Return ER|complete",
+            "count": 146,
+            "share_on_edge": 0.9668874172185431
+          },
+          {
+            "pair": "Release C|complete => Return ER|complete",
+            "count": 3,
+            "share_on_edge": 0.019867549668874173
+          },
+          {
+            "pair": "Release D|complete => Return ER|complete",
+            "count": 2,
+            "share_on_edge": 0.013245033112582781
+          }
+        ],
+        "top_contexts": [
+          {
+            "input": "CRP||1",
+            "count": 76,
+            "share_on_edge": 0.5033112582781457
+          },
+          {
+            "input": "Leucocytes||1",
+            "count": 50,
+            "share_on_edge": 0.33112582781456956
+          },
+          {
+            "input": "Admission NC||1",
+            "count": 25,
+            "share_on_edge": 0.16556291390728478
+          }
+        ],
+        "top_prev_actions": [
+          {
+            "action": "Release A|complete",
+            "count": 146
+          },
+          {
+            "action": "Release C|complete",
+            "count": 3
+          },
+          {
+            "action": "Release D|complete",
+            "count": 2
+          }
+        ],
+        "top_next_actions": [
+          {
+            "action": "Return ER|complete",
+            "count": 151
+          }
+        ]
+      },
+      {
+        "from_agent": "F",
+        "to_agent": "B",
+        "handover_count": 78,
+        "case_count": 75,
+        "from_event_count": 95,
+        "to_event_count": 3640,
+        "p_out": 0.8387096774193549,
+        "p_in": 0.08562019758507135,
+        "p_reverse_out": 0.038018433179723504,
+        "asymmetry_out_minus_reverse": 0.8006912442396313,
+        "lift_vs_global_in": 3.003151446478524,
+        "from_out_degree_nonzero": 4,
+        "to_in_degree_nonzero": 23,
+        "from_route_entropy_bits": 0.7502653766231973,
+        "edge_rank_from": 1,
+        "top_action_pairs": [
+          {
+            "pair": "Admission NC|complete => CRP|complete",
+            "count": 39,
+            "share_on_edge": 0.5
+          },
+          {
+            "pair": "Admission NC|complete => Leucocytes|complete",
+            "count": 38,
+            "share_on_edge": 0.48717948717948717
+          },
+          {
+            "pair": "Admission NC|complete => LacticAcid|complete",
+            "count": 1,
+            "share_on_edge": 0.01282051282051282
+          }
+        ],
+        "top_contexts": [
+          {
+            "input": "IV Antibiotics||1",
+            "count": 31,
+            "share_on_edge": 0.3974358974358974
+          },
+          {
+            "input": "Admission NC||1",
+            "count": 21,
+            "share_on_edge": 0.2692307692307692
+          },
+          {
+            "input": "CRP||1",
+            "count": 12,
+            "share_on_edge": 0.15384615384615385
+          },
+          {
+            "input": "Leucocytes||1",
+            "count": 10,
+            "share_on_edge": 0.1282051282051282
+          },
+          {
+            "input": "LacticAcid||1",
+            "count": 3,
+            "share_on_edge": 0.038461538461538464
+          }
+        ],
+        "top_prev_actions": [
+          {
+            "action": "Admission NC|complete",
+            "count": 78
+          }
+        ],
+        "top_next_actions": [
+          {
+            "action": "CRP|complete",
+            "count": 39
+          },
+          {
+            "action": "Leucocytes|complete",
+            "count": 38
+          },
+          {
+            "action": "LacticAcid|complete",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "from_agent": "C",
+        "to_agent": "B",
+        "handover_count": 65,
+        "case_count": 65,
+        "from_event_count": 491,
+        "to_event_count": 3640,
+        "p_out": 0.1326530612244898,
+        "p_in": 0.07135016465422613,
+        "p_reverse_out": 0.020737327188940093,
+        "asymmetry_out_minus_reverse": 0.11191573403554972,
+        "lift_vs_global_in": 0.4749882389838482,
+        "from_out_degree_nonzero": 3,
+        "to_in_degree_nonzero": 23,
+        "from_route_entropy_bits": 0.9062600355763661,
+        "edge_rank_from": 2,
+        "top_action_pairs": [
+          {
+            "pair": "ER Triage|complete => CRP|complete",
+            "count": 26,
+            "share_on_edge": 0.4
+          },
+          {
+            "pair": "ER Triage|complete => Leucocytes|complete",
+            "count": 25,
+            "share_on_edge": 0.38461538461538464
+          },
+          {
+            "pair": "ER Triage|complete => LacticAcid|complete",
+            "count": 14,
+            "share_on_edge": 0.2153846153846154
+          }
+        ],
+        "top_contexts": [
+          {
+            "input": "ER Registration||1",
+            "count": 56,
+            "share_on_edge": 0.8615384615384616
+          },
+          {
+            "input": "IV Liquid||1",
+            "count": 4,
+            "share_on_edge": 0.06153846153846154
+          },
+          {
+            "input": "IV Antibiotics||1",
+            "count": 4,
+            "share_on_edge": 0.06153846153846154
+          },
+          {
+            "input": "Admission NC||1",
+            "count": 1,
+            "share_on_edge": 0.015384615384615385
+          }
+        ],
+        "top_prev_actions": [
+          {
+            "action": "ER Triage|complete",
+            "count": 65
+          }
+        ],
+        "top_next_actions": [
+          {
+            "action": "CRP|complete",
+            "count": 26
+          },
+          {
+            "action": "Leucocytes|complete",
+            "count": 25
+          },
+          {
+            "action": "LacticAcid|complete",
+            "count": 14
+          }
+        ]
+      },
+      {
+        "from_agent": "O",
+        "to_agent": "B",
+        "handover_count": 56,
+        "case_count": 54,
+        "from_event_count": 74,
+        "to_event_count": 3640,
+        "p_out": 0.7671232876712328,
+        "p_in": 0.06147091108671789,
+        "p_reverse_out": 0.029953917050691243,
+        "asymmetry_out_minus_reverse": 0.7371693706205416,
+        "lift_vs_global_in": 2.7468234515736127,
+        "from_out_degree_nonzero": 6,
+        "to_in_degree_nonzero": 23,
+        "from_route_entropy_bits": 1.2196668039531318,
+        "edge_rank_from": 1,
+        "top_action_pairs": [
+          {
+            "pair": "Admission NC|complete => CRP|complete",
+            "count": 32,
+            "share_on_edge": 0.5714285714285714
+          },
+          {
+            "pair": "Admission NC|complete => Leucocytes|complete",
+            "count": 23,
+            "share_on_edge": 0.4107142857142857
+          },
+          {
+            "pair": "Admission NC|complete => LacticAcid|complete",
+            "count": 1,
+            "share_on_edge": 0.017857142857142856
+          }
+        ],
+        "top_contexts": [
+          {
+            "input": "IV Antibiotics||1",
+            "count": 26,
+            "share_on_edge": 0.4642857142857143
+          },
+          {
+            "input": "Admission NC||1",
+            "count": 11,
+            "share_on_edge": 0.19642857142857142
+          },
+          {
+            "input": "Leucocytes||1",
+            "count": 8,
+            "share_on_edge": 0.14285714285714285
+          },
+          {
+            "input": "CRP||1",
+            "count": 7,
+            "share_on_edge": 0.125
+          },
+          {
+            "input": "LacticAcid||1",
+            "count": 3,
+            "share_on_edge": 0.05357142857142857
+          }
+        ],
+        "top_prev_actions": [
+          {
+            "action": "Admission NC|complete",
+            "count": 56
+          }
+        ],
+        "top_next_actions": [
+          {
+            "action": "CRP|complete",
+            "count": 32
+          },
+          {
+            "action": "Leucocytes|complete",
+            "count": 23
+          },
+          {
+            "action": "LacticAcid|complete",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "from_agent": "A",
+        "to_agent": "G",
+        "handover_count": 53,
+        "case_count": 53,
+        "from_event_count": 1596,
+        "to_event_count": 70,
+        "p_out": 0.048534798534798536,
+        "p_in": 0.7681159420289855,
+        "p_reverse_out": 0.0,
+        "asymmetry_out_minus_reverse": 0.048534798534798536,
+        "lift_vs_global_in": 2.2945001858045337,
+        "from_out_degree_nonzero": 21,
+        "to_in_degree_nonzero": 2,
+        "from_route_entropy_bits": 2.3877677120358283,
+        "edge_rank_from": 3,
+        "top_action_pairs": [
+          {
+            "pair": "IV Antibiotics|complete => Admission NC|complete",
+            "count": 42,
+            "share_on_edge": 0.7924528301886793
+          },
+          {
+            "pair": "IV Liquid|complete => Admission NC|complete",
+            "count": 9,
+            "share_on_edge": 0.16981132075471697
+          },
+          {
+            "pair": "ER Sepsis Triage|complete => Admission NC|complete",
+            "count": 2,
+            "share_on_edge": 0.03773584905660377
+          }
+        ],
+        "top_contexts": [
+          {
+            "input": "IV Liquid||1",
+            "count": 30,
+            "share_on_edge": 0.5660377358490566
+          },
+          {
+            "input": "IV Antibiotics||1",
+            "count": 8,
+            "share_on_edge": 0.1509433962264151
+          },
+          {
+            "input": "Leucocytes||1",
+            "count": 5,
+            "share_on_edge": 0.09433962264150944
+          },
+          {
+            "input": "CRP||1",
+            "count": 4,
+            "share_on_edge": 0.07547169811320754
+          },
+          {
+            "input": "LacticAcid||1",
+            "count": 3,
+            "share_on_edge": 0.05660377358490566
+          }
+        ],
+        "top_prev_actions": [
+          {
+            "action": "IV Antibiotics|complete",
+            "count": 42
+          },
+          {
+            "action": "IV Liquid|complete",
+            "count": 9
+          },
+          {
+            "action": "ER Sepsis Triage|complete",
+            "count": 2
+          }
+        ],
+        "top_next_actions": [
+          {
+            "action": "Admission NC|complete",
+            "count": 53
+          }
+        ]
+      },
+      {
+        "from_agent": "M",
+        "to_agent": "B",
+        "handover_count": 38,
+        "case_count": 38,
+        "from_event_count": 48,
+        "to_event_count": 3640,
+        "p_out": 0.7916666666666666,
+        "p_in": 0.04171240395170143,
+        "p_reverse_out": 0.02304147465437788,
+        "asymmetry_out_minus_reverse": 0.7686251920122887,
+        "lift_vs_global_in": 2.8347054518843757,
+        "from_out_degree_nonzero": 3,
+        "to_in_degree_nonzero": 23,
+        "from_route_entropy_bits": 0.8359922814745508,
+        "edge_rank_from": 1,
+        "top_action_pairs": [
+          {
+            "pair": "Admission NC|complete => Leucocytes|complete",
+            "count": 19,
+            "share_on_edge": 0.5
+          },
+          {
+            "pair": "Admission NC|complete => CRP|complete",
+            "count": 18,
+            "share_on_edge": 0.47368421052631576
+          },
+          {
+            "pair": "Admission NC|complete => LacticAcid|complete",
+            "count": 1,
+            "share_on_edge": 0.02631578947368421
+          }
+        ],
+        "top_contexts": [
+          {
+            "input": "IV Antibiotics||1",
+            "count": 16,
+            "share_on_edge": 0.42105263157894735
+          },
+          {
+            "input": "Leucocytes||1",
+            "count": 7,
+            "share_on_edge": 0.18421052631578946
+          },
+          {
+            "input": "CRP||1",
+            "count": 6,
+            "share_on_edge": 0.15789473684210525
+          },
+          {
+            "input": "Admission NC||1",
+            "count": 4,
+            "share_on_edge": 0.10526315789473684
+          },
+          {
+            "input": "LacticAcid||1",
+            "count": 3,
+            "share_on_edge": 0.07894736842105263
+          }
+        ],
+        "top_prev_actions": [
+          {
+            "action": "Admission NC|complete",
+            "count": 38
+          }
+        ],
+        "top_next_actions": [
+          {
+            "action": "Leucocytes|complete",
+            "count": 19
+          },
+          {
+            "action": "CRP|complete",
+            "count": 18
+          },
+          {
+            "action": "LacticAcid|complete",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "from_agent": "A",
+        "to_agent": "F",
+        "handover_count": 38,
+        "case_count": 38,
+        "from_event_count": 1596,
+        "to_event_count": 95,
+        "p_out": 0.0347985347985348,
+        "p_in": 0.40425531914893614,
+        "p_reverse_out": 0.0,
+        "asymmetry_out_minus_reverse": 0.0347985347985348,
+        "lift_vs_global_in": 1.2075831969448991,
+        "from_out_degree_nonzero": 21,
+        "to_in_degree_nonzero": 11,
+        "from_route_entropy_bits": 2.3877677120358283,
+        "edge_rank_from": 4,
+        "top_action_pairs": [
+          {
+            "pair": "IV Antibiotics|complete => Admission NC|complete",
+            "count": 38,
+            "share_on_edge": 1.0
+          }
+        ],
+        "top_contexts": [
+          {
+            "input": "IV Liquid||1",
+            "count": 29,
+            "share_on_edge": 0.7631578947368421
+          },
+          {
+            "input": "ER Sepsis Triage||1",
+            "count": 4,
+            "share_on_edge": 0.10526315789473684
+          },
+          {
+            "input": "LacticAcid||1",
+            "count": 3,
+            "share_on_edge": 0.07894736842105263
+          },
+          {
+            "input": "CRP||1",
+            "count": 1,
+            "share_on_edge": 0.02631578947368421
+          },
+          {
+            "input": "Leucocytes||1",
+            "count": 1,
+            "share_on_edge": 0.02631578947368421
+          }
+        ],
+        "top_prev_actions": [
+          {
+            "action": "IV Antibiotics|complete",
+            "count": 38
+          }
+        ],
+        "top_next_actions": [
+          {
+            "action": "Admission NC|complete",
+            "count": 38
+          }
+        ]
+      },
+      {
+        "from_agent": "I",
+        "to_agent": "B",
+        "handover_count": 36,
+        "case_count": 35,
+        "from_event_count": 58,
+        "to_event_count": 3640,
+        "p_out": 0.6545454545454545,
+        "p_in": 0.03951701427003293,
+        "p_reverse_out": 0.024193548387096774,
+        "asymmetry_out_minus_reverse": 0.6303519061583578,
+        "lift_vs_global_in": 2.3437181917972256,
+        "from_out_degree_nonzero": 7,
+        "to_in_degree_nonzero": 23,
+        "from_route_entropy_bits": 1.6205168770678635,
+        "edge_rank_from": 1,
+        "top_action_pairs": [
+          {
+            "pair": "Admission NC|complete => Leucocytes|complete",
+            "count": 20,
+            "share_on_edge": 0.5555555555555556
+          },
+          {
+            "pair": "Admission NC|complete => CRP|complete",
+            "count": 15,
+            "share_on_edge": 0.4166666666666667
+          },
+          {
+            "pair": "Admission NC|complete => LacticAcid|complete",
+            "count": 1,
+            "share_on_edge": 0.027777777777777776
+          }
+        ],
+        "top_contexts": [
+          {
+            "input": "IV Antibiotics||1",
+            "count": 12,
+            "share_on_edge": 0.3333333333333333
+          },
+          {
+            "input": "CRP||1",
+            "count": 8,
+            "share_on_edge": 0.2222222222222222
+          },
+          {
+            "input": "Admission NC||1",
+            "count": 6,
+            "share_on_edge": 0.16666666666666666
+          },
+          {
+            "input": "LacticAcid||1",
+            "count": 4,
+            "share_on_edge": 0.1111111111111111
+          },
+          {
+            "input": "Leucocytes||1",
+            "count": 3,
+            "share_on_edge": 0.08333333333333333
+          }
+        ],
+        "top_prev_actions": [
+          {
+            "action": "Admission NC|complete",
+            "count": 36
+          }
+        ],
+        "top_next_actions": [
+          {
+            "action": "Leucocytes|complete",
+            "count": 20
+          },
+          {
+            "action": "CRP|complete",
+            "count": 15
+          },
+          {
+            "action": "LacticAcid|complete",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "from_agent": "A",
+        "to_agent": "O",
+        "handover_count": 34,
+        "case_count": 34,
+        "from_event_count": 1596,
+        "to_event_count": 74,
+        "p_out": 0.031135531135531136,
+        "p_in": 0.4657534246575342,
+        "p_reverse_out": 0.0684931506849315,
+        "asymmetry_out_minus_reverse": -0.03735761954940037,
+        "lift_vs_global_in": 1.3912890762205832,
+        "from_out_degree_nonzero": 21,
+        "to_in_degree_nonzero": 11,
+        "from_route_entropy_bits": 2.3877677120358283,
+        "edge_rank_from": 5,
+        "top_action_pairs": [
+          {
+            "pair": "IV Antibiotics|complete => Admission NC|complete",
+            "count": 33,
+            "share_on_edge": 0.9705882352941176
+          },
+          {
+            "pair": "IV Liquid|complete => Admission NC|complete",
+            "count": 1,
+            "share_on_edge": 0.029411764705882353
+          }
+        ],
+        "top_contexts": [
+          {
+            "input": "IV Liquid||1",
+            "count": 22,
+            "share_on_edge": 0.6470588235294118
+          },
+          {
+            "input": "CRP||1",
+            "count": 4,
+            "share_on_edge": 0.11764705882352941
+          },
+          {
+            "input": "Leucocytes||1",
+            "count": 3,
+            "share_on_edge": 0.08823529411764706
+          },
+          {
+            "input": "LacticAcid||1",
+            "count": 3,
+            "share_on_edge": 0.08823529411764706
+          },
+          {
+            "input": "IV Antibiotics||1",
+            "count": 1,
+            "share_on_edge": 0.029411764705882353
+          }
+        ],
+        "top_prev_actions": [
+          {
+            "action": "IV Antibiotics|complete",
+            "count": 33
+          },
+          {
+            "action": "IV Liquid|complete",
+            "count": 1
+          }
+        ],
+        "top_next_actions": [
+          {
+            "action": "Admission NC|complete",
+            "count": 34
+          }
+        ]
+      },
+      {
+        "from_agent": "B",
+        "to_agent": "F",
+        "handover_count": 33,
+        "case_count": 32,
+        "from_event_count": 3640,
+        "to_event_count": 95,
+        "p_out": 0.038018433179723504,
+        "p_in": 0.35106382978723405,
+        "p_reverse_out": 0.8387096774193549,
+        "asymmetry_out_minus_reverse": -0.8006912442396313,
+        "lift_vs_global_in": 1.3193205216197668,
+        "from_out_degree_nonzero": 23,
+        "to_in_degree_nonzero": 11,
+        "from_route_entropy_bits": 2.8827960251265363,
+        "edge_rank_from": 3,
+        "top_action_pairs": [
+          {
+            "pair": "CRP|complete => Admission NC|complete",
+            "count": 16,
+            "share_on_edge": 0.48484848484848486
+          },
+          {
+            "pair": "Leucocytes|complete => Admission NC|complete",
+            "count": 11,
+            "share_on_edge": 0.3333333333333333
+          },
+          {
+            "pair": "LacticAcid|complete => Admission NC|complete",
+            "count": 6,
+            "share_on_edge": 0.18181818181818182
+          }
+        ],
+        "top_contexts": [
+          {
+            "input": "Leucocytes||1",
+            "count": 14,
+            "share_on_edge": 0.42424242424242425
+          },
+          {
+            "input": "CRP||1",
+            "count": 11,
+            "share_on_edge": 0.3333333333333333
+          },
+          {
+            "input": "LacticAcid||1",
+            "count": 7,
+            "share_on_edge": 0.21212121212121213
+          },
+          {
+            "input": "Admission NC||1",
+            "count": 1,
+            "share_on_edge": 0.030303030303030304
+          }
+        ],
+        "top_prev_actions": [
+          {
+            "action": "CRP|complete",
+            "count": 16
+          },
+          {
+            "action": "Leucocytes|complete",
+            "count": 11
+          },
+          {
+            "action": "LacticAcid|complete",
+            "count": 6
+          }
+        ],
+        "top_next_actions": [
+          {
+            "action": "Admission NC|complete",
+            "count": 33
+          }
+        ]
+      }
+    ],
+    "top_agents": [
+      {
+        "agent_id": "A",
+        "event_count": 1596,
+        "out_total": 1092,
+        "in_total": 711,
+        "out_degree_nonzero": 21,
+        "in_degree_nonzero": 7,
+        "route_entropy_bits": 2.3877677120358283,
+        "top_outgoing": [
+          {
+            "to_agent": "C",
+            "count": 438,
+            "share": 0.4010989010989011
+          },
+          {
+            "to_agent": "B",
+            "count": 401,
+            "share": 0.36721611721611724
+          },
+          {
+            "to_agent": "G",
+            "count": 53,
+            "share": 0.048534798534798536
+          },
+          {
+            "to_agent": "F",
+            "count": 38,
+            "share": 0.0347985347985348
+          },
+          {
+            "to_agent": "O",
+            "count": 34,
+            "share": 0.031135531135531136
+          }
+        ],
+        "top_incoming": [
+          {
+            "from_agent": "C",
+            "count": 392,
+            "share": 0.5513361462728551
+          },
+          {
+            "from_agent": "B",
+            "count": 307,
+            "share": 0.4317862165963432
+          },
+          {
+            "from_agent": "O",
+            "count": 5,
+            "share": 0.007032348804500703
+          },
+          {
+            "from_agent": "I",
+            "count": 3,
+            "share": 0.004219409282700422
+          },
+          {
+            "from_agent": "N",
+            "count": 2,
+            "share": 0.0028129395218002813
+          }
+        ]
+      },
+      {
+        "agent_id": "B",
+        "event_count": 3640,
+        "out_total": 868,
+        "in_total": 911,
+        "out_degree_nonzero": 23,
+        "in_degree_nonzero": 23,
+        "route_entropy_bits": 2.8827960251265363,
+        "top_outgoing": [
+          {
+            "to_agent": "A",
+            "count": 307,
+            "share": 0.35368663594470046
+          },
+          {
+            "to_agent": "E",
+            "count": 288,
+            "share": 0.3317972350230415
+          },
+          {
+            "to_agent": "F",
+            "count": 33,
+            "share": 0.038018433179723504
+          },
+          {
+            "to_agent": "O",
+            "count": 26,
+            "share": 0.029953917050691243
+          },
+          {
+            "to_agent": "I",
+            "count": 21,
+            "share": 0.024193548387096774
+          }
+        ],
+        "top_incoming": [
+          {
+            "from_agent": "A",
+            "count": 401,
+            "share": 0.44017563117453345
+          },
+          {
+            "from_agent": "F",
+            "count": 78,
+            "share": 0.08562019758507135
+          },
+          {
+            "from_agent": "C",
+            "count": 65,
+            "share": 0.07135016465422613
+          },
+          {
+            "from_agent": "O",
+            "count": 56,
+            "share": 0.06147091108671789
+          },
+          {
+            "from_agent": "M",
+            "count": 38,
+            "share": 0.04171240395170143
+          }
+        ]
+      },
+      {
+        "agent_id": "C",
+        "event_count": 491,
+        "out_total": 490,
+        "in_total": 488,
+        "out_degree_nonzero": 3,
+        "in_degree_nonzero": 4,
+        "route_entropy_bits": 0.9062600355763661,
+        "top_outgoing": [
+          {
+            "to_agent": "A",
+            "count": 392,
+            "share": 0.8
+          },
+          {
+            "to_agent": "B",
+            "count": 65,
+            "share": 0.1326530612244898
+          },
+          {
+            "to_agent": "L",
+            "count": 33,
+            "share": 0.0673469387755102
+          }
+        ],
+        "top_incoming": [
+          {
+            "from_agent": "A",
+            "count": 438,
+            "share": 0.8975409836065574
+          },
+          {
+            "from_agent": "L",
+            "count": 31,
+            "share": 0.06352459016393443
+          },
+          {
+            "from_agent": "B",
+            "count": 18,
+            "share": 0.036885245901639344
+          },
+          {
+            "from_agent": "M",
+            "count": 1,
+            "share": 0.0020491803278688526
+          }
+        ]
+      },
+      {
+        "agent_id": "E",
+        "event_count": 362,
+        "out_total": 153,
+        "in_total": 362,
+        "out_degree_nonzero": 2,
+        "in_degree_nonzero": 15,
+        "route_entropy_bits": 0.10053087773783527,
+        "top_outgoing": [
+          {
+            "to_agent": "?",
+            "count": 151,
+            "share": 0.9869281045751634
+          },
+          {
+            "to_agent": "B",
+            "count": 2,
+            "share": 0.013071895424836602
+          }
+        ],
+        "top_incoming": [
+          {
+            "from_agent": "B",
+            "count": 288,
+            "share": 0.7955801104972375
+          },
+          {
+            "from_agent": "F",
+            "count": 13,
+            "share": 0.03591160220994475
+          },
+          {
+            "from_agent": "I",
+            "count": 10,
+            "share": 0.027624309392265192
+          },
+          {
+            "from_agent": "M",
+            "count": 9,
+            "share": 0.024861878453038673
+          },
+          {
+            "from_agent": "R",
+            "count": 8,
+            "share": 0.022099447513812154
+          }
+        ]
+      },
+      {
+        "agent_id": "F",
+        "event_count": 95,
+        "out_total": 93,
+        "in_total": 94,
+        "out_degree_nonzero": 4,
+        "in_degree_nonzero": 11,
+        "route_entropy_bits": 0.7502653766231973,
+        "top_outgoing": [
+          {
+            "to_agent": "B",
+            "count": 78,
+            "share": 0.8387096774193549
+          },
+          {
+            "to_agent": "E",
+            "count": 13,
+            "share": 0.13978494623655913
+          },
+          {
+            "to_agent": "I",
+            "count": 1,
+            "share": 0.010752688172043012
+          },
+          {
+            "to_agent": "O",
+            "count": 1,
+            "share": 0.010752688172043012
+          }
+        ],
+        "top_incoming": [
+          {
+            "from_agent": "A",
+            "count": 38,
+            "share": 0.40425531914893614
+          },
+          {
+            "from_agent": "B",
+            "count": 33,
+            "share": 0.35106382978723405
+          },
+          {
+            "from_agent": "G",
+            "count": 11,
+            "share": 0.11702127659574468
+          },
+          {
+            "from_agent": "Q",
+            "count": 2,
+            "share": 0.02127659574468085
+          },
+          {
+            "from_agent": "R",
+            "count": 2,
+            "share": 0.02127659574468085
+          }
+        ]
+      },
+      {
+        "agent_id": "L",
+        "event_count": 111,
+        "out_total": 73,
+        "in_total": 50,
+        "out_degree_nonzero": 6,
+        "in_degree_nonzero": 2,
+        "route_entropy_bits": 1.701046265324314,
+        "top_outgoing": [
+          {
+            "to_agent": "C",
+            "count": 31,
+            "share": 0.4246575342465753
+          },
+          {
+            "to_agent": "B",
+            "count": 29,
+            "share": 0.3972602739726027
+          },
+          {
+            "to_agent": "M",
+            "count": 10,
+            "share": 0.136986301369863
+          },
+          {
+            "to_agent": "F",
+            "count": 1,
+            "share": 0.0136986301369863
+          },
+          {
+            "to_agent": "O",
+            "count": 1,
+            "share": 0.0136986301369863
+          }
+        ],
+        "top_incoming": [
+          {
+            "from_agent": "C",
+            "count": 33,
+            "share": 0.66
+          },
+          {
+            "from_agent": "B",
+            "count": 17,
+            "share": 0.34
+          }
+        ]
+      },
+      {
+        "agent_id": "O",
+        "event_count": 74,
+        "out_total": 73,
+        "in_total": 73,
+        "out_degree_nonzero": 6,
+        "in_degree_nonzero": 11,
+        "route_entropy_bits": 1.2196668039531318,
+        "top_outgoing": [
+          {
+            "to_agent": "B",
+            "count": 56,
+            "share": 0.7671232876712328
+          },
+          {
+            "to_agent": "E",
+            "count": 8,
+            "share": 0.1095890410958904
+          },
+          {
+            "to_agent": "A",
+            "count": 5,
+            "share": 0.0684931506849315
+          },
+          {
+            "to_agent": "F",
+            "count": 2,
+            "share": 0.0273972602739726
+          },
+          {
+            "to_agent": "D",
+            "count": 1,
+            "share": 0.0136986301369863
+          }
+        ],
+        "top_incoming": [
+          {
+            "from_agent": "A",
+            "count": 34,
+            "share": 0.4657534246575342
+          },
+          {
+            "from_agent": "B",
+            "count": 26,
+            "share": 0.3561643835616438
+          },
+          {
+            "from_agent": "G",
+            "count": 5,
+            "share": 0.0684931506849315
+          },
+          {
+            "from_agent": "R",
+            "count": 1,
+            "share": 0.0136986301369863
+          },
+          {
+            "from_agent": "X",
+            "count": 1,
+            "share": 0.0136986301369863
+          }
+        ]
+      },
+      {
+        "agent_id": "G",
+        "event_count": 70,
+        "out_total": 68,
+        "in_total": 69,
+        "out_degree_nonzero": 15,
+        "in_degree_nonzero": 2,
+        "route_entropy_bits": 3.0423907699780655,
+        "top_outgoing": [
+          {
+            "to_agent": "B",
+            "count": 27,
+            "share": 0.39705882352941174
+          },
+          {
+            "to_agent": "F",
+            "count": 11,
+            "share": 0.16176470588235295
+          },
+          {
+            "to_agent": "O",
+            "count": 5,
+            "share": 0.07352941176470588
+          },
+          {
+            "to_agent": "H",
+            "count": 3,
+            "share": 0.04411764705882353
+          },
+          {
+            "to_agent": "D",
+            "count": 3,
+            "share": 0.04411764705882353
+          }
+        ],
+        "top_incoming": [
+          {
+            "from_agent": "A",
+            "count": 53,
+            "share": 0.7681159420289855
+          },
+          {
+            "from_agent": "B",
+            "count": 16,
+            "share": 0.2318840579710145
+          }
+        ]
+      },
+      {
+        "agent_id": "I",
+        "event_count": 58,
+        "out_total": 55,
+        "in_total": 56,
+        "out_degree_nonzero": 7,
+        "in_degree_nonzero": 8,
+        "route_entropy_bits": 1.6205168770678635,
+        "top_outgoing": [
+          {
+            "to_agent": "B",
+            "count": 36,
+            "share": 0.6545454545454545
+          },
+          {
+            "to_agent": "E",
+            "count": 10,
+            "share": 0.18181818181818182
+          },
+          {
+            "to_agent": "N",
+            "count": 3,
+            "share": 0.05454545454545454
+          },
+          {
+            "to_agent": "A",
+            "count": 3,
+            "share": 0.05454545454545454
+          },
+          {
+            "to_agent": "F",
+            "count": 1,
+            "share": 0.01818181818181818
+          }
+        ],
+        "top_incoming": [
+          {
+            "from_agent": "A",
+            "count": 26,
+            "share": 0.4642857142857143
+          },
+          {
+            "from_agent": "B",
+            "count": 21,
+            "share": 0.375
+          },
+          {
+            "from_agent": "H",
+            "count": 2,
+            "share": 0.03571428571428571
+          },
+          {
+            "from_agent": "N",
+            "count": 2,
+            "share": 0.03571428571428571
+          },
+          {
+            "from_agent": "G",
+            "count": 2,
+            "share": 0.03571428571428571
+          }
+        ]
+      },
+      {
+        "agent_id": "M",
+        "event_count": 48,
+        "out_total": 48,
+        "in_total": 48,
+        "out_degree_nonzero": 3,
+        "in_degree_nonzero": 8,
+        "route_entropy_bits": 0.8359922814745508,
+        "top_outgoing": [
+          {
+            "to_agent": "B",
+            "count": 38,
+            "share": 0.7916666666666666
+          },
+          {
+            "to_agent": "E",
+            "count": 9,
+            "share": 0.1875
+          },
+          {
+            "to_agent": "C",
+            "count": 1,
+            "share": 0.020833333333333332
+          }
+        ],
+        "top_incoming": [
+          {
+            "from_agent": "B",
+            "count": 20,
+            "share": 0.4166666666666667
+          },
+          {
+            "from_agent": "A",
+            "count": 12,
+            "share": 0.25
+          },
+          {
+            "from_agent": "L",
+            "count": 10,
+            "share": 0.20833333333333334
+          },
+          {
+            "from_agent": "U",
+            "count": 2,
+            "share": 0.041666666666666664
+          },
+          {
+            "from_agent": "G",
+            "count": 1,
+            "share": 0.020833333333333332
+          }
+        ]
+      },
+      {
+        "agent_id": "R",
+        "event_count": 32,
+        "out_total": 32,
+        "in_total": 32,
+        "out_degree_nonzero": 6,
+        "in_degree_nonzero": 4,
+        "route_entropy_bits": 1.665293038892871,
+        "top_outgoing": [
+          {
+            "to_agent": "B",
+            "count": 19,
+            "share": 0.59375
+          },
+          {
+            "to_agent": "E",
+            "count": 8,
+            "share": 0.25
+          },
+          {
+            "to_agent": "F",
+            "count": 2,
+            "share": 0.0625
+          },
+          {
+            "to_agent": "O",
+            "count": 1,
+            "share": 0.03125
+          },
+          {
+            "to_agent": "I",
+            "count": 1,
+            "share": 0.03125
+          }
+        ],
+        "top_incoming": [
+          {
+            "from_agent": "B",
+            "count": 15,
+            "share": 0.46875
+          },
+          {
+            "from_agent": "A",
+            "count": 13,
+            "share": 0.40625
+          },
+          {
+            "from_agent": "J",
+            "count": 2,
+            "share": 0.0625
+          },
+          {
+            "from_agent": "G",
+            "count": 2,
+            "share": 0.0625
+          }
+        ]
+      },
+      {
+        "agent_id": "P",
+        "event_count": 29,
+        "out_total": 29,
+        "in_total": 29,
+        "out_degree_nonzero": 5,
+        "in_degree_nonzero": 7,
+        "route_entropy_bits": 0.854656693597637,
+        "top_outgoing": [
+          {
+            "to_agent": "B",
+            "count": 25,
+            "share": 0.8620689655172413
+          },
+          {
+            "to_agent": "A",
+            "count": 1,
+            "share": 0.034482758620689655
+          },
+          {
+            "to_agent": "E",
+            "count": 1,
+            "share": 0.034482758620689655
+          },
+          {
+            "to_agent": "S",
+            "count": 1,
+            "share": 0.034482758620689655
+          },
+          {
+            "to_agent": "F",
+            "count": 1,
+            "share": 0.034482758620689655
+          }
+        ],
+        "top_incoming": [
+          {
+            "from_agent": "B",
+            "count": 12,
+            "share": 0.41379310344827586
+          },
+          {
+            "from_agent": "A",
+            "count": 11,
+            "share": 0.3793103448275862
+          },
+          {
+            "from_agent": "G",
+            "count": 2,
+            "share": 0.06896551724137931
+          },
+          {
+            "from_agent": "S",
+            "count": 1,
+            "share": 0.034482758620689655
+          },
+          {
+            "from_agent": "H",
+            "count": 1,
+            "share": 0.034482758620689655
+          }
+        ]
+      },
+      {
+        "agent_id": "H",
+        "event_count": 26,
+        "out_total": 25,
+        "in_total": 25,
+        "out_degree_nonzero": 5,
+        "in_degree_nonzero": 3,
+        "route_entropy_bits": 1.5993308322365363,
+        "top_outgoing": [
+          {
+            "to_agent": "B",
+            "count": 15,
+            "share": 0.6
+          },
+          {
+            "to_agent": "E",
+            "count": 6,
+            "share": 0.24
+          },
+          {
+            "to_agent": "I",
+            "count": 2,
+            "share": 0.08
+          },
+          {
+            "to_agent": "A",
+            "count": 1,
+            "share": 0.04
+          },
+          {
+            "to_agent": "P",
+            "count": 1,
+            "share": 0.04
+          }
+        ],
+        "top_incoming": [
+          {
+            "from_agent": "B",
+            "count": 16,
+            "share": 0.64
+          },
+          {
+            "from_agent": "A",
+            "count": 6,
+            "share": 0.24
+          },
+          {
+            "from_agent": "G",
+            "count": 3,
+            "share": 0.12
+          }
+        ]
+      },
+      {
+        "agent_id": "N",
+        "event_count": 25,
+        "out_total": 24,
+        "in_total": 24,
+        "out_degree_nonzero": 8,
+        "in_degree_nonzero": 5,
+        "route_entropy_bits": 2.247224320061398,
+        "top_outgoing": [
+          {
+            "to_agent": "B",
+            "count": 13,
+            "share": 0.5416666666666666
+          },
+          {
+            "to_agent": "A",
+            "count": 2,
+            "share": 0.08333333333333333
+          },
+          {
+            "to_agent": "E",
+            "count": 2,
+            "share": 0.08333333333333333
+          },
+          {
+            "to_agent": "I",
+            "count": 2,
+            "share": 0.08333333333333333
+          },
+          {
+            "to_agent": "F",
+            "count": 2,
+            "share": 0.08333333333333333
+          }
+        ],
+        "top_incoming": [
+          {
+            "from_agent": "B",
+            "count": 10,
+            "share": 0.4166666666666667
+          },
+          {
+            "from_agent": "A",
+            "count": 8,
+            "share": 0.3333333333333333
+          },
+          {
+            "from_agent": "I",
+            "count": 3,
+            "share": 0.125
+          },
+          {
+            "from_agent": "G",
+            "count": 2,
+            "share": 0.08333333333333333
+          },
+          {
+            "from_agent": "V",
+            "count": 1,
+            "share": 0.041666666666666664
+          }
+        ]
+      },
+      {
+        "agent_id": "W",
+        "event_count": 24,
+        "out_total": 24,
+        "in_total": 24,
+        "out_degree_nonzero": 2,
+        "in_degree_nonzero": 4,
+        "route_entropy_bits": 0.24988229283318544,
+        "top_outgoing": [
+          {
+            "to_agent": "B",
+            "count": 23,
+            "share": 0.9583333333333334
+          },
+          {
+            "to_agent": "O",
+            "count": 1,
+            "share": 0.041666666666666664
+          }
+        ],
+        "top_incoming": [
+          {
+            "from_agent": "A",
+            "count": 11,
+            "share": 0.4583333333333333
+          },
+          {
+            "from_agent": "B",
+            "count": 10,
+            "share": 0.4166666666666667
+          },
+          {
+            "from_agent": "G",
+            "count": 2,
+            "share": 0.08333333333333333
+          },
+          {
+            "from_agent": "O",
+            "count": 1,
+            "share": 0.041666666666666664
+          }
+        ]
+      }
+    ]
+  },
+  "entity_field_summary": {
+    "n_entities": 98,
+    "n_edges": 506,
+    "entity_type_counts": {
+      "agent": 25,
+      "action": 16,
+      "information_field": 32,
+      "membrane": 25
+    },
+    "edge_type_counts": {
+      "agent_to_action": 40,
+      "membrane_to_action": 40,
+      "membrane_to_information_field": 180,
+      "action_to_action": 102,
+      "agent_to_agent": 144
+    },
+    "top_edges_by_type": {
+      "action_to_action": [
+        {
+          "from_id": "action:Leucocytes|complete",
+          "to_id": "action:CRP|complete",
+          "edge_type": "action_to_action",
+          "count": 795,
+          "p_out_type": 0.5268389662027833,
+          "context_entropy_bits": 2.7503585848348995,
+          "case_count": 359,
+          "top_contexts": [
+            {
+              "context": "CRP||1",
+              "count": 205,
+              "share_on_edge": 0.2578616352201258
+            },
+            {
+              "context": "Admission NC||1",
+              "count": 159,
+              "share_on_edge": 0.2
+            },
+            {
+              "context": "Leucocytes||1",
+              "count": 135,
+              "share_on_edge": 0.16981132075471697
+            },
+            {
+              "context": "LacticAcid||1",
+              "count": 129,
+              "share_on_edge": 0.16226415094339622
+            },
+            {
+              "context": "ER Sepsis Triage||1",
+              "count": 89,
+              "share_on_edge": 0.1119496855345912
+            }
+          ]
+        },
+        {
+          "from_id": "action:CRP|complete",
+          "to_id": "action:Leucocytes|complete",
+          "edge_type": "action_to_action",
+          "count": 657,
+          "p_out_type": 0.4572025052192067,
+          "context_entropy_bits": 2.7044389303176155,
+          "case_count": 301,
+          "top_contexts": [
+            {
+              "context": "Leucocytes||1",
+              "count": 201,
+              "share_on_edge": 0.3059360730593607
+            },
+            {
+              "context": "Admission NC||1",
+              "count": 144,
+              "share_on_edge": 0.2191780821917808
+            },
+            {
+              "context": "CRP||1",
+              "count": 99,
+              "share_on_edge": 0.1506849315068493
+            },
+            {
+              "context": "LacticAcid||1",
+              "count": 92,
+              "share_on_edge": 0.1400304414003044
+            },
+            {
+              "context": "ER Sepsis Triage||1",
+              "count": 56,
+              "share_on_edge": 0.0852359208523592
+            }
+          ]
+        },
+        {
+          "from_id": "action:ER Registration|complete",
+          "to_id": "action:ER Triage|complete",
+          "edge_type": "action_to_action",
+          "count": 449,
+          "p_out_type": 0.918200408997955,
+          "context_entropy_bits": 2.231379638859482,
+          "case_count": 449,
+          "top_contexts": [
+            {
+              "context": "∅||1",
+              "count": 131,
+              "share_on_edge": 0.29175946547884185
+            },
+            {
+              "context": "∅||0",
+              "count": 116,
+              "share_on_edge": 0.2583518930957684
+            },
+            {
+              "context": "∅||2",
+              "count": 115,
+              "share_on_edge": 0.2561247216035635
+            },
+            {
+              "context": "∅||3",
+              "count": 68,
+              "share_on_edge": 0.1514476614699332
+            },
+            {
+              "context": "Leucocytes||1",
+              "count": 5,
+              "share_on_edge": 0.011135857461024499
+            }
+          ]
+        },
+        {
+          "from_id": "action:ER Triage|complete",
+          "to_id": "action:ER Sepsis Triage|complete",
+          "edge_type": "action_to_action",
+          "count": 415,
+          "p_out_type": 0.8469387755102041,
+          "context_entropy_bits": 0.48693379725685565,
+          "case_count": 415,
+          "top_contexts": [
+            {
+              "context": "ER Registration||1",
+              "count": 387,
+              "share_on_edge": 0.9325301204819277
+            },
+            {
+              "context": "IV Liquid||1",
+              "count": 10,
+              "share_on_edge": 0.024096385542168676
+            },
+            {
+              "context": "LacticAcid||1",
+              "count": 8,
+              "share_on_edge": 0.01927710843373494
+            },
+            {
+              "context": "Leucocytes||1",
+              "count": 5,
+              "share_on_edge": 0.012048192771084338
+            },
+            {
+              "context": "CRP||1",
+              "count": 5,
+              "share_on_edge": 0.012048192771084338
+            }
+          ]
+        },
+        {
+          "from_id": "action:CRP|complete",
+          "to_id": "action:LacticAcid|complete",
+          "edge_type": "action_to_action",
+          "count": 279,
+          "p_out_type": 0.1941544885177453,
+          "context_entropy_bits": 1.8755268670947727,
+          "case_count": 186,
+          "top_contexts": [
+            {
+              "context": "Leucocytes||1",
+              "count": 180,
+              "share_on_edge": 0.6451612903225806
+            },
+            {
+              "context": "ER Sepsis Triage||1",
+              "count": 34,
+              "share_on_edge": 0.12186379928315412
+            },
+            {
+              "context": "LacticAcid||1",
+              "count": 20,
+              "share_on_edge": 0.07168458781362007
+            },
+            {
+              "context": "ER Triage||1",
+              "count": 11,
+              "share_on_edge": 0.03942652329749104
+            },
+            {
+              "context": "IV Antibiotics||1",
+              "count": 10,
+              "share_on_edge": 0.035842293906810034
+            }
+          ]
+        },
+        {
+          "from_id": "action:LacticAcid|complete",
+          "to_id": "action:Leucocytes|complete",
+          "edge_type": "action_to_action",
+          "count": 242,
+          "p_out_type": 0.378125,
+          "context_entropy_bits": 2.3131663974940615,
+          "case_count": 163,
+          "top_contexts": [
+            {
+              "context": "CRP||1",
+              "count": 124,
+              "share_on_edge": 0.512396694214876
+            },
+            {
+              "context": "ER Sepsis Triage||1",
+              "count": 40,
+              "share_on_edge": 0.1652892561983471
+            },
+            {
+              "context": "Leucocytes||1",
+              "count": 24,
+              "share_on_edge": 0.09917355371900827
+            },
+            {
+              "context": "LacticAcid||1",
+              "count": 16,
+              "share_on_edge": 0.06611570247933884
+            },
+            {
+              "context": "IV Antibiotics||1",
+              "count": 12,
+              "share_on_edge": 0.049586776859504134
+            }
+          ]
+        },
+        {
+          "from_id": "action:IV Liquid|complete",
+          "to_id": "action:IV Antibiotics|complete",
+          "edge_type": "action_to_action",
+          "count": 238,
+          "p_out_type": 0.695906432748538,
+          "context_entropy_bits": 2.0019354176521933,
+          "case_count": 238,
+          "top_contexts": [
+            {
+              "context": "ER Sepsis Triage||1",
+              "count": 94,
+              "share_on_edge": 0.3949579831932773
+            },
+            {
+              "context": "LacticAcid||1",
+              "count": 54,
+              "share_on_edge": 0.226890756302521
+            },
+            {
+              "context": "Leucocytes||1",
+              "count": 45,
+              "share_on_edge": 0.18907563025210083
+            },
+            {
+              "context": "CRP||1",
+              "count": 42,
+              "share_on_edge": 0.17647058823529413
+            },
+            {
+              "context": "ER Triage||1",
+              "count": 2,
+              "share_on_edge": 0.008403361344537815
+            }
+          ]
+        },
+        {
+          "from_id": "action:IV Antibiotics|complete",
+          "to_id": "action:Admission NC|complete",
+          "edge_type": "action_to_action",
+          "count": 210,
+          "p_out_type": 0.6194690265486725,
+          "context_entropy_bits": 1.6463690633630028,
+          "case_count": 210,
+          "top_contexts": [
+            {
+              "context": "IV Liquid||1",
+              "count": 135,
+              "share_on_edge": 0.6428571428571429
+            },
+            {
+              "context": "Leucocytes||1",
+              "count": 23,
+              "share_on_edge": 0.10952380952380952
+            },
+            {
+              "context": "LacticAcid||1",
+              "count": 21,
+              "share_on_edge": 0.1
+            },
+            {
+              "context": "CRP||1",
+              "count": 16,
+              "share_on_edge": 0.0761904761904762
+            },
+            {
+              "context": "ER Sepsis Triage||1",
+              "count": 15,
+              "share_on_edge": 0.07142857142857142
+            }
+          ]
+        }
+      ],
+      "agent_to_action": [
+        {
+          "from_id": "agent:B",
+          "to_id": "action:Leucocytes|complete",
+          "edge_type": "agent_to_action",
+          "count": 1530,
+          "p_out_type": 0.42032967032967034,
+          "context_entropy_bits": 0.0036453215957774313,
+          "case_count": 0,
+          "top_contexts": [
+            {
+              "context": "event_count",
+              "count": 1530,
+              "share_on_edge": 1.0
+            },
+            {
+              "context": "share_of_agent_events",
+              "count": 0,
+              "share_on_edge": 0.0002747252747252747
+            }
+          ]
+        },
+        {
+          "from_id": "agent:B",
+          "to_id": "action:CRP|complete",
+          "edge_type": "agent_to_action",
+          "count": 1462,
+          "p_out_type": 0.40164835164835166,
+          "context_entropy_bits": 0.0036453215957774313,
+          "case_count": 0,
+          "top_contexts": [
+            {
+              "context": "event_count",
+              "count": 1462,
+              "share_on_edge": 1.0
+            },
+            {
+              "context": "share_of_agent_events",
+              "count": 0,
+              "share_on_edge": 0.0002747252747252747
+            }
+          ]
+        },
+        {
+          "from_id": "agent:B",
+          "to_id": "action:LacticAcid|complete",
+          "edge_type": "agent_to_action",
+          "count": 648,
+          "p_out_type": 0.17802197802197803,
+          "context_entropy_bits": 0.0036453215957774313,
+          "case_count": 0,
+          "top_contexts": [
+            {
+              "context": "event_count",
+              "count": 648,
+              "share_on_edge": 1.0
+            },
+            {
+              "context": "share_of_agent_events",
+              "count": 0,
+              "share_on_edge": 0.0002747252747252747
+            }
+          ]
+        },
+        {
+          "from_id": "agent:C",
+          "to_id": "action:ER Triage|complete",
+          "edge_type": "agent_to_action",
+          "count": 491,
+          "p_out_type": 1.0,
+          "context_entropy_bits": 0.021105167476406,
+          "case_count": 0,
+          "top_contexts": [
+            {
+              "context": "event_count",
+              "count": 491,
+              "share_on_edge": 1.0
+            },
+            {
+              "context": "share_of_agent_events",
+              "count": 1,
+              "share_on_edge": 0.002036659877800407
+            }
+          ]
+        },
+        {
+          "from_id": "agent:A",
+          "to_id": "action:ER Registration|complete",
+          "edge_type": "agent_to_action",
+          "count": 454,
+          "p_out_type": 0.2844611528822055,
+          "context_entropy_bits": 0.007566306734423636,
+          "case_count": 0,
+          "top_contexts": [
+            {
+              "context": "event_count",
+              "count": 454,
+              "share_on_edge": 1.0
+            },
+            {
+              "context": "share_of_agent_events",
+              "count": 0,
+              "share_on_edge": 0.0006265664160401003
+            }
+          ]
+        },
+        {
+          "from_id": "agent:A",
+          "to_id": "action:ER Sepsis Triage|complete",
+          "edge_type": "agent_to_action",
+          "count": 454,
+          "p_out_type": 0.2844611528822055,
+          "context_entropy_bits": 0.007566306734423636,
+          "case_count": 0,
+          "top_contexts": [
+            {
+              "context": "event_count",
+              "count": 454,
+              "share_on_edge": 1.0
+            },
+            {
+              "context": "share_of_agent_events",
+              "count": 0,
+              "share_on_edge": 0.0006265664160401003
+            }
+          ]
+        },
+        {
+          "from_id": "agent:A",
+          "to_id": "action:IV Antibiotics|complete",
+          "edge_type": "agent_to_action",
+          "count": 359,
+          "p_out_type": 0.224937343358396,
+          "context_entropy_bits": 0.007566306734423796,
+          "case_count": 0,
+          "top_contexts": [
+            {
+              "context": "event_count",
+              "count": 359,
+              "share_on_edge": 1.0
+            },
+            {
+              "context": "share_of_agent_events",
+              "count": 0,
+              "share_on_edge": 0.0006265664160401002
+            }
+          ]
+        },
+        {
+          "from_id": "agent:A",
+          "to_id": "action:IV Liquid|complete",
+          "edge_type": "agent_to_action",
+          "count": 329,
+          "p_out_type": 0.20614035087719298,
+          "context_entropy_bits": 0.007566306734423796,
+          "case_count": 0,
+          "top_contexts": [
+            {
+              "context": "event_count",
+              "count": 329,
+              "share_on_edge": 1.0
+            },
+            {
+              "context": "share_of_agent_events",
+              "count": 0,
+              "share_on_edge": 0.0006265664160401002
+            }
+          ]
+        }
+      ],
+      "agent_to_agent": [
+        {
+          "from_id": "agent:A",
+          "to_id": "agent:C",
+          "edge_type": "agent_to_agent",
+          "count": 438,
+          "p_out_type": 0.4010989010989011,
+          "context_entropy_bits": 0.2905659779673705,
+          "case_count": 438,
+          "top_contexts": [
+            {
+              "context": "ER Registration|complete => ER Triage|complete",
+              "count": 420,
+              "share_on_edge": 0.958904109589041
+            },
+            {
+              "context": "IV Liquid|complete => ER Triage|complete",
+              "count": 13,
+              "share_on_edge": 0.02968036529680365
+            },
+            {
+              "context": "IV Antibiotics|complete => ER Triage|complete",
+              "count": 4,
+              "share_on_edge": 0.0091324200913242
+            },
+            {
+              "context": "ER Sepsis Triage|complete => ER Triage|complete",
+              "count": 1,
+              "share_on_edge": 0.00228310502283105
+            }
+          ]
+        },
+        {
+          "from_id": "agent:A",
+          "to_id": "agent:B",
+          "edge_type": "agent_to_agent",
+          "count": 401,
+          "p_out_type": 0.36721611721611724,
+          "context_entropy_bits": 2.921997692034959,
+          "case_count": 380,
+          "top_contexts": [
+            {
+              "context": "ER Sepsis Triage|complete => Leucocytes|complete",
+              "count": 111,
+              "share_on_edge": 0.27680798004987534
+            },
+            {
+              "context": "ER Sepsis Triage|complete => CRP|complete",
+              "count": 86,
+              "share_on_edge": 0.2144638403990025
+            },
+            {
+              "context": "ER Sepsis Triage|complete => LacticAcid|complete",
+              "count": 72,
+              "share_on_edge": 0.17955112219451372
+            },
+            {
+              "context": "IV Antibiotics|complete => Leucocytes|complete",
+              "count": 30,
+              "share_on_edge": 0.07481296758104738
+            },
+            {
+              "context": "IV Antibiotics|complete => CRP|complete",
+              "count": 23,
+              "share_on_edge": 0.057356608478802994
+            }
+          ]
+        },
+        {
+          "from_id": "agent:C",
+          "to_id": "agent:A",
+          "edge_type": "agent_to_agent",
+          "count": 392,
+          "p_out_type": 0.8,
+          "context_entropy_bits": 0.1938318230279054,
+          "case_count": 392,
+          "top_contexts": [
+            {
+              "context": "ER Triage|complete => ER Sepsis Triage|complete",
+              "count": 382,
+              "share_on_edge": 0.9744897959183674
+            },
+            {
+              "context": "ER Triage|complete => IV Liquid|complete",
+              "count": 7,
+              "share_on_edge": 0.017857142857142856
+            },
+            {
+              "context": "ER Triage|complete => ER Registration|complete",
+              "count": 3,
+              "share_on_edge": 0.007653061224489796
+            }
+          ]
+        },
+        {
+          "from_id": "agent:B",
+          "to_id": "agent:A",
+          "edge_type": "agent_to_agent",
+          "count": 307,
+          "p_out_type": 0.35368663594470046,
+          "context_entropy_bits": 3.1996820972843008,
+          "case_count": 299,
+          "top_contexts": [
+            {
+              "context": "LacticAcid|complete => IV Liquid|complete",
+              "count": 53,
+              "share_on_edge": 0.17263843648208468
+            },
+            {
+              "context": "Leucocytes|complete => IV Liquid|complete",
+              "count": 47,
+              "share_on_edge": 0.15309446254071662
+            },
+            {
+              "context": "CRP|complete => IV Liquid|complete",
+              "count": 42,
+              "share_on_edge": 0.13680781758957655
+            },
+            {
+              "context": "LacticAcid|complete => IV Antibiotics|complete",
+              "count": 39,
+              "share_on_edge": 0.1270358306188925
+            },
+            {
+              "context": "CRP|complete => IV Antibiotics|complete",
+              "count": 36,
+              "share_on_edge": 0.11726384364820847
+            }
+          ]
+        },
+        {
+          "from_id": "agent:B",
+          "to_id": "agent:E",
+          "edge_type": "agent_to_agent",
+          "count": 288,
+          "p_out_type": 0.3317972350230415,
+          "context_entropy_bits": 1.8188675292943768,
+          "case_count": 288,
+          "top_contexts": [
+            {
+              "context": "CRP|complete => Release A|complete",
+              "count": 142,
+              "share_on_edge": 0.4930555555555556
+            },
+            {
+              "context": "Leucocytes|complete => Release A|complete",
+              "count": 107,
+              "share_on_edge": 0.3715277777777778
+            },
+            {
+              "context": "CRP|complete => Release B|complete",
+              "count": 12,
+              "share_on_edge": 0.041666666666666664
+            },
+            {
+              "context": "Leucocytes|complete => Release B|complete",
+              "count": 6,
+              "share_on_edge": 0.020833333333333332
+            },
+            {
+              "context": "CRP|complete => Release C|complete",
+              "count": 5,
+              "share_on_edge": 0.017361111111111112
+            }
+          ]
+        },
+        {
+          "from_id": "agent:E",
+          "to_id": "agent:?",
+          "edge_type": "agent_to_agent",
+          "count": 151,
+          "p_out_type": 0.9869281045751634,
+          "context_entropy_bits": 0.24191948701616506,
+          "case_count": 151,
+          "top_contexts": [
+            {
+              "context": "Release A|complete => Return ER|complete",
+              "count": 146,
+              "share_on_edge": 0.9668874172185431
+            },
+            {
+              "context": "Release C|complete => Return ER|complete",
+              "count": 3,
+              "share_on_edge": 0.019867549668874173
+            },
+            {
+              "context": "Release D|complete => Return ER|complete",
+              "count": 2,
+              "share_on_edge": 0.013245033112582781
+            }
+          ]
+        },
+        {
+          "from_id": "agent:F",
+          "to_id": "agent:B",
+          "edge_type": "agent_to_agent",
+          "count": 78,
+          "p_out_type": 0.8387096774193549,
+          "context_entropy_bits": 1.0860184746765569,
+          "case_count": 75,
+          "top_contexts": [
+            {
+              "context": "Admission NC|complete => CRP|complete",
+              "count": 39,
+              "share_on_edge": 0.5
+            },
+            {
+              "context": "Admission NC|complete => Leucocytes|complete",
+              "count": 38,
+              "share_on_edge": 0.48717948717948717
+            },
+            {
+              "context": "Admission NC|complete => LacticAcid|complete",
+              "count": 1,
+              "share_on_edge": 0.01282051282051282
+            }
+          ]
+        },
+        {
+          "from_id": "agent:C",
+          "to_id": "agent:B",
+          "edge_type": "agent_to_agent",
+          "count": 65,
+          "p_out_type": 0.1326530612244898,
+          "context_entropy_bits": 1.536047715723178,
+          "case_count": 65,
+          "top_contexts": [
+            {
+              "context": "ER Triage|complete => CRP|complete",
+              "count": 26,
+              "share_on_edge": 0.4
+            },
+            {
+              "context": "ER Triage|complete => Leucocytes|complete",
+              "count": 25,
+              "share_on_edge": 0.38461538461538464
+            },
+            {
+              "context": "ER Triage|complete => LacticAcid|complete",
+              "count": 14,
+              "share_on_edge": 0.2153846153846154
+            }
+          ]
+        }
+      ],
+      "membrane_to_action": [
+        {
+          "from_id": "membrane:B",
+          "to_id": "action:Leucocytes|complete",
+          "edge_type": "membrane_to_action",
+          "count": 1530,
+          "p_out_type": 0.42032967032967034,
+          "context_entropy_bits": 0.0,
+          "case_count": 0,
+          "top_contexts": []
+        },
+        {
+          "from_id": "membrane:B",
+          "to_id": "action:CRP|complete",
+          "edge_type": "membrane_to_action",
+          "count": 1462,
+          "p_out_type": 0.40164835164835166,
+          "context_entropy_bits": 0.0,
+          "case_count": 0,
+          "top_contexts": []
+        },
+        {
+          "from_id": "membrane:B",
+          "to_id": "action:LacticAcid|complete",
+          "edge_type": "membrane_to_action",
+          "count": 648,
+          "p_out_type": 0.17802197802197803,
+          "context_entropy_bits": 0.0,
+          "case_count": 0,
+          "top_contexts": []
+        },
+        {
+          "from_id": "membrane:C",
+          "to_id": "action:ER Triage|complete",
+          "edge_type": "membrane_to_action",
+          "count": 491,
+          "p_out_type": 1.0,
+          "context_entropy_bits": 0.0,
+          "case_count": 0,
+          "top_contexts": []
+        },
+        {
+          "from_id": "membrane:A",
+          "to_id": "action:ER Registration|complete",
+          "edge_type": "membrane_to_action",
+          "count": 454,
+          "p_out_type": 0.2844611528822055,
+          "context_entropy_bits": 0.0,
+          "case_count": 0,
+          "top_contexts": []
+        },
+        {
+          "from_id": "membrane:A",
+          "to_id": "action:ER Sepsis Triage|complete",
+          "edge_type": "membrane_to_action",
+          "count": 454,
+          "p_out_type": 0.2844611528822055,
+          "context_entropy_bits": 0.0,
+          "case_count": 0,
+          "top_contexts": []
+        },
+        {
+          "from_id": "membrane:A",
+          "to_id": "action:IV Antibiotics|complete",
+          "edge_type": "membrane_to_action",
+          "count": 359,
+          "p_out_type": 0.224937343358396,
+          "context_entropy_bits": 0.0,
+          "case_count": 0,
+          "top_contexts": []
+        },
+        {
+          "from_id": "membrane:A",
+          "to_id": "action:IV Liquid|complete",
+          "edge_type": "membrane_to_action",
+          "count": 329,
+          "p_out_type": 0.20614035087719298,
+          "context_entropy_bits": 0.0,
+          "case_count": 0,
+          "top_contexts": []
+        }
+      ],
+      "membrane_to_information_field": [
+        {
+          "from_id": "membrane:?",
+          "to_id": "information_field:case:concept:name",
+          "edge_type": "membrane_to_information_field",
+          "count": 1,
+          "p_out_type": 0.2,
+          "context_entropy_bits": 0.0,
+          "case_count": 0,
+          "top_contexts": []
+        },
+        {
+          "from_id": "membrane:?",
+          "to_id": "information_field:concept:name",
+          "edge_type": "membrane_to_information_field",
+          "count": 1,
+          "p_out_type": 0.2,
+          "context_entropy_bits": 0.0,
+          "case_count": 0,
+          "top_contexts": []
+        },
+        {
+          "from_id": "membrane:?",
+          "to_id": "information_field:lifecycle:transition",
+          "edge_type": "membrane_to_information_field",
+          "count": 1,
+          "p_out_type": 0.2,
+          "context_entropy_bits": 0.0,
+          "case_count": 0,
+          "top_contexts": []
+        },
+        {
+          "from_id": "membrane:?",
+          "to_id": "information_field:org:group",
+          "edge_type": "membrane_to_information_field",
+          "count": 1,
+          "p_out_type": 0.2,
+          "context_entropy_bits": 0.0,
+          "case_count": 0,
+          "top_contexts": []
+        },
+        {
+          "from_id": "membrane:?",
+          "to_id": "information_field:org:resource",
+          "edge_type": "membrane_to_information_field",
+          "count": 1,
+          "p_out_type": 0.2,
+          "context_entropy_bits": 0.0,
+          "case_count": 0,
+          "top_contexts": []
+        },
+        {
+          "from_id": "membrane:A",
+          "to_id": "information_field:Age",
+          "edge_type": "membrane_to_information_field",
+          "count": 1,
+          "p_out_type": 0.034482758620689655,
+          "context_entropy_bits": 0.0,
+          "case_count": 0,
+          "top_contexts": []
+        },
+        {
+          "from_id": "membrane:A",
+          "to_id": "information_field:Diagnose",
+          "edge_type": "membrane_to_information_field",
+          "count": 1,
+          "p_out_type": 0.034482758620689655,
+          "context_entropy_bits": 0.0,
+          "case_count": 0,
+          "top_contexts": []
+        },
+        {
+          "from_id": "membrane:A",
+          "to_id": "information_field:DiagnosticArtAstrup",
+          "edge_type": "membrane_to_information_field",
+          "count": 1,
+          "p_out_type": 0.034482758620689655,
+          "context_entropy_bits": 0.0,
+          "case_count": 0,
+          "top_contexts": []
+        }
+      ]
+    }
+  },
+  "decisions": [
+    "Медицинский донор #2: Sepsis, не склеивать с Hospital2011/BPIC2012",
+    "role_mode=agent: мембрана = отделение (org:group)",
+    "Контур=diagnostic; scripts/run_diagnostic.py (версия 0.8.1)",
+    "package_version=0.10.0",
+    "FEP / case-head / stress top-3 / prune_min_support вне критического пути",
+    "λ не входит в обучение; softmax — только A/B по CE holdout",
+    "Softmax CE holdout лучше счётчиков (0.6470 < 0.6885) — политика = softmax",
+    "Диагностика: агентов=25, незаменимых частых действий (уник. носитель)=11",
+    "Directed edges: E=144 из 600 возможных",
+    "Entity field: сущностей=98, рёбер=506, типов={'agent_to_action': 40, 'membrane_to_action': 40, 'membrane_to_information_field': 180, 'action_to_action': 102, 'agent_to_agent': 144}"
+  ],
+  "failures": [],
+  "notes_ru": "0.8.1: Sepsis Cases (NL hospital ERP). 16 активностей, циклы ER→лаборатория→release. Агент=org:group, контекст=Age. Split 7+3 мес. Проверка гипотезы: детерминированный медлог → высокий next-step на holdout."
+}

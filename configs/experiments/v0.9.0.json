@@ -1,0 +1,76 @@
+{
+  "version": "0.9.0",
+  "require_package_version": "0.9.0",
+  "recipe": "softmax_fep_ab",
+  "donor": {
+    "id": "BPIC2019",
+    "doi": "10.4121/uuid:d06aff4b-79f0-45e6-8ec8-e19730c248f1",
+    "xes_path": "data/raw/BPI_Challenge_2019.xes",
+    "time_filter_from": "2018-01-01",
+    "subsample_fit_cases": 12000,
+    "subsample_hold_cases": 8000,
+    "subsample_seed": 42
+  },
+  "arms": ["softmax", "fep_habit_only", "fep_full_efe"],
+  "rollback_declined_prune": false,
+  "notes_ru": "0.9.0: третий организм BPIC2019 (закупки NL). Фильтр с 2018-01-01; subsample 12k+8k; amount=Cumulative net worth (EUR); роли procurement.",
+  "notes_zh": "0.9.0：第三数据源 BPIC2019（荷兰采购）。自 2018-01-01 过滤；子采样 12k+8k；金额=Cumulative net worth (EUR)；角色 procurement。",
+  "decisions_seed": [
+    "BPIC2019: ingest обобщён (amount/roles/filters/subsample)",
+    "Subsample для сопоставимого wall-time",
+    "Timing — Ridge sidecar, не приоритет"
+  ],
+  "experiment": {
+    "donor_id": "BPIC2019",
+    "donor_doi": "10.4121/uuid:d06aff4b-79f0-45e6-8ec8-e19730c248f1",
+    "split": {
+      "fit_months": 3,
+      "holdout_months": 2,
+      "target_fit_months": 7,
+      "target_holdout_months": 3
+    },
+    "donor_adapt": {
+      "agent_column": "org:resource",
+      "context_column": "Cumulative net worth (EUR)",
+      "role_mode": "procurement"
+    },
+    "policy": {
+      "lambda_entropy": 0.05,
+      "max_iter": 250,
+      "C": 1.0,
+      "random_state": 42,
+      "solver": "saga",
+      "tol": 0.001,
+      "amount_quantiles": [0.0, 0.25, 0.5, 0.75, 1.0],
+      "prune_min_support": 30,
+      "terminal_prefixes": [
+        "Clear Invoice",
+        "Delete Purchase Order Item",
+        "Cancel Invoice Receipt"
+      ]
+    },
+    "fep": {
+      "dirichlet_alpha": 0.5,
+      "gamma_precision": 4.0,
+      "preference_power": 1.0,
+      "habit_weight": 1.0,
+      "ambiguity_weight": 0.0,
+      "risk_weight": 0.0,
+      "empty_transition_entropy": 3.0,
+      "mode": "habit_only",
+      "tune_on_fit": true,
+      "tune_eval_max_rows": 25000
+    },
+    "timing": {
+      "dt_min_sec": 0.0,
+      "dt_max_sec": 2592000.0,
+      "default_latency_sec": 3600.0,
+      "latency_noise_low": 1.0,
+      "latency_noise_high": 1.0,
+      "ridge_alpha": 1.0,
+      "min_train_dt_samples": 100
+    },
+    "sim": {"max_steps_per_case": 50, "seed": 42},
+    "eval": {"top_k_actions": 20, "next_step_top_k": 3}
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "version": "0.8.5",
+  "contour": "diagnostic",
+  "require_package_version": "0.10.0",
+  "recipe": "agent_rules",
+  "donor": {
+    "id": "BPIC2012",
+    "doi": "10.4121/uuid:3926db30-f712-4394-aebc-75976070e91f",
+    "xes_path": "data/raw/BPI_Challenge_2012.xes"
+  },
+  "notes_ru": "0.8.5: BPIC2012; directed edge semantics: какие Information-поля меняются перед hand-over (A→B).",
+  "notes_zh": "0.8.5：BPIC2012；directed edge 语义：hand-over(A→B)前哪些 Information 字段发生变化。",
+  "decisions_seed": [
+    "Следующий естественный шаг: на ребре A→B посчитать changed Information fields между event i и i+1 внутри кейса.",
+    "Контур diagnostic: agent_rules (счётчики + A/B softmax по CE)."
+  ],
+  "experiment": {
+    "donor_id": "BPIC2012",
+    "donor_doi": "10.4121/uuid:3926db30-f712-4394-aebc-75976070e91f",
+    "split": {
+      "fit_months": 3,
+      "holdout_months": 2,
+      "target_fit_months": 7,
+      "target_holdout_months": 3
+    },
+    "donor_adapt": {
+      "agent_column": "org:resource",
+      "context_column": "",
+      "role_mode": "activity_prefix",
+      "count_min_support": 3,
+      "compare_softmax": true,
+      "run_sim": false
+    },
+    "policy": {
+      "prune_min_support": 0
+    }
+  }
+}
+

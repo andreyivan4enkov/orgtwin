@@ -62,34 +62,72 @@ class SoftmaxPolicyBundle:
         return [a for a, m in zip(self.action_classes, mask) if m]
 
 
-def prepare_trace_frame(df: pd.DataFrame, amount_bin_edges: Optional[np.ndarray] = None) -> tuple[pd.DataFrame, np.ndarray]:
-    """Добавляет prev_activity, action, amount_bin. Возвращает edges для holdout."""
+def _resolve_agent_col(df: pd.DataFrame, agent_col: Optional[str] = None) -> str:
+    if agent_col and agent_col in df.columns:
+        return agent_col
+    if "org:resource" in df.columns:
+        return "org:resource"
+    if "org:group" in df.columns:
+        return "org:group"
+    return "org:resource"
+
+
+def _resolve_context_col(df: pd.DataFrame, context_col: Optional[str] = None) -> Optional[str]:
+    if context_col:
+        return context_col if context_col in df.columns else None
+    for c in (
+        "case:AMOUNT_REQ",
+        "AMOUNT_REQ",
+        "Cumulative net worth (EUR)",
+        "case:Age",
+        "Age",
+    ):
+        if c in df.columns:
+            return c
+    return None
+
+
+def prepare_trace_frame(
+    df: pd.DataFrame,
+    amount_bin_edges: Optional[np.ndarray] = None,
+    agent_col: Optional[str] = None,
+    context_col: Optional[str] = None,
+) -> tuple[pd.DataFrame, np.ndarray]:
+    """Добавляет prev_activity, prev2_activity, action, amount_bin, agent. Возвращает edges для holdout."""
     out = df.copy()
-    out["org:resource"] = out["org:resource"].astype(str)
-    out["prev_activity"] = out.groupby("case:concept:name")["concept:name"].shift(1)
-    out["prev_activity"] = out["prev_activity"].fillna("∅").astype(str)
+    a_col = _resolve_agent_col(out, agent_col)
+    if a_col not in out.columns:
+        out[a_col] = "UNKNOWN"
+    out[a_col] = out[a_col].fillna("UNKNOWN").astype(str)
+    by_case = out.groupby("case:concept:name")["concept:name"]
+    out["prev_activity"] = by_case.shift(1).fillna("∅").astype(str)
+    out["prev2_activity"] = by_case.shift(2).fillna("∅").astype(str)
     out["action"] = action_names_vectorized(out)
 
-    amount_col = "case:AMOUNT_REQ" if "case:AMOUNT_REQ" in out.columns else (
-        "AMOUNT_REQ" if "AMOUNT_REQ" in out.columns else None
-    )
-    if amount_col:
-        vals = pd.to_numeric(out[amount_col], errors="coerce")
-        if amount_bin_edges is None:
-            # квантили fit
-            qs = vals.quantile([0.0, 0.25, 0.5, 0.75, 1.0]).to_numpy(dtype=float)
-            # уникализировать рёбра
-            edges = np.unique(qs)
-            if len(edges) < 2:
-                edges = np.array([float(vals.min()), float(vals.max()) + 1.0])
-            amount_bin_edges = edges
-        out["amount_bin"] = np.digitize(vals.fillna(vals.median()), amount_bin_edges[1:-1], right=True).astype(str)
+    ctx = _resolve_context_col(out, context_col)
+    if ctx:
+        vals = pd.to_numeric(out[ctx], errors="coerce")
+        if vals.notna().sum() == 0:
+            out["amount_bin"] = out[ctx].fillna("∅").astype(str)
+            if amount_bin_edges is None:
+                amount_bin_edges = np.array([0.0, 1.0])
+        else:
+            if amount_bin_edges is None:
+                qs = vals.quantile([0.0, 0.25, 0.5, 0.75, 1.0]).to_numpy(dtype=float)
+                edges = np.unique(qs[~np.isnan(qs)])
+                if len(edges) < 2:
+                    lo = float(np.nanmin(vals.to_numpy())) if vals.notna().any() else 0.0
+                    edges = np.array([lo, lo + 1.0])
+                amount_bin_edges = edges
+            fill = float(vals.median()) if vals.notna().any() else 0.0
+            inner = amount_bin_edges[1:-1] if len(amount_bin_edges) > 2 else np.array([])
+            out["amount_bin"] = np.digitize(vals.fillna(fill), inner, right=True).astype(str)
     else:
         out["amount_bin"] = "0"
         if amount_bin_edges is None:
             amount_bin_edges = np.array([0.0, 1.0])
 
-    out["agent"] = out["org:resource"]
+    out["agent"] = out[a_col]
     return out, amount_bin_edges
 
 
@@ -111,16 +149,22 @@ def train_softmax_policies(
     solver: str = "saga",
     tol: float = 1e-3,
     C: float = 1.0,
+    agent_col: Optional[str] = None,
+    context_col: Optional[str] = None,
+    role_mode: str = "activity_prefix",
 ) -> SoftmaxPolicyBundle:
     """
-    Классика: One-Hot(Information) + One-Hot(agent) → multinomial logistic (softmax).
+    Классика: One-Hot(prev, prev2, amount_bin, agent) → multinomial logistic (softmax).
     Мембрана роли = support действий роли; logits вне мембраны маскируются при сэмпле.
     """
-    framed, edges = prepare_trace_frame(fit_df)
-    agent_to_role = _infer_roles(framed)
+    framed, edges = prepare_trace_frame(fit_df, agent_col=agent_col, context_col=context_col)
+    from orgtwin.ingest.xes_loader import infer_roles_from_frame
+
+    agent_to_role = infer_roles_from_frame(framed, role_mode=role_mode)
     framed["role_id"] = framed["agent"].map(agent_to_role).fillna("UNKNOWN")
 
-    feature_cols = ["prev_activity", "amount_bin", "agent"]
+    # порядок 2 по активности + контекст + агент (как в диагностике, плюс prev2)
+    feature_cols = ["prev_activity", "prev2_activity", "amount_bin", "agent"]
     X_raw = framed[feature_cols].astype(str)
     y = framed["action"].astype(str)
 
@@ -289,9 +333,10 @@ def sample_next_agent(
 def next_step_accuracy(
     bundle: SoftmaxPolicyBundle,
     df: pd.DataFrame,
+    **prep_kw: Any,
 ) -> dict:
     """Классическая проверка политики: accuracy / CE / top-3 на holdout."""
-    framed, _ = prepare_trace_frame(df, amount_bin_edges=bundle.amount_bin_edges)
+    framed, _ = prepare_trace_frame(df, amount_bin_edges=bundle.amount_bin_edges, **prep_kw)
     # только агенты, виденные на fit
     known = framed["agent"].isin(bundle.agent_to_role)
     framed = framed[known]

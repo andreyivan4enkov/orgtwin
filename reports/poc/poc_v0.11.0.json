@@ -1,0 +1,225 @@
+{
+  "version": "0.11.0",
+  "donor": "BPIC2012",
+  "config": "configs/simulator/v0.7.0.json",
+  "json_name": "reports/poc/poc_v0.11.0.json",
+  "split_meta": {
+    "t0": "2011-09-30 22:38:44.546000+00:00",
+    "t1": "2012-03-14 15:04:54.681000+00:00",
+    "fit_end": "2011-12-30 22:38:44.546000+00:00",
+    "hold_end": "2012-02-29 22:38:44.546000+00:00",
+    "fit_cases": 7427,
+    "hold_cases": 5658,
+    "fit_events": 149330,
+    "hold_events": 112847,
+    "fit_months": 3,
+    "holdout_months": 2
+  },
+  "diagnostic": {
+    "counts": {
+      "n": 110015,
+      "accuracy": 0.545734672544653,
+      "top3_accuracy": 0.892378312048357,
+      "cross_entropy": 1.662298236418105
+    },
+    "softmax": {
+      "n": 110015,
+      "accuracy": 0.5503704040358133,
+      "top3_accuracy": 0.911239376448666,
+      "cross_entropy": 1.040568064133424
+    },
+    "local_minima": {
+      "n_agents": 65
+    },
+    "n_exclusive_agents": 2,
+    "stuck_top": [
+      {
+        "agent_id": "10862",
+        "stuck_event_fraction": 0.3879310344827586,
+        "n_events": 451,
+        "n_exclusive": 0
+      },
+      {
+        "agent_id": "10880",
+        "stuck_event_fraction": 0.38155136268343814,
+        "n_events": 660,
+        "n_exclusive": 0
+      },
+      {
+        "agent_id": "10859",
+        "stuck_event_fraction": 0.2823529411764706,
+        "n_events": 338,
+        "n_exclusive": 0
+      },
+      {
+        "agent_id": "10910",
+        "stuck_event_fraction": 0.1934596577017115,
+        "n_events": 3369,
+        "n_exclusive": 0
+      },
+      {
+        "agent_id": "10609",
+        "stuck_event_fraction": 0.12236736870167955,
+        "n_events": 3952,
+        "n_exclusive": 0
+      },
+      {
+        "agent_id": "10228",
+        "stuck_event_fraction": 0.06363636363636363,
+        "n_events": 404,
+        "n_exclusive": 0
+      }
+    ]
+  },
+  "queue": {
+    "flow_x1": {
+      "wall_sec": 285.45593785800156,
+      "max_queue_any_real": 4281,
+      "bottleneck_agent": "112",
+      "sum_final_queue": 0,
+      "n_events": 77420,
+      "n_cases": 5658,
+      "top_agents_by_max_queue": [
+        [
+          "112",
+          4281
+        ],
+        [
+          "11049",
+          607
+        ],
+        [
+          "11181",
+          436
+        ],
+        [
+          "10861",
+          304
+        ],
+        [
+          "11259",
+          263
+        ],
+        [
+          "10899",
+          197
+        ],
+        [
+          "11180",
+          192
+        ],
+        [
+          "10909",
+          112
+        ]
+      ],
+      "capacity_overrides": {}
+    },
+    "flow_x2": {
+      "wall_sec": 362.92693518099986,
+      "max_queue_any_real": 9958,
+      "bottleneck_agent": "112",
+      "sum_final_queue": 0,
+      "n_events": 156308,
+      "n_cases": 11316,
+      "top_agents_by_max_queue": [
+        [
+          "112",
+          9958
+        ],
+        [
+          "11049",
+          1130
+        ],
+        [
+          "11181",
+          616
+        ],
+        [
+          "11180",
+          542
+        ],
+        [
+          "10861",
+          526
+        ],
+        [
+          "11259",
+          492
+        ],
+        [
+          "10899",
+          479
+        ],
+        [
+          "11000",
+          262
+        ]
+      ],
+      "capacity_overrides": {}
+    },
+    "flow_x2_plus1": {
+      "wall_sec": 361.9436347619994,
+      "max_queue_any_real": 8555,
+      "bottleneck_agent": "112",
+      "sum_final_queue": 0,
+      "n_events": 155249,
+      "n_cases": 11316,
+      "top_agents_by_max_queue": [
+        [
+          "112",
+          8555
+        ],
+        [
+          "11049",
+          1108
+        ],
+        [
+          "11181",
+          850
+        ],
+        [
+          "11180",
+          722
+        ],
+        [
+          "10861",
+          664
+        ],
+        [
+          "11259",
+          511
+        ],
+        [
+          "10899",
+          487
+        ],
+        [
+          "10909",
+          436
+        ]
+      ],
+      "capacity_overrides": {
+        "112": 2
+      },
+      "boosted_agent": "112",
+      "boosted_queue_before": 9958,
+      "boosted_queue_after": 8555
+    }
+  },
+  "prior_evidence": {
+    "Hospital v0.8.0": "holdout next softmax=0.629 (диагност отделений, без очереди)",
+    "BPIC2019 очередь": "max_queue ×1=4568, ×2=9150 (есть артефакт NONE в топе старого прогона)"
+  },
+  "claims": {
+    "proven": [
+      "holdout next-step не случаен",
+      "очередь растёт при ×2",
+      "слот +1 меняет узкое место"
+    ],
+    "not_proven": [
+      "календарь смен",
+      "закрытый контур клиента"
+    ]
+  }
+}

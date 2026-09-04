@@ -1,0 +1,33 @@
+{
+  "version": "0.10.0",
+  "contour": "simulator",
+  "require_package_version": "0.10.0",
+  "recipe": "queue_stress",
+  "donor": {
+    "id": "BPIC2012",
+    "doi": "10.4121/uuid:3926db30-f712-4394-aebc-75976070e91f",
+    "xes_path": "data/raw/BPI_Challenge_2012.xes"
+  },
+  "notes_ru": "Честный DES: capacity=1, FIFO-очередь, service time = latency_sec из лога. Стресс ×2 через input_flow_multiplier. Метрика — max_queue_length, не Spearman dt.",
+  "decisions_seed": [
+    "queue_des.py вместо batch-step для нагрузочного сценария",
+    "calibrate_duration запрещён при queue_mode",
+    "docs/SIMULATOR_HONEST.md — границы честности"
+  ],
+  "experiment": {
+    "donor_id": "BPIC2012",
+    "donor_doi": "10.4121/uuid:3926db30-f712-4394-aebc-75976070e91f",
+    "split": {"fit_months": 3, "holdout_months": 2},
+    "policy": {
+      "max_iter": 150,
+      "terminal_prefixes": ["A_CANCELLED", "A_DECLINED", "A_APPROVED", "A_REGISTERED"]
+    },
+    "sim": {
+      "queue_mode": true,
+      "agent_capacity": 1,
+      "input_flow_multiplier": 2.0,
+      "max_steps_per_case": 40,
+      "seed": 42
+    }
+  }
+}

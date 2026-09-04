@@ -1,0 +1,1814 @@
+{
+  "min_input_support": 20,
+  "top1_stuck_threshold": 0.8,
+  "unique_share": 0.8,
+  "n_agents": 33,
+  "agents": [
+    {
+      "agent_id": "Hyper Pressure Tank",
+      "role_id": "3",
+      "n_events": 30,
+      "n_distinct_actions": 1,
+      "n_role_actions": 3,
+      "unused_role_actions_n": 2,
+      "unused_role_actions_sample": [
+        "1e consult      bezoek|complete",
+        "darm        - katheteriseren stoma|complete"
+      ],
+      "mean_H_bits_typical_input": 0.0,
+      "stuck_event_fraction": 1.0,
+      "n_typical_inputs": 1,
+      "max_local_rules": [
+        {
+          "input": "behandelen  - in hyperpressietank||1",
+          "support": 29,
+          "entropy_bits": 0.0,
+          "top1_action": "behandelen  - in hyperpressietank|complete",
+          "top1_mass": 1.0
+        }
+      ],
+      "exclusive_frequent_actions": [
+        {
+          "action": "behandelen  - in hyperpressietank|complete",
+          "agent_n": 30,
+          "global_n": 30,
+          "share": 1.0
+        }
+      ]
+    },
+    {
+      "agent_id": "ICU Adults",
+      "role_id": "89",
+      "n_events": 65,
+      "n_distinct_actions": 14,
+      "n_role_actions": 24,
+      "unused_role_actions_n": 10,
+      "unused_role_actions_sample": [
+        "190204 klasse 3a        a204|complete",
+        "1e consult      bezoek|complete",
+        "analgesie   - epiduraal door anesthesist|complete",
+        "anesthesie  - bij spec.onderz.en verr.ge|complete",
+        "anesthesie  - bij vervoer beademde patie|complete",
+        "echografie  - blaas - extern|complete",
+        "infuus      - inbrengen|complete",
+        "interc.consult vervolg klinisch  anesthe|complete",
+        "ligdagen - alle spec.beh.kinderg.-reval.|complete",
+        "pijnbestrijd- aanleggen patient controll|complete"
+      ],
+      "mean_H_bits_typical_input": NaN,
+      "stuck_event_fraction": NaN,
+      "n_typical_inputs": 0,
+      "max_local_rules": [],
+      "exclusive_frequent_actions": []
+    },
+    {
+      "agent_id": "Pharmacy Laboratory",
+      "role_id": "86",
+      "n_events": 117,
+      "n_distinct_actions": 3,
+      "n_role_actions": 168,
+      "unused_role_actions_n": 165,
+      "unused_role_actions_sample": [
+        "17-hydroxyprogesteron mbv ria|complete",
+        "aanname laboratoriumonderzoek|complete",
+        "acth mbv radioisotopen|complete",
+        "actuele ph - pco2 - stand.bicarbonaat|complete",
+        "afereseplasma gesplitst fq1 en fq2|complete",
+        "albumine - spoed|complete",
+        "albumine|complete",
+        "alfa amylase - spoed|complete",
+        "alfa-1-foetoproteine|complete",
+        "alkalische fosfatase - kinetisch - spoed|complete",
+        "alkalische fosfatase -kinetisch-|complete",
+        "aluminium|complete",
+        "ammoniak - spoed|complete",
+        "ammoniak|complete",
+        "amylase|complete"
+      ],
+      "mean_H_bits_typical_input": 0.0,
+      "stuck_event_fraction": 1.0,
+      "n_typical_inputs": 2,
+      "max_local_rules": [
+        {
+          "input": "gammaglutamyltranspeptidase||1",
+          "support": 38,
+          "entropy_bits": 0.0,
+          "top1_action": "squamous cell carcinoma mbv eia|complete",
+          "top1_mass": 1.0
+        },
+        {
+          "input": "cea - tumormarker mbv meia||1",
+          "support": 27,
+          "entropy_bits": 0.0,
+          "top1_action": "squamous cell carcinoma mbv eia|complete",
+          "top1_mass": 1.0
+        }
+      ],
+      "exclusive_frequent_actions": [
+        {
+          "action": "squamous cell carcinoma mbv eia|complete",
+          "agent_n": 114,
+          "global_n": 114,
+          "share": 1.0
+        }
+      ]
+    },
+    {
+      "agent_id": "Internal Specialisms clinic",
+      "role_id": "13",
+      "n_events": 755,
+      "n_distinct_actions": 11,
+      "n_role_actions": 13,
+      "unused_role_actions_n": 2,
+      "unused_role_actions_sample": [
+        "blaas       - catheter a demeure - inbre|complete",
+        "infuus      - inbrengen|complete"
+      ],
+      "mean_H_bits_typical_input": 0.8119635279655604,
+      "stuck_event_fraction": 0.7819148936170213,
+      "n_typical_inputs": 4,
+      "max_local_rules": [
+        {
+          "input": "ordertarief||1",
+          "support": 404,
+          "entropy_bits": 0.4125552866570625,
+          "top1_action": "vervolgconsult poliklinisch|complete",
+          "top1_mass": 0.9381188118811881
+        },
+        {
+          "input": "vervolgconsult poliklinisch||1",
+          "support": 101,
+          "entropy_bits": 2.1531981497529804,
+          "top1_action": "vervolgconsult poliklinisch|complete",
+          "top1_mass": 0.42574257425742573
+        },
+        {
+          "input": "1e consult poliklinisch||1",
+          "support": 37,
+          "entropy_bits": 0.9171193563669939,
+          "top1_action": "administratief tarief       - eerste pol|complete",
+          "top1_mass": 0.8108108108108109
+        },
+        {
+          "input": "administratief tarief       - eerste pol||1",
+          "support": 22,
+          "entropy_bits": 1.8122120296587747,
+          "top1_action": "vervolgconsult poliklinisch|complete",
+          "top1_mass": 0.45454545454545453
+        }
+      ],
+      "exclusive_frequent_actions": [
+        {
+          "action": "inwend.geneesk.  korte kaart kosten-out|complete",
+          "agent_n": 38,
+          "global_n": 38,
+          "share": 1.0
+        }
+      ]
+    },
+    {
+      "agent_id": "Lab Experimental Immunology",
+      "role_id": "86",
+      "n_events": 1,
+      "n_distinct_actions": 1,
+      "n_role_actions": 168,
+      "unused_role_actions_n": 167,
+      "unused_role_actions_sample": [
+        "17-hydroxyprogesteron mbv ria|complete",
+        "aanname laboratoriumonderzoek|complete",
+        "acth mbv radioisotopen|complete",
+        "actuele ph - pco2 - stand.bicarbonaat|complete",
+        "afereseplasma gesplitst fq1 en fq2|complete",
+        "albumine - spoed|complete",
+        "albumine|complete",
+        "alfa amylase - spoed|complete",
+        "alfa-1-foetoproteine|complete",
+        "alkalische fosfatase - kinetisch - spoed|complete",
+        "alkalische fosfatase -kinetisch-|complete",
+        "aluminium|complete",
+        "ammoniak - spoed|complete",
+        "ammoniak|complete",
+        "amylase|complete"
+      ],
+      "mean_H_bits_typical_input": NaN,
+      "stuck_event_fraction": NaN,
+      "n_typical_inputs": 0,
+      "max_local_rules": [],
+      "exclusive_frequent_actions": []
+    },
+    {
+      "agent_id": "Lab Hematology",
+      "role_id": "86",
+      "n_events": 2,
+      "n_distinct_actions": 1,
+      "n_role_actions": 168,
+      "unused_role_actions_n": 167,
+      "unused_role_actions_sample": [
+        "17-hydroxyprogesteron mbv ria|complete",
+        "aanname laboratoriumonderzoek|complete",
+        "acth mbv radioisotopen|complete",
+        "actuele ph - pco2 - stand.bicarbonaat|complete",
+        "afereseplasma gesplitst fq1 en fq2|complete",
+        "albumine - spoed|complete",
+        "albumine|complete",
+        "alfa amylase - spoed|complete",
+        "alfa-1-foetoproteine|complete",
+        "alkalische fosfatase - kinetisch - spoed|complete",
+        "alkalische fosfatase -kinetisch-|complete",
+        "aluminium|complete",
+        "ammoniak - spoed|complete",
+        "ammoniak|complete",
+        "amylase|complete"
+      ],
+      "mean_H_bits_typical_input": NaN,
+      "stuck_event_fraction": NaN,
+      "n_typical_inputs": 0,
+      "max_local_rules": [],
+      "exclusive_frequent_actions": []
+    },
+    {
+      "agent_id": "Medical Microbiology",
+      "role_id": "87",
+      "n_events": 1166,
+      "n_distinct_actions": 15,
+      "n_role_actions": 15,
+      "unused_role_actions_n": 0,
+      "unused_role_actions_sample": [],
+      "mean_H_bits_typical_input": 0.9536767833272828,
+      "stuck_event_fraction": 0.23261117445838084,
+      "n_typical_inputs": 9,
+      "max_local_rules": [
+        {
+          "input": "bacteriologisch onderzoek met kweek -nie||1",
+          "support": 262,
+          "entropy_bits": 1.09428005846496,
+          "top1_action": "bacteriologisch onderzoek met kweek -nie|complete",
+          "top1_mass": 0.6564885496183206
+        },
+        {
+          "input": "aanname laboratoriumonderzoek||1",
+          "support": 230,
+          "entropy_bits": 1.3504190226789776,
+          "top1_action": "aanname laboratoriumonderzoek|complete",
+          "top1_mass": 0.6391304347826087
+        },
+        {
+          "input": "hepatitis-b surface antigeen confirmatie||1",
+          "support": 73,
+          "entropy_bits": 0.0,
+          "top1_action": "hepatitis-b surface antigeen confirmatie|complete",
+          "top1_mass": 1.0
+        },
+        {
+          "input": "ligdagen - alle spec.beh.kinderg.-reval.||1",
+          "support": 70,
+          "entropy_bits": 0.21574768544463674,
+          "top1_action": "aanname laboratoriumonderzoek|complete",
+          "top1_mass": 0.9714285714285714
+        },
+        {
+          "input": "resistentiebepalingen - 5 bepalingen||1",
+          "support": 107,
+          "entropy_bits": 0.9994328781096229,
+          "top1_action": "resistentiebepalingen - 5 bepalingen|complete",
+          "top1_mass": 0.514018691588785
+        },
+        {
+          "input": "microscopisch onderzoek - gekleurd en on||1",
+          "support": 61,
+          "entropy_bits": 0.7153220528038851,
+          "top1_action": "bacteriologisch onderzoek met kweek -nie|complete",
+          "top1_mass": 0.8032786885245902
+        },
+        {
+          "input": "aanname laboratoriumonderzoek||0",
+          "support": 27,
+          "entropy_bits": 1.0377724203178629,
+          "top1_action": "aanname laboratoriumonderzoek|complete",
+          "top1_mass": 0.7037037037037037
+        },
+        {
+          "input": "bacteriologisch onderzoek met kweek -nie||0",
+          "support": 25,
+          "entropy_bits": 1.0211191885631823,
+          "top1_action": "bacteriologisch onderzoek met kweek -nie|complete",
+          "top1_mass": 0.72
+        },
+        {
+          "input": "kalium potentiometrisch||1",
+          "support": 22,
+          "entropy_bits": 0.9023932827949788,
+          "top1_action": "microscopisch onderzoek - gekleurd en on|complete",
+          "top1_mass": 0.6818181818181818
+        }
+      ],
+      "exclusive_frequent_actions": [
+        {
+          "action": "bacteriologisch onderzoek met kweek -nie|complete",
+          "agent_n": 404,
+          "global_n": 404,
+          "share": 1.0
+        },
+        {
+          "action": "hepatitis-b surface antigeen confirmatie|complete",
+          "agent_n": 188,
+          "global_n": 188,
+          "share": 1.0
+        },
+        {
+          "action": "resistentiebepalingen - 5 bepalingen|complete",
+          "agent_n": 160,
+          "global_n": 160,
+          "share": 1.0
+        },
+        {
+          "action": "microscopisch onderzoek - gekleurd en on|complete",
+          "agent_n": 65,
+          "global_n": 65,
+          "share": 1.0
+        }
+      ]
+    },
+    {
+      "agent_id": "Anesthesiology",
+      "role_id": "89",
+      "n_events": 1,
+      "n_distinct_actions": 1,
+      "n_role_actions": 24,
+      "unused_role_actions_n": 23,
+      "unused_role_actions_sample": [
+        "190101 bovenreg.toesl.  a101|complete",
+        "190204 klasse 3a        a204|complete",
+        "190205 klasse 3b        a205|complete",
+        "1e consult      bezoek|complete",
+        "analgesie   - epiduraal door anesthesist|complete",
+        "anesthesie  - bij spec.onderz.en verr.ge|complete",
+        "arterie     - punctie tbv.verblijfsnaald|complete",
+        "beademing - anesthesie - eerste dag|complete",
+        "beademing - anesthesie - tweede t-m vijf|complete",
+        "cvvhd       --continue veno-veneuze hemo|complete",
+        "e.c.g.      - elektrocardiografie|complete",
+        "echografie  - blaas - extern|complete",
+        "infuus      - inbrengen|complete",
+        "intensive care ligdag - 1e tot en met 5e|complete",
+        "intensive care ligdag - 6e tot en met 14|complete"
+      ],
+      "mean_H_bits_typical_input": NaN,
+      "stuck_event_fraction": NaN,
+      "n_typical_inputs": 0,
+      "max_local_rules": [],
+      "exclusive_frequent_actions": []
+    },
+    {
+      "agent_id": "Anesthesiology clinic",
+      "role_id": "89",
+      "n_events": 9,
+      "n_distinct_actions": 1,
+      "n_role_actions": 24,
+      "unused_role_actions_n": 23,
+      "unused_role_actions_sample": [
+        "190101 bovenreg.toesl.  a101|complete",
+        "190204 klasse 3a        a204|complete",
+        "190205 klasse 3b        a205|complete",
+        "analgesie   - epiduraal door anesthesist|complete",
+        "anesthesie  - bij spec.onderz.en verr.ge|complete",
+        "anesthesie  - bij vervoer beademde patie|complete",
+        "arterie     - punctie tbv.verblijfsnaald|complete",
+        "beademing - anesthesie - eerste dag|complete",
+        "beademing - anesthesie - tweede t-m vijf|complete",
+        "cvvhd       --continue veno-veneuze hemo|complete",
+        "e.c.g.      - elektrocardiografie|complete",
+        "echografie  - blaas - extern|complete",
+        "infuus      - inbrengen|complete",
+        "intensive care ligdag - 1e tot en met 5e|complete",
+        "intensive care ligdag - 6e tot en met 14|complete"
+      ],
+      "mean_H_bits_typical_input": NaN,
+      "stuck_event_fraction": NaN,
+      "n_typical_inputs": 0,
+      "max_local_rules": [],
+      "exclusive_frequent_actions": []
+    },
+    {
+      "agent_id": "Cardiovascular clinics",
+      "role_id": "20",
+      "n_events": 52,
+      "n_distinct_actions": 3,
+      "n_role_actions": 3,
+      "unused_role_actions_n": 0,
+      "unused_role_actions_sample": [],
+      "mean_H_bits_typical_input": 0.0,
+      "stuck_event_fraction": 1.0,
+      "n_typical_inputs": 1,
+      "max_local_rules": [
+        {
+          "input": "ligdagen - alle spec.beh.kinderg.-reval.||1",
+          "support": 27,
+          "entropy_bits": 0.0,
+          "top1_action": "e.c.g.      - elektrocardiografie|complete",
+          "top1_mass": 1.0
+        }
+      ],
+      "exclusive_frequent_actions": []
+    },
+    {
+      "agent_id": "Day Centre - treatment",
+      "role_id": "7",
+      "n_events": 5,
+      "n_distinct_actions": 5,
+      "n_role_actions": 82,
+      "unused_role_actions_n": 77,
+      "unused_role_actions_sample": [
+        "190021 klinische opname a002|complete",
+        "190034 afwezigheidsdag  a006|complete",
+        "190035 dagverpleging    a007|complete",
+        "190055 zware dagverpleging a009|complete",
+        "190101 bovenreg.toesl.  a101|complete",
+        "190204 klasse 3a        a204|complete",
+        "190205 klasse 3b        a205|complete",
+        "1e consult      bezoek|complete",
+        "1e consult poliklinisch|complete",
+        "administratief tarief       - eerste pol|complete",
+        "anesthesie  - bij behandeling met radium|complete",
+        "blaas       - cystoscopie met biopsie|complete",
+        "blaas       - cystoscopie|complete",
+        "blaas       - suprapubische katheter inb|complete",
+        "blaas       - uretrocystoscopie nno|complete"
+      ],
+      "mean_H_bits_typical_input": NaN,
+      "stuck_event_fraction": NaN,
+      "n_typical_inputs": 0,
+      "max_local_rules": [],
+      "exclusive_frequent_actions": []
+    },
+    {
+      "agent_id": "Day Centre - ward",
+      "role_id": "7",
+      "n_events": 6,
+      "n_distinct_actions": 2,
+      "n_role_actions": 82,
+      "unused_role_actions_n": 80,
+      "unused_role_actions_sample": [
+        "190021 klinische opname a002|complete",
+        "190034 afwezigheidsdag  a006|complete",
+        "190055 zware dagverpleging a009|complete",
+        "190101 bovenreg.toesl.  a101|complete",
+        "190204 klasse 3a        a204|complete",
+        "190205 klasse 3b        a205|complete",
+        "1e consult      bezoek|complete",
+        "1e consult poliklinisch|complete",
+        "administratief tarief       - eerste pol|complete",
+        "anesthesie  - bij behandeling met radium|complete",
+        "blaas       - cystoscopie met biopsie|complete",
+        "blaas       - cystoscopie|complete",
+        "blaas       - suprapubische katheter inb|complete",
+        "blaas       - uretrocystoscopie nno|complete",
+        "buik        - excisie patholog.afwijking|complete"
+      ],
+      "mean_H_bits_typical_input": NaN,
+      "stuck_event_fraction": NaN,
+      "n_typical_inputs": 0,
+      "max_local_rules": [],
+      "exclusive_frequent_actions": []
+    },
+    {
+      "agent_id": "Diet Studies",
+      "role_id": "99",
+      "n_events": 77,
+      "n_distinct_actions": 2,
+      "n_role_actions": 2,
+      "unused_role_actions_n": 0,
+      "unused_role_actions_sample": [],
+      "mean_H_bits_typical_input": 0.5075868716184456,
+      "stuck_event_fraction": 1.0,
+      "n_typical_inputs": 2,
+      "max_local_rules": [
+        {
+          "input": "190205 klasse 3b        a205||1",
+          "support": 27,
+          "entropy_bits": 0.6051865766334206,
+          "top1_action": "dieet nno|complete",
+          "top1_mass": 0.8518518518518519
+        },
+        {
+          "input": "190101 bovenreg.toesl.  a101||1",
+          "support": 25,
+          "entropy_bits": 0.4021791902022728,
+          "top1_action": "dieet nno|complete",
+          "top1_mass": 0.92
+        }
+      ],
+      "exclusive_frequent_actions": [
+        {
+          "action": "dieet nno|complete",
+          "agent_n": 68,
+          "global_n": 68,
+          "share": 1.0
+        }
+      ]
+    },
+    {
+      "agent_id": "Emergency room",
+      "role_id": "13",
+      "n_events": 4,
+      "n_distinct_actions": 3,
+      "n_role_actions": 13,
+      "unused_role_actions_n": 10,
+      "unused_role_actions_sample": [
+        "1e consult      bezoek|complete",
+        "1e consult poliklinisch|complete",
+        "interc.consult klinisch  interne ziekten|complete",
+        "interc.consult vervolg klinisch  interne|complete",
+        "inwend.geneesk.    jaarkaart kosten-out|complete",
+        "inwend.geneesk.   aanv.kaart kosten-out|complete",
+        "inwend.geneesk.  korte kaart kosten-out|complete",
+        "paclitaxel|complete",
+        "telefonisch consult|complete",
+        "vervolgconsult poliklinisch|complete"
+      ],
+      "mean_H_bits_typical_input": NaN,
+      "stuck_event_fraction": NaN,
+      "n_typical_inputs": 0,
+      "max_local_rules": [],
+      "exclusive_frequent_actions": []
+    },
+    {
+      "agent_id": "Endoscopy",
+      "role_id": "18",
+      "n_events": 11,
+      "n_distinct_actions": 5,
+      "n_role_actions": 5,
+      "unused_role_actions_n": 0,
+      "unused_role_actions_sample": [],
+      "mean_H_bits_typical_input": NaN,
+      "stuck_event_fraction": NaN,
+      "n_typical_inputs": 0,
+      "max_local_rules": [],
+      "exclusive_frequent_actions": []
+    },
+    {
+      "agent_id": "Function Centre ENT",
+      "role_id": "2",
+      "n_events": 9,
+      "n_distinct_actions": 5,
+      "n_role_actions": 5,
+      "unused_role_actions_n": 0,
+      "unused_role_actions_sample": [],
+      "mean_H_bits_typical_input": NaN,
+      "stuck_event_fraction": NaN,
+      "n_typical_inputs": 0,
+      "max_local_rules": [],
+      "exclusive_frequent_actions": []
+    },
+    {
+      "agent_id": "Nursing ward",
+      "role_id": "7",
+      "n_events": 8164,
+      "n_distinct_actions": 28,
+      "n_role_actions": 82,
+      "unused_role_actions_n": 54,
+      "unused_role_actions_sample": [
+        "1e consult      bezoek|complete",
+        "anesthesie  - bij behandeling met radium|complete",
+        "blaas       - cystoscopie met biopsie|complete",
+        "blaas       - cystoscopie|complete",
+        "blaas       - suprapubische katheter inb|complete",
+        "blaas       - uretrocystoscopie nno|complete",
+        "buik        - excisie patholog.afwijking|complete",
+        "buik        - primaire stageringsoperati|complete",
+        "buik        - proeflaparotomie|complete",
+        "buik        - second-look-oper.stagering|complete",
+        "buik        - stag.lap-tumorred.-omentec|complete",
+        "buik        - stag.laparotom.-omentect.-|complete",
+        "buik        - stageringslaparotom.-oment|complete",
+        "cervix      - conisatie|complete",
+        "cervix      - curettage|complete"
+      ],
+      "mean_H_bits_typical_input": 1.2753928814372772,
+      "stuck_event_fraction": 0.2658626114315679,
+      "n_typical_inputs": 37,
+      "max_local_rules": [
+        {
+          "input": "190205 klasse 3b        a205||1",
+          "support": 1602,
+          "entropy_bits": 1.2695052728786933,
+          "top1_action": "190101 bovenreg.toesl.  a101|complete",
+          "top1_mass": 0.5998751560549314
+        },
+        {
+          "input": "190101 bovenreg.toesl.  a101||1",
+          "support": 966,
+          "entropy_bits": 0.5328668515633855,
+          "top1_action": "ligdagen - alle spec.beh.kinderg.-reval.|complete",
+          "top1_mass": 0.9265010351966874
+        },
+        {
+          "input": "ligdagen - alle spec.beh.kinderg.-reval.||1",
+          "support": 1361,
+          "entropy_bits": 1.6852219175152707,
+          "top1_action": "190205 klasse 3b        a205|complete",
+          "top1_mass": 0.6149889786921381
+        },
+        {
+          "input": "190021 klinische opname a002||1",
+          "support": 511,
+          "entropy_bits": 1.2877222606925347,
+          "top1_action": "190205 klasse 3b        a205|complete",
+          "top1_mass": 0.7221135029354208
+        },
+        {
+          "input": "ordertarief||1",
+          "support": 674,
+          "entropy_bits": 1.9777829522020784,
+          "top1_action": "190205 klasse 3b        a205|complete",
+          "top1_mass": 0.5074183976261127
+        },
+        {
+          "input": "190204 klasse 3a        a204||1",
+          "support": 355,
+          "entropy_bits": 1.1293325989538154,
+          "top1_action": "190101 bovenreg.toesl.  a101|complete",
+          "top1_mass": 0.6676056338028169
+        },
+        {
+          "input": "190205 klasse 3b        a205||0",
+          "support": 156,
+          "entropy_bits": 0.2641996932002912,
+          "top1_action": "190101 bovenreg.toesl.  a101|complete",
+          "top1_mass": 0.9551282051282052
+        },
+        {
+          "input": "vervolgconsult poliklinisch||1",
+          "support": 388,
+          "entropy_bits": 2.3122844326626493,
+          "top1_action": "ligdagen - alle spec.beh.kinderg.-reval.|complete",
+          "top1_mass": 0.36855670103092786
+        },
+        {
+          "input": "190101 bovenreg.toesl.  a101||0",
+          "support": 124,
+          "entropy_bits": 0.11911602665564835,
+          "top1_action": "ligdagen - alle spec.beh.kinderg.-reval.|complete",
+          "top1_mass": 0.9838709677419355
+        },
+        {
+          "input": "190035 dagverpleging    a007||1",
+          "support": 135,
+          "entropy_bits": 1.4836575451076814,
+          "top1_action": "paclitaxel|complete",
+          "top1_mass": 0.725925925925926
+        },
+        {
+          "input": "gefiltreerd erytrocytenconcentraat||1",
+          "support": 98,
+          "entropy_bits": 0.1641343332046879,
+          "top1_action": "ligdagen - alle spec.beh.kinderg.-reval.|complete",
+          "top1_mass": 0.9795918367346939
+        },
+        {
+          "input": "190205 klasse 3b        a205||2",
+          "support": 102,
+          "entropy_bits": 0.6279577069134921,
+          "top1_action": "190101 bovenreg.toesl.  a101|complete",
+          "top1_mass": 0.8627450980392157
+        }
+      ],
+      "exclusive_frequent_actions": [
+        {
+          "action": "ligdagen - alle spec.beh.kinderg.-reval.|complete",
+          "agent_n": 2750,
+          "global_n": 2764,
+          "share": 0.9949348769898697
+        },
+        {
+          "action": "190205 klasse 3b        a205|complete",
+          "agent_n": 2125,
+          "global_n": 2147,
+          "share": 0.9897531439217513
+        },
+        {
+          "action": "190101 bovenreg.toesl.  a101|complete",
+          "agent_n": 1575,
+          "global_n": 1585,
+          "share": 0.9936908517350158
+        },
+        {
+          "action": "190021 klinische opname a002|complete",
+          "agent_n": 590,
+          "global_n": 590,
+          "share": 1.0
+        },
+        {
+          "action": "190204 klasse 3a        a204|complete",
+          "agent_n": 435,
+          "global_n": 441,
+          "share": 0.9863945578231292
+        },
+        {
+          "action": "dagverpleging - alle spec.beh.kind.-rev.|complete",
+          "agent_n": 211,
+          "global_n": 215,
+          "share": 0.9813953488372092
+        },
+        {
+          "action": "190035 dagverpleging    a007|complete",
+          "agent_n": 209,
+          "global_n": 213,
+          "share": 0.9812206572769953
+        },
+        {
+          "action": "paclitaxel|complete",
+          "agent_n": 153,
+          "global_n": 157,
+          "share": 0.9745222929936306
+        }
+      ]
+    },
+    {
+      "agent_id": "General Lab Clinical Chemistry",
+      "role_id": "86",
+      "n_events": 26899,
+      "n_distinct_actions": 141,
+      "n_role_actions": 168,
+      "unused_role_actions_n": 27,
+      "unused_role_actions_sample": [
+        "17-hydroxyprogesteron mbv ria|complete",
+        "acth mbv radioisotopen|complete",
+        "antinucleaire factor -anf-|complete",
+        "betasubunit bep. mbv. ria hcg|complete",
+        "buffy coat|complete",
+        "cortisol immunofluorimetrisch|complete",
+        "cortisol|complete",
+        "delta-4-androsteendion|complete",
+        "dhea-sulfaat met extractie mbv ria|complete",
+        "erytrocyten|complete",
+        "fenytoine kwantitatief|complete",
+        "fsh enzym-immunologisch|complete",
+        "gentamycine kwn - immuno-assay|complete",
+        "lh mbv radioisotopen|complete",
+        "oestradiol mbv radioisotopen -ria|complete"
+      ],
+      "mean_H_bits_typical_input": 1.721542888471129,
+      "stuck_event_fraction": 0.23949326362356727,
+      "n_typical_inputs": 162,
+      "max_local_rules": [
+        {
+          "input": "aanname laboratoriumonderzoek||1",
+          "support": 3479,
+          "entropy_bits": 2.804943399834704,
+          "top1_action": "aanname laboratoriumonderzoek|complete",
+          "top1_mass": 0.5340615119287151
+        },
+        {
+          "input": "natrium vlamfotometrisch||1",
+          "support": 755,
+          "entropy_bits": 0.584479652970149,
+          "top1_action": "kalium potentiometrisch|complete",
+          "top1_mass": 0.8966887417218543
+        },
+        {
+          "input": "ligdagen - alle spec.beh.kinderg.-reval.||1",
+          "support": 588,
+          "entropy_bits": 0.10021504155004085,
+          "top1_action": "aanname laboratoriumonderzoek|complete",
+          "top1_mass": 0.9880952380952381
+        },
+        {
+          "input": "hemoglobine foto-elektrisch||1",
+          "support": 773,
+          "entropy_bits": 1.8200635876335682,
+          "top1_action": "creatinine|complete",
+          "top1_mass": 0.7115135834411385
+        },
+        {
+          "input": "leukocyten tellen elektronisch||1",
+          "support": 575,
+          "entropy_bits": 0.8846870648830668,
+          "top1_action": "trombocyten tellen - elektronisch|complete",
+          "top1_mass": 0.8834782608695653
+        },
+        {
+          "input": "ordertarief||1",
+          "support": 499,
+          "entropy_bits": 0.42335199983847327,
+          "top1_action": "ordertarief|complete",
+          "top1_mass": 0.9178356713426854
+        },
+        {
+          "input": "natrium - vlamfotometrisch - spoed||1",
+          "support": 552,
+          "entropy_bits": 0.8323641603756948,
+          "top1_action": "kalium vlamfotometrisch - spoed|complete",
+          "top1_mass": 0.7771739130434783
+        },
+        {
+          "input": "differentiele telling automatisch||1",
+          "support": 694,
+          "entropy_bits": 1.4148672729657334,
+          "top1_action": "haemoglobine foto-electrisch - spoed|complete",
+          "top1_mass": 0.600864553314121
+        },
+        {
+          "input": "haemoglobine foto-electrisch - spoed||1",
+          "support": 677,
+          "entropy_bits": 2.133258453588296,
+          "top1_action": "trombocyten tellen - spoed|complete",
+          "top1_mass": 0.5908419497784343
+        },
+        {
+          "input": "creatinine||1",
+          "support": 735,
+          "entropy_bits": 1.9779530516427983,
+          "top1_action": "natrium vlamfotometrisch|complete",
+          "top1_mass": 0.5346938775510204
+        },
+        {
+          "input": "trombocyten tellen - spoed||1",
+          "support": 461,
+          "entropy_bits": 1.9175730041838122,
+          "top1_action": "leucocyten tellen -electronisch- spoed|complete",
+          "top1_mass": 0.6811279826464208
+        },
+        {
+          "input": "ca-125 mbv meia||1",
+          "support": 345,
+          "entropy_bits": 0.6999011308975553,
+          "top1_action": "ordertarief|complete",
+          "top1_mass": 0.9101449275362319
+        }
+      ],
+      "exclusive_frequent_actions": [
+        {
+          "action": "aanname laboratoriumonderzoek|complete",
+          "agent_n": 4048,
+          "global_n": 4373,
+          "share": 0.925680310999314
+        },
+        {
+          "action": "ordertarief|complete",
+          "agent_n": 2558,
+          "global_n": 2558,
+          "share": 1.0
+        },
+        {
+          "action": "hemoglobine foto-elektrisch|complete",
+          "agent_n": 891,
+          "global_n": 891,
+          "share": 1.0
+        },
+        {
+          "action": "kalium potentiometrisch|complete",
+          "agent_n": 868,
+          "global_n": 868,
+          "share": 1.0
+        },
+        {
+          "action": "natrium vlamfotometrisch|complete",
+          "agent_n": 856,
+          "global_n": 856,
+          "share": 1.0
+        },
+        {
+          "action": "creatinine|complete",
+          "agent_n": 851,
+          "global_n": 851,
+          "share": 1.0
+        },
+        {
+          "action": "haemoglobine foto-electrisch - spoed|complete",
+          "agent_n": 813,
+          "global_n": 813,
+          "share": 1.0
+        },
+        {
+          "action": "differentiele telling automatisch|complete",
+          "agent_n": 766,
+          "global_n": 766,
+          "share": 1.0
+        },
+        {
+          "action": "kalium vlamfotometrisch - spoed|complete",
+          "agent_n": 675,
+          "global_n": 675,
+          "share": 1.0
+        },
+        {
+          "action": "natrium - vlamfotometrisch - spoed|complete",
+          "agent_n": 669,
+          "global_n": 669,
+          "share": 1.0
+        },
+        {
+          "action": "leukocyten tellen elektronisch|complete",
+          "agent_n": 659,
+          "global_n": 659,
+          "share": 1.0
+        },
+        {
+          "action": "trombocyten tellen - elektronisch|complete",
+          "agent_n": 610,
+          "global_n": 610,
+          "share": 1.0
+        },
+        {
+          "action": "leucocyten tellen -electronisch- spoed|complete",
+          "agent_n": 558,
+          "global_n": 558,
+          "share": 1.0
+        },
+        {
+          "action": "trombocyten tellen - spoed|complete",
+          "agent_n": 555,
+          "global_n": 555,
+          "share": 1.0
+        },
+        {
+          "action": "kruisproef volledig -drie methoden-|complete",
+          "agent_n": 491,
+          "global_n": 491,
+          "share": 1.0
+        },
+        {
+          "action": "creatinine - spoed|complete",
+          "agent_n": 488,
+          "global_n": 488,
+          "share": 1.0
+        },
+        {
+          "action": "ca-125 mbv meia|complete",
+          "agent_n": 405,
+          "global_n": 405,
+          "share": 1.0
+        },
+        {
+          "action": "calcium|complete",
+          "agent_n": 398,
+          "global_n": 398,
+          "share": 1.0
+        },
+        {
+          "action": "screening antistoffen erytrocyten|complete",
+          "agent_n": 381,
+          "global_n": 381,
+          "share": 1.0
+        },
+        {
+          "action": "bloedgroep abo en rhesusfactor|complete",
+          "agent_n": 379,
+          "global_n": 379,
+          "share": 1.0
+        }
+      ]
+    },
+    {
+      "agent_id": "Obstetrics & Gynaecology clinic",
+      "role_id": "7",
+      "n_events": 2874,
+      "n_distinct_actions": 13,
+      "n_role_actions": 82,
+      "unused_role_actions_n": 69,
+      "unused_role_actions_sample": [
+        "190021 klinische opname a002|complete",
+        "190034 afwezigheidsdag  a006|complete",
+        "190055 zware dagverpleging a009|complete",
+        "190101 bovenreg.toesl.  a101|complete",
+        "190204 klasse 3a        a204|complete",
+        "190205 klasse 3b        a205|complete",
+        "anesthesie  - bij behandeling met radium|complete",
+        "blaas       - cystoscopie met biopsie|complete",
+        "blaas       - cystoscopie|complete",
+        "blaas       - suprapubische katheter inb|complete",
+        "blaas       - uretrocystoscopie nno|complete",
+        "buik        - excisie patholog.afwijking|complete",
+        "buik        - primaire stageringsoperati|complete",
+        "buik        - proeflaparotomie|complete",
+        "buik        - punctie ascites ontlastend|complete"
+      ],
+      "mean_H_bits_typical_input": 1.3714379086604451,
+      "stuck_event_fraction": 0.1859903381642512,
+      "n_typical_inputs": 16,
+      "max_local_rules": [
+        {
+          "input": "vervolgconsult poliklinisch||1",
+          "support": 971,
+          "entropy_bits": 1.6275879995966303,
+          "top1_action": "administratief tarief       - eerste pol|complete",
+          "top1_mass": 0.5169927909371782
+        },
+        {
+          "input": "ordertarief||1",
+          "support": 281,
+          "entropy_bits": 0.7074623381373056,
+          "top1_action": "vervolgconsult poliklinisch|complete",
+          "top1_mass": 0.8790035587188612
+        },
+        {
+          "input": "administratief tarief       - eerste pol||1",
+          "support": 328,
+          "entropy_bits": 1.2581961343070747,
+          "top1_action": "vervolgconsult poliklinisch|complete",
+          "top1_mass": 0.6371951219512195
+        },
+        {
+          "input": "telefonisch consult||1",
+          "support": 177,
+          "entropy_bits": 1.5580642761643388,
+          "top1_action": "vervolgconsult poliklinisch|complete",
+          "top1_mass": 0.5988700564971752
+        },
+        {
+          "input": "∅||1",
+          "support": 238,
+          "entropy_bits": 1.7469441375347134,
+          "top1_action": "verlosk.-gynaec. korte kaart kosten-out|complete",
+          "top1_mass": 0.3277310924369748
+        },
+        {
+          "input": "1e consult poliklinisch||1",
+          "support": 79,
+          "entropy_bits": 0.5539756835714512,
+          "top1_action": "administratief tarief       - eerste pol|complete",
+          "top1_mass": 0.9113924050632911
+        },
+        {
+          "input": "verlosk.-gynaec.   jaarkaart kosten-out||1",
+          "support": 73,
+          "entropy_bits": 0.46328187072785876,
+          "top1_action": "vervolgconsult poliklinisch|complete",
+          "top1_mass": 0.9178082191780822
+        },
+        {
+          "input": "thorax||1",
+          "support": 70,
+          "entropy_bits": 1.1194435251110189,
+          "top1_action": "1e consult poliklinisch|complete",
+          "top1_mass": 0.6
+        },
+        {
+          "input": "ct abdomen||1",
+          "support": 67,
+          "entropy_bits": 1.1754755887418664,
+          "top1_action": "vervolgconsult poliklinisch|complete",
+          "top1_mass": 0.5970149253731343
+        },
+        {
+          "input": "histologisch onderzoek - biopten nno||1",
+          "support": 29,
+          "entropy_bits": 0.6437936616217652,
+          "top1_action": "vervolgconsult poliklinisch|complete",
+          "top1_mass": 0.896551724137931
+        },
+        {
+          "input": "190101 bovenreg.toesl.  a101||1",
+          "support": 50,
+          "entropy_bits": 1.6026938237037671,
+          "top1_action": "vervolgconsult poliklinisch|complete",
+          "top1_mass": 0.46
+        },
+        {
+          "input": "∅||3",
+          "support": 25,
+          "entropy_bits": 1.2177968115985955,
+          "top1_action": "verlosk.-gynaec. korte kaart kosten-out|complete",
+          "top1_mass": 0.64
+        }
+      ],
+      "exclusive_frequent_actions": [
+        {
+          "action": "telefonisch consult|complete",
+          "agent_n": 424,
+          "global_n": 488,
+          "share": 0.8688524590163934
+        },
+        {
+          "action": "verlosk.-gynaec. korte kaart kosten-out|complete",
+          "agent_n": 124,
+          "global_n": 133,
+          "share": 0.9323308270676691
+        },
+        {
+          "action": "verlosk.-gynaec.   jaarkaart kosten-out|complete",
+          "agent_n": 115,
+          "global_n": 117,
+          "share": 0.9829059829059829
+        },
+        {
+          "action": "verlosk.-gynaec.  aanv.kaart kosten-out|complete",
+          "agent_n": 73,
+          "global_n": 78,
+          "share": 0.9358974358974359
+        },
+        {
+          "action": "echografie  - genitalia interna|complete",
+          "agent_n": 40,
+          "global_n": 41,
+          "share": 0.975609756097561
+        }
+      ]
+    },
+    {
+      "agent_id": "Radiotherapy",
+      "role_id": "61",
+      "n_events": 670,
+      "n_distinct_actions": 15,
+      "n_role_actions": 15,
+      "unused_role_actions_n": 0,
+      "unused_role_actions_sample": [],
+      "mean_H_bits_typical_input": 1.5437614419708878,
+      "stuck_event_fraction": 0.18508997429305912,
+      "n_typical_inputs": 7,
+      "max_local_rules": [
+        {
+          "input": "vervolgconsult poliklinisch||1",
+          "support": 154,
+          "entropy_bits": 1.5955896389351945,
+          "top1_action": "vervolgconsult poliklinisch|complete",
+          "top1_mass": 0.45454545454545453
+        },
+        {
+          "input": "administratief tarief       - eerste pol||1",
+          "support": 59,
+          "entropy_bits": 1.513453710547758,
+          "top1_action": "vervolgconsult poliklinisch|complete",
+          "top1_mass": 0.6610169491525424
+        },
+        {
+          "input": "behandeltijd - eenheid t3 - megavolt||1",
+          "support": 45,
+          "entropy_bits": 0.8225797618424915,
+          "top1_action": "teletherapie - megavolt fotonen bestrali|complete",
+          "top1_mass": 0.8
+        },
+        {
+          "input": "ordertarief||1",
+          "support": 50,
+          "entropy_bits": 1.954556070998145,
+          "top1_action": "vervolgconsult poliklinisch|complete",
+          "top1_mass": 0.66
+        },
+        {
+          "input": "1e consult poliklinisch||1",
+          "support": 27,
+          "entropy_bits": 1.0472024795701151,
+          "top1_action": "administratief tarief       - eerste pol|complete",
+          "top1_mass": 0.8148148148148148
+        },
+        {
+          "input": "telefonisch consult||1",
+          "support": 27,
+          "entropy_bits": 1.5025342603810576,
+          "top1_action": "vervolgconsult poliklinisch|complete",
+          "top1_mass": 0.6666666666666666
+        },
+        {
+          "input": "ligdagen - alle spec.beh.kinderg.-reval.||1",
+          "support": 27,
+          "entropy_bits": 2.2934015850680254,
+          "top1_action": "brachytherapie - interstitieel - intensi|complete",
+          "top1_mass": 0.4074074074074074
+        }
+      ],
+      "exclusive_frequent_actions": [
+        {
+          "action": "teletherapie - megavolt fotonen bestrali|complete",
+          "agent_n": 97,
+          "global_n": 97,
+          "share": 1.0
+        },
+        {
+          "action": "behandeltijd - eenheid t3 - megavolt|complete",
+          "agent_n": 62,
+          "global_n": 62,
+          "share": 1.0
+        },
+        {
+          "action": "brachytherapie - interstitieel - intensi|complete",
+          "agent_n": 30,
+          "global_n": 30,
+          "share": 1.0
+        }
+      ]
+    },
+    {
+      "agent_id": "Operating rooms",
+      "role_id": "7",
+      "n_events": 238,
+      "n_distinct_actions": 50,
+      "n_role_actions": 82,
+      "unused_role_actions_n": 32,
+      "unused_role_actions_sample": [
+        "190021 klinische opname a002|complete",
+        "190034 afwezigheidsdag  a006|complete",
+        "190035 dagverpleging    a007|complete",
+        "190055 zware dagverpleging a009|complete",
+        "190101 bovenreg.toesl.  a101|complete",
+        "190204 klasse 3a        a204|complete",
+        "190205 klasse 3b        a205|complete",
+        "1e consult      bezoek|complete",
+        "1e consult poliklinisch|complete",
+        "administratief tarief       - eerste pol|complete",
+        "buik        - punctie ascites ontlastend|complete",
+        "dagverpleging - alle spec.beh.kind.-rev.|complete",
+        "doxorubicine liposomal --caelyx--|complete",
+        "echografie  - genitalia interna|complete",
+        "echografie a vue ivw zwangerschap - met|complete"
+      ],
+      "mean_H_bits_typical_input": 4.559564150118183,
+      "stuck_event_fraction": 0.0,
+      "n_typical_inputs": 1,
+      "max_local_rules": [
+        {
+          "input": "ligdagen - alle spec.beh.kinderg.-reval.||1",
+          "support": 117,
+          "entropy_bits": 4.559564150118183,
+          "top1_action": "anesthesie  - bij behandeling met radium|complete",
+          "top1_mass": 0.1111111111111111
+        }
+      ],
+      "exclusive_frequent_actions": [
+        {
+          "action": "vagina      - toucher onder anesthesie|complete",
+          "agent_n": 43,
+          "global_n": 43,
+          "share": 1.0
+        },
+        {
+          "action": "blaas       - uretrocystoscopie nno|complete",
+          "agent_n": 30,
+          "global_n": 30,
+          "share": 1.0
+        }
+      ]
+    },
+    {
+      "agent_id": "Nuclear Medicine",
+      "role_id": "63",
+      "n_events": 95,
+      "n_distinct_actions": 17,
+      "n_role_actions": 17,
+      "unused_role_actions_n": 0,
+      "unused_role_actions_sample": [],
+      "mean_H_bits_typical_input": 1.817576127248412,
+      "stuck_event_fraction": 0.0,
+      "n_typical_inputs": 1,
+      "max_local_rules": [
+        {
+          "input": "ligdagen - alle spec.beh.kinderg.-reval.||1",
+          "support": 26,
+          "entropy_bits": 1.817576127248412,
+          "top1_action": "maag - ontledig.-scint vast-vloeib.voeds|complete",
+          "top1_mass": 0.5384615384615384
+        }
+      ],
+      "exclusive_frequent_actions": []
+    },
+    {
+      "agent_id": "Ophthalmology clinic",
+      "role_id": "7",
+      "n_events": 1,
+      "n_distinct_actions": 1,
+      "n_role_actions": 82,
+      "unused_role_actions_n": 81,
+      "unused_role_actions_sample": [
+        "190021 klinische opname a002|complete",
+        "190034 afwezigheidsdag  a006|complete",
+        "190035 dagverpleging    a007|complete",
+        "190055 zware dagverpleging a009|complete",
+        "190101 bovenreg.toesl.  a101|complete",
+        "190204 klasse 3a        a204|complete",
+        "190205 klasse 3b        a205|complete",
+        "1e consult      bezoek|complete",
+        "1e consult poliklinisch|complete",
+        "administratief tarief       - eerste pol|complete",
+        "anesthesie  - bij behandeling met radium|complete",
+        "blaas       - cystoscopie met biopsie|complete",
+        "blaas       - cystoscopie|complete",
+        "blaas       - suprapubische katheter inb|complete",
+        "blaas       - uretrocystoscopie nno|complete"
+      ],
+      "mean_H_bits_typical_input": NaN,
+      "stuck_event_fraction": NaN,
+      "n_typical_inputs": 0,
+      "max_local_rules": [],
+      "exclusive_frequent_actions": []
+    },
+    {
+      "agent_id": "Pain clinic",
+      "role_id": "89",
+      "n_events": 11,
+      "n_distinct_actions": 2,
+      "n_role_actions": 24,
+      "unused_role_actions_n": 22,
+      "unused_role_actions_sample": [
+        "190101 bovenreg.toesl.  a101|complete",
+        "190204 klasse 3a        a204|complete",
+        "190205 klasse 3b        a205|complete",
+        "1e consult      bezoek|complete",
+        "analgesie   - epiduraal door anesthesist|complete",
+        "anesthesie  - bij spec.onderz.en verr.ge|complete",
+        "anesthesie  - bij vervoer beademde patie|complete",
+        "arterie     - punctie tbv.verblijfsnaald|complete",
+        "beademing - anesthesie - eerste dag|complete",
+        "beademing - anesthesie - tweede t-m vijf|complete",
+        "cvvhd       --continue veno-veneuze hemo|complete",
+        "e.c.g.      - elektrocardiografie|complete",
+        "echografie  - blaas - extern|complete",
+        "infuus      - inbrengen|complete",
+        "intensive care ligdag - 1e tot en met 5e|complete"
+      ],
+      "mean_H_bits_typical_input": NaN,
+      "stuck_event_fraction": NaN,
+      "n_typical_inputs": 0,
+      "max_local_rules": [],
+      "exclusive_frequent_actions": []
+    },
+    {
+      "agent_id": "Radiology",
+      "role_id": "62",
+      "n_events": 824,
+      "n_distinct_actions": 80,
+      "n_role_actions": 80,
+      "unused_role_actions_n": 0,
+      "unused_role_actions_sample": [],
+      "mean_H_bits_typical_input": 3.00908750367904,
+      "stuck_event_fraction": 0.07468123861566485,
+      "n_typical_inputs": 8,
+      "max_local_rules": [
+        {
+          "input": "ordertarief||1",
+          "support": 240,
+          "entropy_bits": 3.31536842224299,
+          "top1_action": "thorax|complete",
+          "top1_mass": 0.42916666666666664
+        },
+        {
+          "input": "ct thorax||1",
+          "support": 41,
+          "entropy_bits": 0.2811937964320427,
+          "top1_action": "ct abdomen|complete",
+          "top1_mass": 0.9512195121951219
+        },
+        {
+          "input": "vervolgconsult poliklinisch||1",
+          "support": 81,
+          "entropy_bits": 3.095095304869543,
+          "top1_action": "ct abdomen|complete",
+          "top1_mass": 0.43209876543209874
+        },
+        {
+          "input": "administratief tarief       - eerste pol||1",
+          "support": 63,
+          "entropy_bits": 3.1574586458531773,
+          "top1_action": "ct abdomen|complete",
+          "top1_mass": 0.25396825396825395
+        },
+        {
+          "input": "telefonisch consult||1",
+          "support": 36,
+          "entropy_bits": 2.632195933767555,
+          "top1_action": "ct abdomen|complete",
+          "top1_mass": 0.4166666666666667
+        },
+        {
+          "input": "thorax||1",
+          "support": 30,
+          "entropy_bits": 2.9634318448152466,
+          "top1_action": "buikoverzicht|complete",
+          "top1_mass": 0.3
+        },
+        {
+          "input": "190101 bovenreg.toesl.  a101||1",
+          "support": 24,
+          "entropy_bits": 2.802841670172532,
+          "top1_action": "mri abdomen|complete",
+          "top1_mass": 0.2916666666666667
+        },
+        {
+          "input": "ligdagen - alle spec.beh.kinderg.-reval.||1",
+          "support": 34,
+          "entropy_bits": 4.24173085589259,
+          "top1_action": "ct thorax|complete",
+          "top1_mass": 0.11764705882352941
+        }
+      ],
+      "exclusive_frequent_actions": [
+        {
+          "action": "ct abdomen|complete",
+          "agent_n": 195,
+          "global_n": 195,
+          "share": 1.0
+        },
+        {
+          "action": "thorax|complete",
+          "agent_n": 175,
+          "global_n": 175,
+          "share": 1.0
+        },
+        {
+          "action": "ct thorax|complete",
+          "agent_n": 58,
+          "global_n": 59,
+          "share": 0.9830508474576272
+        },
+        {
+          "action": "mri abdomen|complete",
+          "agent_n": 51,
+          "global_n": 51,
+          "share": 1.0
+        },
+        {
+          "action": "buikoverzicht|complete",
+          "agent_n": 45,
+          "global_n": 45,
+          "share": 1.0
+        },
+        {
+          "action": "mri bekken|complete",
+          "agent_n": 41,
+          "global_n": 41,
+          "share": 1.0
+        }
+      ]
+    },
+    {
+      "agent_id": "Pathology",
+      "role_id": "88",
+      "n_events": 518,
+      "n_distinct_actions": 20,
+      "n_role_actions": 20,
+      "unused_role_actions_n": 0,
+      "unused_role_actions_sample": [],
+      "mean_H_bits_typical_input": 2.2943391713007126,
+      "stuck_event_fraction": 0.0,
+      "n_typical_inputs": 6,
+      "max_local_rules": [
+        {
+          "input": "vagina      - toucher onder anesthesie||1",
+          "support": 22,
+          "entropy_bits": 1.090652803252992,
+          "top1_action": "histologisch onderzoek - biopten nno|complete",
+          "top1_mass": 0.6818181818181818
+        },
+        {
+          "input": "immunopathologisch onderzoek||1",
+          "support": 68,
+          "entropy_bits": 3.0735455397060014,
+          "top1_action": "histologisch onderzoek - biopten nno|complete",
+          "top1_mass": 0.20588235294117646
+        },
+        {
+          "input": "cytologisch onderzoek - ascites -||1",
+          "support": 20,
+          "entropy_bits": 1.1567796494470395,
+          "top1_action": "histologisch onderzoek - grote resectiep|complete",
+          "top1_mass": 0.7
+        },
+        {
+          "input": "vervolgconsult poliklinisch||1",
+          "support": 30,
+          "entropy_bits": 2.0782038010085966,
+          "top1_action": "histologisch onderzoek - biopten nno|complete",
+          "top1_mass": 0.43333333333333335
+        },
+        {
+          "input": "vriescoupe||1",
+          "support": 20,
+          "entropy_bits": 2.246439344671016,
+          "top1_action": "histologisch onderzoek - grote resectiep|complete",
+          "top1_mass": 0.4
+        },
+        {
+          "input": "administratief tarief       - eerste pol||1",
+          "support": 23,
+          "entropy_bits": 2.4547006984277124,
+          "top1_action": "cytologisch onderzoek - ectocervix -|complete",
+          "top1_mass": 0.21739130434782608
+        }
+      ],
+      "exclusive_frequent_actions": [
+        {
+          "action": "histologisch onderzoek - biopten nno|complete",
+          "agent_n": 88,
+          "global_n": 88,
+          "share": 1.0
+        },
+        {
+          "action": "immunopathologisch onderzoek|complete",
+          "agent_n": 84,
+          "global_n": 84,
+          "share": 1.0
+        },
+        {
+          "action": "histologisch onderzoek - grote resectiep|complete",
+          "agent_n": 81,
+          "global_n": 81,
+          "share": 1.0
+        },
+        {
+          "action": "cytologisch onderzoek - ectocervix -|complete",
+          "agent_n": 44,
+          "global_n": 44,
+          "share": 1.0
+        },
+        {
+          "action": "coupe ter inzage|complete",
+          "agent_n": 40,
+          "global_n": 40,
+          "share": 1.0
+        },
+        {
+          "action": "histologisch onderzoek - kleine resectie|complete",
+          "agent_n": 34,
+          "global_n": 34,
+          "share": 1.0
+        },
+        {
+          "action": "cito histologisch onderzoek|complete",
+          "agent_n": 33,
+          "global_n": 33,
+          "share": 1.0
+        },
+        {
+          "action": "cytologisch onderzoek - vagina -|complete",
+          "agent_n": 30,
+          "global_n": 30,
+          "share": 1.0
+        }
+      ]
+    },
+    {
+      "agent_id": "Recovery room / high care",
+      "role_id": "89",
+      "n_events": 162,
+      "n_distinct_actions": 16,
+      "n_role_actions": 24,
+      "unused_role_actions_n": 8,
+      "unused_role_actions_sample": [
+        "1e consult      bezoek|complete",
+        "anesthesie  - bij vervoer beademde patie|complete",
+        "beademing - anesthesie - eerste dag|complete",
+        "beademing - anesthesie - tweede t-m vijf|complete",
+        "cvvhd       --continue veno-veneuze hemo|complete",
+        "intensive care ligdag - 1e tot en met 5e|complete",
+        "intensive care ligdag - 6e tot en met 14|complete",
+        "klinische kaart - inwendige geneeskunde|complete"
+      ],
+      "mean_H_bits_typical_input": 1.854950653268019,
+      "stuck_event_fraction": 0.0,
+      "n_typical_inputs": 1,
+      "max_local_rules": [
+        {
+          "input": "ligdagen - alle spec.beh.kinderg.-reval.||1",
+          "support": 70,
+          "entropy_bits": 1.8549506532680191,
+          "top1_action": "infuus      - inbrengen|complete",
+          "top1_mass": 0.6571428571428571
+        }
+      ],
+      "exclusive_frequent_actions": [
+        {
+          "action": "infuus      - inbrengen|complete",
+          "agent_n": 73,
+          "global_n": 75,
+          "share": 0.9733333333333334
+        }
+      ]
+    },
+    {
+      "agent_id": "Special lab Genetic Metabolic Diseases",
+      "role_id": "90",
+      "n_events": 1,
+      "n_distinct_actions": 1,
+      "n_role_actions": 1,
+      "unused_role_actions_n": 0,
+      "unused_role_actions_sample": [],
+      "mean_H_bits_typical_input": NaN,
+      "stuck_event_fraction": NaN,
+      "n_typical_inputs": 0,
+      "max_local_rules": [],
+      "exclusive_frequent_actions": []
+    },
+    {
+      "agent_id": "Special lab Nuro sensory",
+      "role_id": "86",
+      "n_events": 4,
+      "n_distinct_actions": 4,
+      "n_role_actions": 168,
+      "unused_role_actions_n": 164,
+      "unused_role_actions_sample": [
+        "17-hydroxyprogesteron mbv ria|complete",
+        "acth mbv radioisotopen|complete",
+        "actuele ph - pco2 - stand.bicarbonaat|complete",
+        "afereseplasma gesplitst fq1 en fq2|complete",
+        "albumine - spoed|complete",
+        "albumine|complete",
+        "alfa amylase - spoed|complete",
+        "alfa-1-foetoproteine|complete",
+        "alkalische fosfatase - kinetisch - spoed|complete",
+        "alkalische fosfatase -kinetisch-|complete",
+        "aluminium|complete",
+        "ammoniak - spoed|complete",
+        "ammoniak|complete",
+        "amylase|complete",
+        "antinucleaire factor -anf-|complete"
+      ],
+      "mean_H_bits_typical_input": NaN,
+      "stuck_event_fraction": NaN,
+      "n_typical_inputs": 0,
+      "max_local_rules": [],
+      "exclusive_frequent_actions": []
+    },
+    {
+      "agent_id": "Special lab radiology",
+      "role_id": "86",
+      "n_events": 102,
+      "n_distinct_actions": 19,
+      "n_role_actions": 168,
+      "unused_role_actions_n": 149,
+      "unused_role_actions_sample": [
+        "actuele ph - pco2 - stand.bicarbonaat|complete",
+        "afereseplasma gesplitst fq1 en fq2|complete",
+        "albumine - spoed|complete",
+        "albumine|complete",
+        "alfa amylase - spoed|complete",
+        "alfa-1-foetoproteine|complete",
+        "alkalische fosfatase - kinetisch - spoed|complete",
+        "alkalische fosfatase -kinetisch-|complete",
+        "aluminium|complete",
+        "ammoniak - spoed|complete",
+        "ammoniak|complete",
+        "amylase|complete",
+        "antinucleaire factor -anf-|complete",
+        "antistoffen tegen erys - specificiteit -|complete",
+        "antitrombine iii mbv chromogeen-n-substr|complete"
+      ],
+      "mean_H_bits_typical_input": NaN,
+      "stuck_event_fraction": NaN,
+      "n_typical_inputs": 0,
+      "max_local_rules": [],
+      "exclusive_frequent_actions": []
+    },
+    {
+      "agent_id": "Subsection nephrology",
+      "role_id": "13",
+      "n_events": 2,
+      "n_distinct_actions": 2,
+      "n_role_actions": 13,
+      "unused_role_actions_n": 11,
+      "unused_role_actions_sample": [
+        "1e consult      bezoek|complete",
+        "1e consult poliklinisch|complete",
+        "administratief tarief       - eerste pol|complete",
+        "blaas       - catheter a demeure - inbre|complete",
+        "infuus      - inbrengen|complete",
+        "inwend.geneesk.    jaarkaart kosten-out|complete",
+        "inwend.geneesk.   aanv.kaart kosten-out|complete",
+        "inwend.geneesk.  korte kaart kosten-out|complete",
+        "paclitaxel|complete",
+        "telefonisch consult|complete",
+        "vervolgconsult poliklinisch|complete"
+      ],
+      "mean_H_bits_typical_input": NaN,
+      "stuck_event_fraction": NaN,
+      "n_typical_inputs": 0,
+      "max_local_rules": [],
+      "exclusive_frequent_actions": []
+    },
+    {
+      "agent_id": "Third party lab",
+      "role_id": "86",
+      "n_events": 3,
+      "n_distinct_actions": 3,
+      "n_role_actions": 168,
+      "unused_role_actions_n": 165,
+      "unused_role_actions_sample": [
+        "17-hydroxyprogesteron mbv ria|complete",
+        "aanname laboratoriumonderzoek|complete",
+        "acth mbv radioisotopen|complete",
+        "actuele ph - pco2 - stand.bicarbonaat|complete",
+        "afereseplasma gesplitst fq1 en fq2|complete",
+        "albumine - spoed|complete",
+        "albumine|complete",
+        "alfa amylase - spoed|complete",
+        "alfa-1-foetoproteine|complete",
+        "alkalische fosfatase - kinetisch - spoed|complete",
+        "alkalische fosfatase -kinetisch-|complete",
+        "aluminium|complete",
+        "ammoniak - spoed|complete",
+        "ammoniak|complete",
+        "amylase|complete"
+      ],
+      "mean_H_bits_typical_input": NaN,
+      "stuck_event_fraction": NaN,
+      "n_typical_inputs": 0,
+      "max_local_rules": [],
+      "exclusive_frequent_actions": []
+    },
+    {
+      "agent_id": "surgery & urology clinic",
+      "role_id": "3",
+      "n_events": 2,
+      "n_distinct_actions": 2,
+      "n_role_actions": 3,
+      "unused_role_actions_n": 1,
+      "unused_role_actions_sample": [
+        "behandelen  - in hyperpressietank|complete"
+      ],
+      "mean_H_bits_typical_input": NaN,
+      "stuck_event_fraction": NaN,
+      "n_typical_inputs": 0,
+      "max_local_rules": [],
+      "exclusive_frequent_actions": []
+    }
+  ],
+  "uncovered_frequent_actions_if_agent_removed": {
+    "Hyper Pressure Tank": [
+      "behandelen  - in hyperpressietank|complete"
+    ],
+    "Pharmacy Laboratory": [
+      "squamous cell carcinoma mbv eia|complete"
+    ],
+    "Internal Specialisms clinic": [
+      "inwend.geneesk.  korte kaart kosten-out|complete"
+    ],
+    "Medical Microbiology": [
+      "bacteriologisch onderzoek met kweek -nie|complete",
+      "hepatitis-b surface antigeen confirmatie|complete",
+      "resistentiebepalingen - 5 bepalingen|complete",
+      "microscopisch onderzoek - gekleurd en on|complete"
+    ],
+    "Diet Studies": [
+      "dieet nno|complete"
+    ],
+    "Nursing ward": [
+      "ligdagen - alle spec.beh.kinderg.-reval.|complete",
+      "190205 klasse 3b        a205|complete",
+      "190101 bovenreg.toesl.  a101|complete",
+      "190021 klinische opname a002|complete",
+      "190204 klasse 3a        a204|complete",
+      "dagverpleging - alle spec.beh.kind.-rev.|complete",
+      "190035 dagverpleging    a007|complete",
+      "paclitaxel|complete"
+    ],
+    "General Lab Clinical Chemistry": [
+      "aanname laboratoriumonderzoek|complete",
+      "ordertarief|complete",
+      "hemoglobine foto-elektrisch|complete",
+      "kalium potentiometrisch|complete",
+      "natrium vlamfotometrisch|complete",
+      "creatinine|complete",
+      "haemoglobine foto-electrisch - spoed|complete",
+      "differentiele telling automatisch|complete",
+      "kalium vlamfotometrisch - spoed|complete",
+      "natrium - vlamfotometrisch - spoed|complete",
+      "leukocyten tellen elektronisch|complete",
+      "trombocyten tellen - elektronisch|complete",
+      "leucocyten tellen -electronisch- spoed|complete",
+      "trombocyten tellen - spoed|complete",
+      "kruisproef volledig -drie methoden-|complete",
+      "creatinine - spoed|complete",
+      "ca-125 mbv meia|complete",
+      "calcium|complete",
+      "screening antistoffen erytrocyten|complete",
+      "bloedgroep abo en rhesusfactor|complete"
+    ],
+    "Obstetrics & Gynaecology clinic": [
+      "telefonisch consult|complete",
+      "verlosk.-gynaec. korte kaart kosten-out|complete",
+      "verlosk.-gynaec.   jaarkaart kosten-out|complete",
+      "verlosk.-gynaec.  aanv.kaart kosten-out|complete",
+      "echografie  - genitalia interna|complete"
+    ],
+    "Radiotherapy": [
+      "teletherapie - megavolt fotonen bestrali|complete",
+      "behandeltijd - eenheid t3 - megavolt|complete",
+      "brachytherapie - interstitieel - intensi|complete"
+    ],
+    "Operating rooms": [
+      "vagina      - toucher onder anesthesie|complete",
+      "blaas       - uretrocystoscopie nno|complete"
+    ],
+    "Radiology": [
+      "ct abdomen|complete",
+      "thorax|complete",
+      "ct thorax|complete",
+      "mri abdomen|complete",
+      "buikoverzicht|complete",
+      "mri bekken|complete"
+    ],
+    "Pathology": [
+      "histologisch onderzoek - biopten nno|complete",
+      "immunopathologisch onderzoek|complete",
+      "histologisch onderzoek - grote resectiep|complete",
+      "cytologisch onderzoek - ectocervix -|complete",
+      "coupe ter inzage|complete",
+      "histologisch onderzoek - kleine resectie|complete",
+      "cito histologisch onderzoek|complete",
+      "cytologisch onderzoek - vagina -|complete"
+    ],
+    "Recovery room / high care": [
+      "infuus      - inbrengen|complete"
+    ]
+  },
+  "note_ru": "Локальный минимум = высокая поддержка входа и высокая P(топ-1|вход). Не симуляция нагрузки и не увольнение. uncovered_* — какие частые действия почти никто кроме агента не делает."
+}

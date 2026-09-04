@@ -1,0 +1,3797 @@
+{
+  "version": "0.8.0",
+  "contour": "diagnostic",
+  "recipe": "agent_rules",
+  "timestamp_utc": "2026-09-03T15:09:02.834462+00:00",
+  "config_path": "configs/diagnostic/v0.8.0.json",
+  "config": {
+    "donor_id": "HOSPITAL2011",
+    "donor_doi": "10.4121/uuid:d9769f3d-0ab0-4fb8-803b-0d1120ffcf54",
+    "split": {
+      "fit_months": 7,
+      "holdout_months": 3,
+      "target_fit_months": 7,
+      "target_holdout_months": 3
+    },
+    "policy": {
+      "lambda_entropy": 0.05,
+      "max_iter": 250,
+      "C": 1.0,
+      "random_state": 42,
+      "solver": "saga",
+      "tol": 0.001,
+      "amount_quantiles": [
+        0.0,
+        0.25,
+        0.5,
+        0.75,
+        1.0
+      ],
+      "prune_min_support": 0,
+      "terminal_prefixes": [
+        "A_CANCELLED",
+        "A_DECLINED",
+        "A_APPROVED",
+        "A_REGISTERED"
+      ]
+    },
+    "fep": {
+      "dirichlet_alpha": 0.5,
+      "gamma_precision": 4.0,
+      "preference_power": 1.0,
+      "habit_weight": 1.0,
+      "ambiguity_weight": 0.0,
+      "risk_weight": 0.0,
+      "empty_transition_entropy": 3.0,
+      "mode": "habit_only",
+      "tune_on_fit": true,
+      "tune_eval_max_rows": 25000
+    },
+    "timing": {
+      "dt_min_sec": 0.0,
+      "dt_max_sec": 2592000.0,
+      "default_latency_sec": 3600.0,
+      "latency_noise_low": 1.0,
+      "latency_noise_high": 1.0,
+      "ridge_alpha": 1.0,
+      "min_train_dt_samples": 100
+    },
+    "sim": {
+      "max_steps_per_case": 40,
+      "seed": 42,
+      "queue_mode": false,
+      "agent_capacity": 1,
+      "input_flow_multiplier": 1.0,
+      "max_sim_horizon_sec": null
+    },
+    "eval": {
+      "top_k_actions": 20,
+      "next_step_top_k": 3
+    },
+    "donor_adapt": {
+      "agent_column": "org:group",
+      "context_column": "case:Age",
+      "role_mode": "specialism",
+      "count_min_support": 3,
+      "compare_softmax": true,
+      "run_sim": false,
+      "min_input_support": 20,
+      "min_unique_action_support": 30,
+      "unique_share": 0.8,
+      "top1_stuck_threshold": 0.8
+    }
+  },
+  "split_meta": {
+    "t0": "2005-01-02 23:00:00+00:00",
+    "t1": "2008-03-19 23:00:00+00:00",
+    "fit_end": "2005-08-02 23:00:00+00:00",
+    "hold_end": "2005-11-02 23:00:00+00:00",
+    "fit_cases": 354,
+    "hold_cases": 127,
+    "fit_events": 42880,
+    "hold_events": 13210,
+    "fit_months": 7,
+    "holdout_months": 3
+  },
+  "policies": {
+    "counts": {
+      "kind": "counts",
+      "train": {
+        "n_samples": 42880,
+        "n_actions": 420,
+        "n_agents": 33,
+        "n_tables": 2629,
+        "min_support": 3,
+        "fit_action_accuracy": 0.6465951492537313,
+        "fit_top3_accuracy": 0.8885960820895522,
+        "cross_entropy": 1.086921985384575,
+        "backoff": "apc → ap → a → global",
+        "loss_audit_form": "эмпирический P(action|info,agent); CE на fit"
+      },
+      "holdout": {
+        "n": 13202,
+        "accuracy": 0.6243750946826239,
+        "top3_accuracy": 0.849871231631571,
+        "cross_entropy": 2.2233572535629285
+      }
+    },
+    "softmax": {
+      "kind": "softmax",
+      "train": {
+        "n_samples": 42880,
+        "n_actions": 420,
+        "n_agents": 33,
+        "cross_entropy": 1.2101113937747179,
+        "policy_entropy_nats": 1.5105349088962918,
+        "lambda_entropy": 0.05,
+        "free_energy_proxy": 1.2856381392195324,
+        "fit_action_accuracy": 0.6458022388059701,
+        "fail_rate_proxy": 0.3541977611940299,
+        "loss_audit_form": "L ≈ E[fail] + λ H(policy) ≈ fail_rate + λ * entropy"
+      },
+      "holdout": {
+        "n": 13202,
+        "accuracy": 0.629450083320709,
+        "top3_accuracy": 0.861687623087411,
+        "cross_entropy": 1.2965110799102615
+      }
+    }
+  },
+  "comparison": {
+    "next_step_accuracy": {
+      "counts": 0.6243750946826239,
+      "softmax": 0.629450083320709
+    },
+    "top3_accuracy": {
+      "counts": 0.849871231631571,
+      "softmax": 0.861687623087411
+    },
+    "cross_entropy": {
+      "counts": 2.2233572535629285,
+      "softmax": 1.2965110799102615
+    },
+    "n": {
+      "counts": 13202,
+      "softmax": 13202
+    }
+  },
+  "winner_policy": "softmax",
+  "winner_next_step": "softmax",
+  "winner_weekly": null,
+  "local_minima_summary": {
+    "n_agents": 33,
+    "n_agents_with_exclusive_actions": 13,
+    "exclusive_action_items": 61,
+    "top_stuck_agents": [
+      {
+        "agent_id": "Hyper Pressure Tank",
+        "n_events": 30,
+        "mean_H_bits_typical_input": 0.0,
+        "stuck_event_fraction": 1.0,
+        "n_distinct_actions": 1,
+        "n_role_actions": 3,
+        "unused_role_actions_n": 2,
+        "exclusive_n": 1
+      },
+      {
+        "agent_id": "ICU Adults",
+        "n_events": 65,
+        "mean_H_bits_typical_input": NaN,
+        "stuck_event_fraction": NaN,
+        "n_distinct_actions": 14,
+        "n_role_actions": 24,
+        "unused_role_actions_n": 10,
+        "exclusive_n": 0
+      },
+      {
+        "agent_id": "Pharmacy Laboratory",
+        "n_events": 117,
+        "mean_H_bits_typical_input": 0.0,
+        "stuck_event_fraction": 1.0,
+        "n_distinct_actions": 3,
+        "n_role_actions": 168,
+        "unused_role_actions_n": 165,
+        "exclusive_n": 1
+      },
+      {
+        "agent_id": "Internal Specialisms clinic",
+        "n_events": 755,
+        "mean_H_bits_typical_input": 0.8119635279655604,
+        "stuck_event_fraction": 0.7819148936170213,
+        "n_distinct_actions": 11,
+        "n_role_actions": 13,
+        "unused_role_actions_n": 2,
+        "exclusive_n": 1
+      },
+      {
+        "agent_id": "Lab Experimental Immunology",
+        "n_events": 1,
+        "mean_H_bits_typical_input": NaN,
+        "stuck_event_fraction": NaN,
+        "n_distinct_actions": 1,
+        "n_role_actions": 168,
+        "unused_role_actions_n": 167,
+        "exclusive_n": 0
+      },
+      {
+        "agent_id": "Lab Hematology",
+        "n_events": 2,
+        "mean_H_bits_typical_input": NaN,
+        "stuck_event_fraction": NaN,
+        "n_distinct_actions": 1,
+        "n_role_actions": 168,
+        "unused_role_actions_n": 167,
+        "exclusive_n": 0
+      },
+      {
+        "agent_id": "Medical Microbiology",
+        "n_events": 1166,
+        "mean_H_bits_typical_input": 0.9536767833272828,
+        "stuck_event_fraction": 0.23261117445838084,
+        "n_distinct_actions": 15,
+        "n_role_actions": 15,
+        "unused_role_actions_n": 0,
+        "exclusive_n": 4
+      },
+      {
+        "agent_id": "Anesthesiology",
+        "n_events": 1,
+        "mean_H_bits_typical_input": NaN,
+        "stuck_event_fraction": NaN,
+        "n_distinct_actions": 1,
+        "n_role_actions": 24,
+        "unused_role_actions_n": 23,
+        "exclusive_n": 0
+      },
+      {
+        "agent_id": "Anesthesiology clinic",
+        "n_events": 9,
+        "mean_H_bits_typical_input": NaN,
+        "stuck_event_fraction": NaN,
+        "n_distinct_actions": 1,
+        "n_role_actions": 24,
+        "unused_role_actions_n": 23,
+        "exclusive_n": 0
+      },
+      {
+        "agent_id": "Cardiovascular clinics",
+        "n_events": 52,
+        "mean_H_bits_typical_input": 0.0,
+        "stuck_event_fraction": 1.0,
+        "n_distinct_actions": 3,
+        "n_role_actions": 3,
+        "unused_role_actions_n": 0,
+        "exclusive_n": 0
+      },
+      {
+        "agent_id": "Day Centre - treatment",
+        "n_events": 5,
+        "mean_H_bits_typical_input": NaN,
+        "stuck_event_fraction": NaN,
+        "n_distinct_actions": 5,
+        "n_role_actions": 82,
+        "unused_role_actions_n": 77,
+        "exclusive_n": 0
+      },
+      {
+        "agent_id": "Day Centre - ward",
+        "n_events": 6,
+        "mean_H_bits_typical_input": NaN,
+        "stuck_event_fraction": NaN,
+        "n_distinct_actions": 2,
+        "n_role_actions": 82,
+        "unused_role_actions_n": 80,
+        "exclusive_n": 0
+      },
+      {
+        "agent_id": "Diet Studies",
+        "n_events": 77,
+        "mean_H_bits_typical_input": 0.5075868716184456,
+        "stuck_event_fraction": 1.0,
+        "n_distinct_actions": 2,
+        "n_role_actions": 2,
+        "unused_role_actions_n": 0,
+        "exclusive_n": 1
+      },
+      {
+        "agent_id": "Emergency room",
+        "n_events": 4,
+        "mean_H_bits_typical_input": NaN,
+        "stuck_event_fraction": NaN,
+        "n_distinct_actions": 3,
+        "n_role_actions": 13,
+        "unused_role_actions_n": 10,
+        "exclusive_n": 0
+      },
+      {
+        "agent_id": "Endoscopy",
+        "n_events": 11,
+        "mean_H_bits_typical_input": NaN,
+        "stuck_event_fraction": NaN,
+        "n_distinct_actions": 5,
+        "n_role_actions": 5,
+        "unused_role_actions_n": 0,
+        "exclusive_n": 0
+      }
+    ]
+  },
+  "edge_field_summary": {
+    "n_agents": 33,
+    "n_directed_edges_nonzero": 184,
+    "n_directed_edges_possible": 1056,
+    "density_directed": 0.17424242424242425,
+    "top_edges": [
+      {
+        "from_agent": "Nursing ward",
+        "to_agent": "General Lab Clinical Chemistry",
+        "handover_count": 1144,
+        "case_count": 148,
+        "from_event_count": 8164,
+        "to_event_count": 26899,
+        "p_out": 0.5652173913043478,
+        "p_in": 0.44600389863547757,
+        "p_reverse_out": 0.3794174757281553,
+        "asymmetry_out_minus_reverse": 0.18579991557619246,
+        "lift_vs_global_in": 1.8911094160522077,
+        "from_out_degree_nonzero": 21,
+        "to_in_degree_nonzero": 24,
+        "from_route_entropy_bits": 2.4740143164195425,
+        "edge_rank_from": 1,
+        "top_action_pairs": [
+          {
+            "pair": "ligdagen - alle spec.beh.kinderg.-reval.|complete => aanname laboratoriumonderzoek|complete",
+            "count": 683,
+            "share_on_edge": 0.597027972027972
+          },
+          {
+            "pair": "dagverpleging - alle spec.beh.kind.-rev.|complete => aanname laboratoriumonderzoek|complete",
+            "count": 93,
+            "share_on_edge": 0.08129370629370629
+          },
+          {
+            "pair": "190101 bovenreg.toesl.  a101|complete => aanname laboratoriumonderzoek|complete",
+            "count": 81,
+            "share_on_edge": 0.07080419580419581
+          },
+          {
+            "pair": "190101 bovenreg.toesl.  a101|complete => gefiltreerd erytrocytenconcentraat|complete",
+            "count": 59,
+            "share_on_edge": 0.051573426573426576
+          },
+          {
+            "pair": "190205 klasse 3b        a205|complete => gefiltreerd erytrocytenconcentraat|complete",
+            "count": 44,
+            "share_on_edge": 0.038461538461538464
+          }
+        ],
+        "top_contexts": [
+          {
+            "input": "190205 klasse 3b        a205||1",
+            "count": 217,
+            "share_on_edge": 0.1896853146853147
+          },
+          {
+            "input": "190101 bovenreg.toesl.  a101||1",
+            "count": 191,
+            "share_on_edge": 0.16695804195804195
+          },
+          {
+            "input": "ligdagen - alle spec.beh.kinderg.-reval.||1",
+            "count": 90,
+            "share_on_edge": 0.07867132867132867
+          },
+          {
+            "input": "vervolgconsult poliklinisch||1",
+            "count": 87,
+            "share_on_edge": 0.07604895104895106
+          },
+          {
+            "input": "ordertarief||1",
+            "count": 57,
+            "share_on_edge": 0.049825174825174824
+          }
+        ],
+        "top_prev_actions": [
+          {
+            "action": "ligdagen - alle spec.beh.kinderg.-reval.|complete",
+            "count": 692
+          },
+          {
+            "action": "190101 bovenreg.toesl.  a101|complete",
+            "count": 142
+          },
+          {
+            "action": "dagverpleging - alle spec.beh.kind.-rev.|complete",
+            "count": 100
+          },
+          {
+            "action": "190205 klasse 3b        a205|complete",
+            "count": 80
+          },
+          {
+            "action": "190035 dagverpleging    a007|complete",
+            "count": 48
+          }
+        ],
+        "top_next_actions": [
+          {
+            "action": "aanname laboratoriumonderzoek|complete",
+            "count": 985
+          },
+          {
+            "action": "gefiltreerd erytrocytenconcentraat|complete",
+            "count": 138
+          },
+          {
+            "action": "kruisproef volledig -drie methoden-|complete",
+            "count": 13
+          },
+          {
+            "action": "e.c.g.      - elektrocardiografie|complete",
+            "count": 5
+          },
+          {
+            "action": "trombocyten - leuko verwijderd - 5 donor|complete",
+            "count": 3
+          }
+        ]
+      },
+      {
+        "from_agent": "General Lab Clinical Chemistry",
+        "to_agent": "Nursing ward",
+        "handover_count": 977,
+        "case_count": 147,
+        "from_event_count": 26899,
+        "to_event_count": 8164,
+        "p_out": 0.3794174757281553,
+        "p_in": 0.47588894301022894,
+        "p_reverse_out": 0.5652173913043478,
+        "asymmetry_out_minus_reverse": -0.18579991557619246,
+        "lift_vs_global_in": 1.5860500617140911,
+        "from_out_degree_nonzero": 22,
+        "to_in_degree_nonzero": 20,
+        "from_route_entropy_bits": 2.65485354005457,
+        "edge_rank_from": 1,
+        "top_action_pairs": [
+          {
+            "pair": "ordertarief|complete => 190205 klasse 3b        a205|complete",
+            "count": 431,
+            "share_on_edge": 0.44114636642784033
+          },
+          {
+            "pair": "ordertarief|complete => 190021 klinische opname a002|complete",
+            "count": 209,
+            "share_on_edge": 0.21392016376663256
+          },
+          {
+            "pair": "gefiltreerd erytrocytenconcentraat|complete => ligdagen - alle spec.beh.kinderg.-reval.|complete",
+            "count": 114,
+            "share_on_edge": 0.11668372569089049
+          },
+          {
+            "pair": "ordertarief|complete => 190204 klasse 3a        a204|complete",
+            "count": 79,
+            "share_on_edge": 0.08085977482088025
+          },
+          {
+            "pair": "ordertarief|complete => 190035 dagverpleging    a007|complete",
+            "count": 44,
+            "share_on_edge": 0.04503582395087001
+          }
+        ],
+        "top_contexts": [
+          {
+            "input": "ordertarief||1",
+            "count": 144,
+            "share_on_edge": 0.1473899692937564
+          },
+          {
+            "input": "screening antistoffen erytrocyten||1",
+            "count": 91,
+            "share_on_edge": 0.0931422722620266
+          },
+          {
+            "input": "gefiltreerd erytrocytenconcentraat||1",
+            "count": 73,
+            "share_on_edge": 0.07471852610030706
+          },
+          {
+            "input": "leucocyten tellen -electronisch- spoed||1",
+            "count": 36,
+            "share_on_edge": 0.0368474923234391
+          },
+          {
+            "input": "kalium potentiometrisch||1",
+            "count": 33,
+            "share_on_edge": 0.033776867963152504
+          }
+        ],
+        "top_prev_actions": [
+          {
+            "action": "ordertarief|complete",
+            "count": 835
+          },
+          {
+            "action": "gefiltreerd erytrocytenconcentraat|complete",
+            "count": 117
+          },
+          {
+            "action": "kruisproef volledig -drie methoden-|complete",
+            "count": 16
+          },
+          {
+            "action": "afereseplasma gesplitst fq1 en fq2|complete",
+            "count": 5
+          },
+          {
+            "action": "erytrocyten leukocyten verwijderd bestra|complete",
+            "count": 2
+          }
+        ],
+        "top_next_actions": [
+          {
+            "action": "190205 klasse 3b        a205|complete",
+            "count": 439
+          },
+          {
+            "action": "190021 klinische opname a002|complete",
+            "count": 210
+          },
+          {
+            "action": "ligdagen - alle spec.beh.kinderg.-reval.|complete",
+            "count": 165
+          },
+          {
+            "action": "190204 klasse 3a        a204|complete",
+            "count": 80
+          },
+          {
+            "action": "190035 dagverpleging    a007|complete",
+            "count": 50
+          }
+        ]
+      },
+      {
+        "from_agent": "Medical Microbiology",
+        "to_agent": "General Lab Clinical Chemistry",
+        "handover_count": 435,
+        "case_count": 91,
+        "from_event_count": 1166,
+        "to_event_count": 26899,
+        "p_out": 0.9931506849315068,
+        "p_in": 0.1695906432748538,
+        "p_reverse_out": 0.1137864077669903,
+        "asymmetry_out_minus_reverse": 0.8793642771645165,
+        "lift_vs_global_in": 3.3228924670885736,
+        "from_out_degree_nonzero": 4,
+        "to_in_degree_nonzero": 24,
+        "from_route_entropy_bits": 0.06994883592491903,
+        "edge_rank_from": 1,
+        "top_action_pairs": [
+          {
+            "pair": "aanname laboratoriumonderzoek|complete => aanname laboratoriumonderzoek|complete",
+            "count": 111,
+            "share_on_edge": 0.25517241379310346
+          },
+          {
+            "pair": "hepatitis-b surface antigeen confirmatie|complete => ordertarief|complete",
+            "count": 42,
+            "share_on_edge": 0.09655172413793103
+          },
+          {
+            "pair": "bacteriologisch onderzoek met kweek -nie|complete => ordertarief|complete",
+            "count": 40,
+            "share_on_edge": 0.09195402298850575
+          },
+          {
+            "pair": "hepatitis-b surface antigeen confirmatie|complete => urine onderzoek - kwalitatief|complete",
+            "count": 29,
+            "share_on_edge": 0.06666666666666667
+          },
+          {
+            "pair": "bacteriologisch onderzoek met kweek -nie|complete => differentiele telling automatisch|complete",
+            "count": 23,
+            "share_on_edge": 0.052873563218390804
+          }
+        ],
+        "top_contexts": [
+          {
+            "input": "aanname laboratoriumonderzoek||1",
+            "count": 128,
+            "share_on_edge": 0.2942528735632184
+          },
+          {
+            "input": "resistentiebepalingen - 5 bepalingen||1",
+            "count": 45,
+            "share_on_edge": 0.10344827586206896
+          },
+          {
+            "input": "bacteriologisch onderzoek met kweek -nie||1",
+            "count": 40,
+            "share_on_edge": 0.09195402298850575
+          },
+          {
+            "input": "hepatitis-b surface antigeen confirmatie||1",
+            "count": 37,
+            "share_on_edge": 0.08505747126436781
+          },
+          {
+            "input": "ligdagen - alle spec.beh.kinderg.-reval.||1",
+            "count": 24,
+            "share_on_edge": 0.05517241379310345
+          }
+        ],
+        "top_prev_actions": [
+          {
+            "action": "aanname laboratoriumonderzoek|complete",
+            "count": 169
+          },
+          {
+            "action": "hepatitis-b surface antigeen confirmatie|complete",
+            "count": 105
+          },
+          {
+            "action": "bacteriologisch onderzoek met kweek -nie|complete",
+            "count": 105
+          },
+          {
+            "action": "resistentiebepalingen - 5 bepalingen|complete",
+            "count": 37
+          },
+          {
+            "action": "clostridium elisa-test|complete",
+            "count": 9
+          }
+        ],
+        "top_next_actions": [
+          {
+            "action": "aanname laboratoriumonderzoek|complete",
+            "count": 111
+          },
+          {
+            "action": "ordertarief|complete",
+            "count": 100
+          },
+          {
+            "action": "urine onderzoek - kwalitatief|complete",
+            "count": 44
+          },
+          {
+            "action": "differentiele telling automatisch|complete",
+            "count": 39
+          },
+          {
+            "action": "bloedgroep abo en rhesusfactor|complete",
+            "count": 18
+          }
+        ]
+      },
+      {
+        "from_agent": "General Lab Clinical Chemistry",
+        "to_agent": "Internal Specialisms clinic",
+        "handover_count": 426,
+        "case_count": 53,
+        "from_event_count": 26899,
+        "to_event_count": 755,
+        "p_out": 0.1654368932038835,
+        "p_in": 0.7220338983050848,
+        "p_reverse_out": 0.19120135363790186,
+        "asymmetry_out_minus_reverse": -0.025764460434018366,
+        "lift_vs_global_in": 2.406405792331743,
+        "from_out_degree_nonzero": 22,
+        "to_in_degree_nonzero": 7,
+        "from_route_entropy_bits": 2.65485354005457,
+        "edge_rank_from": 2,
+        "top_action_pairs": [
+          {
+            "pair": "ordertarief|complete => vervolgconsult poliklinisch|complete",
+            "count": 398,
+            "share_on_edge": 0.9342723004694836
+          },
+          {
+            "pair": "ordertarief|complete => 1e consult poliklinisch|complete",
+            "count": 19,
+            "share_on_edge": 0.04460093896713615
+          },
+          {
+            "pair": "ordertarief|complete => inwend.geneesk.  korte kaart kosten-out|complete",
+            "count": 3,
+            "share_on_edge": 0.007042253521126761
+          },
+          {
+            "pair": "ordertarief|complete => telefonisch consult|complete",
+            "count": 2,
+            "share_on_edge": 0.004694835680751174
+          },
+          {
+            "pair": "ordertarief|complete => inwend.geneesk.   aanv.kaart kosten-out|complete",
+            "count": 1,
+            "share_on_edge": 0.002347417840375587
+          }
+        ],
+        "top_contexts": [
+          {
+            "input": "leucocyten tellen -electronisch- spoed||1",
+            "count": 173,
+            "share_on_edge": 0.4061032863849765
+          },
+          {
+            "input": "ca-125 mbv meia||1",
+            "count": 95,
+            "share_on_edge": 0.22300469483568075
+          },
+          {
+            "input": "trombocyten tellen - elektronisch||1",
+            "count": 49,
+            "share_on_edge": 0.11502347417840375
+          },
+          {
+            "input": "ordertarief||1",
+            "count": 34,
+            "share_on_edge": 0.07981220657276995
+          },
+          {
+            "input": "albumine||1",
+            "count": 12,
+            "share_on_edge": 0.028169014084507043
+          }
+        ],
+        "top_prev_actions": [
+          {
+            "action": "ordertarief|complete",
+            "count": 425
+          },
+          {
+            "action": "gefiltreerd erytrocytenconcentraat|complete",
+            "count": 1
+          }
+        ],
+        "top_next_actions": [
+          {
+            "action": "vervolgconsult poliklinisch|complete",
+            "count": 399
+          },
+          {
+            "action": "1e consult poliklinisch|complete",
+            "count": 19
+          },
+          {
+            "action": "inwend.geneesk.  korte kaart kosten-out|complete",
+            "count": 3
+          },
+          {
+            "action": "telefonisch consult|complete",
+            "count": 2
+          },
+          {
+            "action": "inwend.geneesk.   aanv.kaart kosten-out|complete",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "from_agent": "Internal Specialisms clinic",
+        "to_agent": "Nursing ward",
+        "handover_count": 377,
+        "case_count": 52,
+        "from_event_count": 755,
+        "to_event_count": 8164,
+        "p_out": 0.637901861252115,
+        "p_in": 0.18363370677057964,
+        "p_reverse_out": 0.023221343873517788,
+        "asymmetry_out_minus_reverse": 0.6146805173785972,
+        "lift_vs_global_in": 2.6665727098225287,
+        "from_out_degree_nonzero": 11,
+        "to_in_degree_nonzero": 20,
+        "from_route_entropy_bits": 1.6678620942191342,
+        "edge_rank_from": 1,
+        "top_action_pairs": [
+          {
+            "pair": "vervolgconsult poliklinisch|complete => ligdagen - alle spec.beh.kinderg.-reval.|complete",
+            "count": 110,
+            "share_on_edge": 0.2917771883289125
+          },
+          {
+            "pair": "vervolgconsult poliklinisch|complete => 190021 klinische opname a002|complete",
+            "count": 92,
+            "share_on_edge": 0.2440318302387268
+          },
+          {
+            "pair": "vervolgconsult poliklinisch|complete => dagverpleging - alle spec.beh.kind.-rev.|complete",
+            "count": 80,
+            "share_on_edge": 0.21220159151193635
+          },
+          {
+            "pair": "vervolgconsult poliklinisch|complete => 190035 dagverpleging    a007|complete",
+            "count": 24,
+            "share_on_edge": 0.0636604774535809
+          },
+          {
+            "pair": "vervolgconsult poliklinisch|complete => 190205 klasse 3b        a205|complete",
+            "count": 11,
+            "share_on_edge": 0.029177718832891247
+          }
+        ],
+        "top_contexts": [
+          {
+            "input": "ordertarief||1",
+            "count": 277,
+            "share_on_edge": 0.7347480106100795
+          },
+          {
+            "input": "vervolgconsult poliklinisch||1",
+            "count": 18,
+            "share_on_edge": 0.04774535809018567
+          },
+          {
+            "input": "1e consult poliklinisch||1",
+            "count": 14,
+            "share_on_edge": 0.03713527851458886
+          },
+          {
+            "input": "ligdagen - alle spec.beh.kinderg.-reval.||1",
+            "count": 8,
+            "share_on_edge": 0.021220159151193633
+          },
+          {
+            "input": "190101 bovenreg.toesl.  a101||1",
+            "count": 7,
+            "share_on_edge": 0.01856763925729443
+          }
+        ],
+        "top_prev_actions": [
+          {
+            "action": "vervolgconsult poliklinisch|complete",
+            "count": 332
+          },
+          {
+            "action": "administratief tarief       - eerste pol|complete",
+            "count": 18
+          },
+          {
+            "action": "1e consult poliklinisch|complete",
+            "count": 9
+          },
+          {
+            "action": "inwend.geneesk.   aanv.kaart kosten-out|complete",
+            "count": 8
+          },
+          {
+            "action": "telefonisch consult|complete",
+            "count": 6
+          }
+        ],
+        "top_next_actions": [
+          {
+            "action": "ligdagen - alle spec.beh.kinderg.-reval.|complete",
+            "count": 136
+          },
+          {
+            "action": "190021 klinische opname a002|complete",
+            "count": 93
+          },
+          {
+            "action": "dagverpleging - alle spec.beh.kind.-rev.|complete",
+            "count": 92
+          },
+          {
+            "action": "190035 dagverpleging    a007|complete",
+            "count": 25
+          },
+          {
+            "action": "190205 klasse 3b        a205|complete",
+            "count": 12
+          }
+        ]
+      },
+      {
+        "from_agent": "General Lab Clinical Chemistry",
+        "to_agent": "Obstetrics & Gynaecology clinic",
+        "handover_count": 307,
+        "case_count": 134,
+        "from_event_count": 26899,
+        "to_event_count": 2874,
+        "p_out": 0.11922330097087379,
+        "p_in": 0.34728506787330315,
+        "p_reverse_out": 0.3290183387270766,
+        "asymmetry_out_minus_reverse": -0.20979503775620278,
+        "lift_vs_global_in": 1.1574370689276459,
+        "from_out_degree_nonzero": 22,
+        "to_in_degree_nonzero": 12,
+        "from_route_entropy_bits": 2.65485354005457,
+        "edge_rank_from": 3,
+        "top_action_pairs": [
+          {
+            "pair": "ordertarief|complete => vervolgconsult poliklinisch|complete",
+            "count": 262,
+            "share_on_edge": 0.8534201954397395
+          },
+          {
+            "pair": "ordertarief|complete => 1e consult poliklinisch|complete",
+            "count": 26,
+            "share_on_edge": 0.08469055374592833
+          },
+          {
+            "pair": "ordertarief|complete => telefonisch consult|complete",
+            "count": 12,
+            "share_on_edge": 0.03908794788273615
+          },
+          {
+            "pair": "ordertarief|complete => verlosk.-gynaec.   jaarkaart kosten-out|complete",
+            "count": 2,
+            "share_on_edge": 0.006514657980456026
+          },
+          {
+            "pair": "gefiltreerd erytrocytenconcentraat|complete => telefonisch consult|complete",
+            "count": 2,
+            "share_on_edge": 0.006514657980456026
+          }
+        ],
+        "top_contexts": [
+          {
+            "input": "ca-125 mbv meia||1",
+            "count": 107,
+            "share_on_edge": 0.3485342019543974
+          },
+          {
+            "input": "aanname laboratoriumonderzoek||1",
+            "count": 32,
+            "share_on_edge": 0.10423452768729642
+          },
+          {
+            "input": "ordertarief||1",
+            "count": 18,
+            "share_on_edge": 0.05863192182410423
+          },
+          {
+            "input": "albumine||1",
+            "count": 13,
+            "share_on_edge": 0.04234527687296417
+          },
+          {
+            "input": "trombocyten tellen - elektronisch||1",
+            "count": 10,
+            "share_on_edge": 0.03257328990228013
+          }
+        ],
+        "top_prev_actions": [
+          {
+            "action": "ordertarief|complete",
+            "count": 304
+          },
+          {
+            "action": "gefiltreerd erytrocytenconcentraat|complete",
+            "count": 3
+          }
+        ],
+        "top_next_actions": [
+          {
+            "action": "vervolgconsult poliklinisch|complete",
+            "count": 263
+          },
+          {
+            "action": "1e consult poliklinisch|complete",
+            "count": 26
+          },
+          {
+            "action": "telefonisch consult|complete",
+            "count": 14
+          },
+          {
+            "action": "verlosk.-gynaec.   jaarkaart kosten-out|complete",
+            "count": 2
+          },
+          {
+            "action": "echografie  - genitalia interna|complete",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "from_agent": "Obstetrics & Gynaecology clinic",
+        "to_agent": "General Lab Clinical Chemistry",
+        "handover_count": 305,
+        "case_count": 158,
+        "from_event_count": 2874,
+        "to_event_count": 26899,
+        "p_out": 0.3290183387270766,
+        "p_in": 0.1189083820662768,
+        "p_reverse_out": 0.11922330097087379,
+        "asymmetry_out_minus_reverse": 0.20979503775620278,
+        "lift_vs_global_in": 1.1008325079749597,
+        "from_out_degree_nonzero": 15,
+        "to_in_degree_nonzero": 24,
+        "from_route_entropy_bits": 2.606305337324503,
+        "edge_rank_from": 1,
+        "top_action_pairs": [
+          {
+            "pair": "telefonisch consult|complete => aanname laboratoriumonderzoek|complete",
+            "count": 87,
+            "share_on_edge": 0.28524590163934427
+          },
+          {
+            "pair": "vervolgconsult poliklinisch|complete => aanname laboratoriumonderzoek|complete",
+            "count": 80,
+            "share_on_edge": 0.26229508196721313
+          },
+          {
+            "pair": "verlosk.-gynaec. korte kaart kosten-out|complete => aanname laboratoriumonderzoek|complete",
+            "count": 46,
+            "share_on_edge": 0.15081967213114755
+          },
+          {
+            "pair": "administratief tarief       - eerste pol|complete => aanname laboratoriumonderzoek|complete",
+            "count": 36,
+            "share_on_edge": 0.1180327868852459
+          },
+          {
+            "pair": "verlosk.-gynaec.   jaarkaart kosten-out|complete => aanname laboratoriumonderzoek|complete",
+            "count": 17,
+            "share_on_edge": 0.05573770491803279
+          }
+        ],
+        "top_contexts": [
+          {
+            "input": "vervolgconsult poliklinisch||1",
+            "count": 77,
+            "share_on_edge": 0.25245901639344265
+          },
+          {
+            "input": "∅||1",
+            "count": 47,
+            "share_on_edge": 0.1540983606557377
+          },
+          {
+            "input": "administratief tarief       - eerste pol||1",
+            "count": 44,
+            "share_on_edge": 0.14426229508196722
+          },
+          {
+            "input": "ordertarief||1",
+            "count": 34,
+            "share_on_edge": 0.11147540983606558
+          },
+          {
+            "input": "telefonisch consult||1",
+            "count": 25,
+            "share_on_edge": 0.08196721311475409
+          }
+        ],
+        "top_prev_actions": [
+          {
+            "action": "telefonisch consult|complete",
+            "count": 91
+          },
+          {
+            "action": "vervolgconsult poliklinisch|complete",
+            "count": 83
+          },
+          {
+            "action": "verlosk.-gynaec. korte kaart kosten-out|complete",
+            "count": 54
+          },
+          {
+            "action": "administratief tarief       - eerste pol|complete",
+            "count": 36
+          },
+          {
+            "action": "verlosk.-gynaec.   jaarkaart kosten-out|complete",
+            "count": 17
+          }
+        ],
+        "top_next_actions": [
+          {
+            "action": "aanname laboratoriumonderzoek|complete",
+            "count": 289
+          },
+          {
+            "action": "e.c.g.      - elektrocardiografie|complete",
+            "count": 16
+          }
+        ]
+      },
+      {
+        "from_agent": "General Lab Clinical Chemistry",
+        "to_agent": "Medical Microbiology",
+        "handover_count": 293,
+        "case_count": 73,
+        "from_event_count": 26899,
+        "to_event_count": 1166,
+        "p_out": 0.1137864077669903,
+        "p_in": 0.6689497716894978,
+        "p_reverse_out": 0.9931506849315068,
+        "asymmetry_out_minus_reverse": -0.8793642771645165,
+        "lift_vs_global_in": 2.229486190539522,
+        "from_out_degree_nonzero": 22,
+        "to_in_degree_nonzero": 15,
+        "from_route_entropy_bits": 2.65485354005457,
+        "edge_rank_from": 4,
+        "top_action_pairs": [
+          {
+            "pair": "aanname laboratoriumonderzoek|complete => aanname laboratoriumonderzoek|complete",
+            "count": 113,
+            "share_on_edge": 0.3856655290102389
+          },
+          {
+            "pair": "sediment - spoed|complete => bacteriologisch onderzoek met kweek -nie|complete",
+            "count": 21,
+            "share_on_edge": 0.07167235494880546
+          },
+          {
+            "pair": "kalium vlamfotometrisch - spoed|complete => bacteriologisch onderzoek met kweek -nie|complete",
+            "count": 17,
+            "share_on_edge": 0.05802047781569966
+          },
+          {
+            "pair": "kalium potentiometrisch|complete => microscopisch onderzoek - gekleurd en on|complete",
+            "count": 16,
+            "share_on_edge": 0.05460750853242321
+          },
+          {
+            "pair": "sgot asat kinetisch - spoed|complete => bacteriologisch onderzoek met kweek -nie|complete",
+            "count": 11,
+            "share_on_edge": 0.03754266211604096
+          }
+        ],
+        "top_contexts": [
+          {
+            "input": "aanname laboratoriumonderzoek||1",
+            "count": 96,
+            "share_on_edge": 0.32764505119453924
+          },
+          {
+            "input": "ligdagen - alle spec.beh.kinderg.-reval.||1",
+            "count": 24,
+            "share_on_edge": 0.08191126279863481
+          },
+          {
+            "input": "natrium vlamfotometrisch||1",
+            "count": 19,
+            "share_on_edge": 0.06484641638225255
+          },
+          {
+            "input": "natrium - vlamfotometrisch - spoed||1",
+            "count": 13,
+            "share_on_edge": 0.04436860068259386
+          },
+          {
+            "input": "aanname laboratoriumonderzoek||0",
+            "count": 10,
+            "share_on_edge": 0.034129692832764506
+          }
+        ],
+        "top_prev_actions": [
+          {
+            "action": "aanname laboratoriumonderzoek|complete",
+            "count": 120
+          },
+          {
+            "action": "kalium potentiometrisch|complete",
+            "count": 23
+          },
+          {
+            "action": "sediment - spoed|complete",
+            "count": 21
+          },
+          {
+            "action": "kalium vlamfotometrisch - spoed|complete",
+            "count": 17
+          },
+          {
+            "action": "sediment|complete",
+            "count": 13
+          }
+        ],
+        "top_next_actions": [
+          {
+            "action": "aanname laboratoriumonderzoek|complete",
+            "count": 119
+          },
+          {
+            "action": "bacteriologisch onderzoek met kweek -nie|complete",
+            "count": 92
+          },
+          {
+            "action": "hepatitis-b surface antigeen confirmatie|complete",
+            "count": 39
+          },
+          {
+            "action": "microscopisch onderzoek - gekleurd en on|complete",
+            "count": 33
+          },
+          {
+            "action": "clostridium elisa-test|complete",
+            "count": 5
+          }
+        ]
+      },
+      {
+        "from_agent": "General Lab Clinical Chemistry",
+        "to_agent": "Radiology",
+        "handover_count": 293,
+        "case_count": 125,
+        "from_event_count": 26899,
+        "to_event_count": 824,
+        "p_out": 0.1137864077669903,
+        "p_in": 0.4452887537993921,
+        "p_reverse_out": 0.1095890410958904,
+        "asymmetry_out_minus_reverse": 0.004197366671099892,
+        "lift_vs_global_in": 1.4840652757694692,
+        "from_out_degree_nonzero": 22,
+        "to_in_degree_nonzero": 13,
+        "from_route_entropy_bits": 2.65485354005457,
+        "edge_rank_from": 5,
+        "top_action_pairs": [
+          {
+            "pair": "ordertarief|complete => thorax|complete",
+            "count": 133,
+            "share_on_edge": 0.4539249146757679
+          },
+          {
+            "pair": "ordertarief|complete => ct abdomen|complete",
+            "count": 29,
+            "share_on_edge": 0.09897610921501707
+          },
+          {
+            "pair": "ordertarief|complete => buikoverzicht|complete",
+            "count": 29,
+            "share_on_edge": 0.09897610921501707
+          },
+          {
+            "pair": "ordertarief|complete => thorax - op zaal|complete",
+            "count": 18,
+            "share_on_edge": 0.06143344709897611
+          },
+          {
+            "pair": "ordertarief|complete => ct thorax|complete",
+            "count": 12,
+            "share_on_edge": 0.040955631399317405
+          }
+        ],
+        "top_contexts": [
+          {
+            "input": "ordertarief||1",
+            "count": 69,
+            "share_on_edge": 0.2354948805460751
+          },
+          {
+            "input": "ca-125 mbv meia||1",
+            "count": 42,
+            "share_on_edge": 0.14334470989761092
+          },
+          {
+            "input": "screening antistoffen erytrocyten||1",
+            "count": 20,
+            "share_on_edge": 0.06825938566552901
+          },
+          {
+            "input": "leucocyten tellen -electronisch- spoed||1",
+            "count": 13,
+            "share_on_edge": 0.04436860068259386
+          },
+          {
+            "input": "magnesium  -aas||1",
+            "count": 12,
+            "share_on_edge": 0.040955631399317405
+          }
+        ],
+        "top_prev_actions": [
+          {
+            "action": "ordertarief|complete",
+            "count": 290
+          },
+          {
+            "action": "kruisproef volledig -drie methoden-|complete",
+            "count": 1
+          },
+          {
+            "action": "e.c.g.      - elektrocardiografie|complete",
+            "count": 1
+          },
+          {
+            "action": "gefiltreerd erytrocytenconcentraat|complete",
+            "count": 1
+          }
+        ],
+        "top_next_actions": [
+          {
+            "action": "thorax|complete",
+            "count": 134
+          },
+          {
+            "action": "ct abdomen|complete",
+            "count": 30
+          },
+          {
+            "action": "buikoverzicht|complete",
+            "count": 29
+          },
+          {
+            "action": "thorax - op zaal|complete",
+            "count": 18
+          },
+          {
+            "action": "ct thorax|complete",
+            "count": 12
+          }
+        ]
+      },
+      {
+        "from_agent": "Radiology",
+        "to_agent": "Obstetrics & Gynaecology clinic",
+        "handover_count": 229,
+        "case_count": 129,
+        "from_event_count": 824,
+        "to_event_count": 2874,
+        "p_out": 0.3485540334855403,
+        "p_in": 0.25904977375565613,
+        "p_reverse_out": 0.16396979503775622,
+        "asymmetry_out_minus_reverse": 0.1845842384477841,
+        "lift_vs_global_in": 3.38381302643994,
+        "from_out_degree_nonzero": 14,
+        "to_in_degree_nonzero": 12,
+        "from_route_entropy_bits": 2.3530929937080987,
+        "edge_rank_from": 1,
+        "top_action_pairs": [
+          {
+            "pair": "thorax|complete => 1e consult poliklinisch|complete",
+            "count": 58,
+            "share_on_edge": 0.25327510917030566
+          },
+          {
+            "pair": "ct abdomen|complete => vervolgconsult poliklinisch|complete",
+            "count": 42,
+            "share_on_edge": 0.18340611353711792
+          },
+          {
+            "pair": "thorax|complete => vervolgconsult poliklinisch|complete",
+            "count": 27,
+            "share_on_edge": 0.11790393013100436
+          },
+          {
+            "pair": "ct abdomen|complete => telefonisch consult|complete",
+            "count": 24,
+            "share_on_edge": 0.10480349344978165
+          },
+          {
+            "pair": "mri abdomen|complete => vervolgconsult poliklinisch|complete",
+            "count": 12,
+            "share_on_edge": 0.05240174672489083
+          }
+        ],
+        "top_contexts": [
+          {
+            "input": "ordertarief||1",
+            "count": 80,
+            "share_on_edge": 0.34934497816593885
+          },
+          {
+            "input": "vervolgconsult poliklinisch||1",
+            "count": 32,
+            "share_on_edge": 0.13973799126637554
+          },
+          {
+            "input": "administratief tarief       - eerste pol||1",
+            "count": 26,
+            "share_on_edge": 0.11353711790393013
+          },
+          {
+            "input": "telefonisch consult||1",
+            "count": 13,
+            "share_on_edge": 0.056768558951965066
+          },
+          {
+            "input": "ct thorax||1",
+            "count": 12,
+            "share_on_edge": 0.05240174672489083
+          }
+        ],
+        "top_prev_actions": [
+          {
+            "action": "thorax|complete",
+            "count": 88
+          },
+          {
+            "action": "ct abdomen|complete",
+            "count": 69
+          },
+          {
+            "action": "mri abdomen|complete",
+            "count": 19
+          },
+          {
+            "action": "mri bekken|complete",
+            "count": 16
+          },
+          {
+            "action": "echo nieren-urinewegen|complete",
+            "count": 10
+          }
+        ],
+        "top_next_actions": [
+          {
+            "action": "vervolgconsult poliklinisch|complete",
+            "count": 104
+          },
+          {
+            "action": "1e consult poliklinisch|complete",
+            "count": 60
+          },
+          {
+            "action": "telefonisch consult|complete",
+            "count": 53
+          },
+          {
+            "action": "verlosk.-gynaec.  aanv.kaart kosten-out|complete",
+            "count": 9
+          },
+          {
+            "action": "1e consult      bezoek|complete",
+            "count": 2
+          }
+        ]
+      },
+      {
+        "from_agent": "Radiology",
+        "to_agent": "Nursing ward",
+        "handover_count": 212,
+        "case_count": 87,
+        "from_event_count": 824,
+        "to_event_count": 8164,
+        "p_out": 0.3226788432267884,
+        "p_in": 0.10326351680467609,
+        "p_reverse_out": 0.05928853754940711,
+        "asymmetry_out_minus_reverse": 0.2633903056773813,
+        "lift_vs_global_in": 1.348869864867169,
+        "from_out_degree_nonzero": 14,
+        "to_in_degree_nonzero": 20,
+        "from_route_entropy_bits": 2.3530929937080987,
+        "edge_rank_from": 2,
+        "top_action_pairs": [
+          {
+            "pair": "buikoverzicht|complete => 190205 klasse 3b        a205|complete",
+            "count": 16,
+            "share_on_edge": 0.07547169811320754
+          },
+          {
+            "pair": "ct abdomen|complete => ligdagen - alle spec.beh.kinderg.-reval.|complete",
+            "count": 15,
+            "share_on_edge": 0.07075471698113207
+          },
+          {
+            "pair": "buikoverzicht|complete => 190021 klinische opname a002|complete",
+            "count": 15,
+            "share_on_edge": 0.07075471698113207
+          },
+          {
+            "pair": "mri abdomen|complete => ligdagen - alle spec.beh.kinderg.-reval.|complete",
+            "count": 14,
+            "share_on_edge": 0.0660377358490566
+          },
+          {
+            "pair": "mri bekken|complete => ligdagen - alle spec.beh.kinderg.-reval.|complete",
+            "count": 13,
+            "share_on_edge": 0.06132075471698113
+          }
+        ],
+        "top_contexts": [
+          {
+            "input": "ordertarief||1",
+            "count": 75,
+            "share_on_edge": 0.35377358490566035
+          },
+          {
+            "input": "ligdagen - alle spec.beh.kinderg.-reval.||1",
+            "count": 19,
+            "share_on_edge": 0.08962264150943396
+          },
+          {
+            "input": "thorax||1",
+            "count": 19,
+            "share_on_edge": 0.08962264150943396
+          },
+          {
+            "input": "administratief tarief       - eerste pol||1",
+            "count": 9,
+            "share_on_edge": 0.04245283018867924
+          },
+          {
+            "input": "ct thorax||1",
+            "count": 9,
+            "share_on_edge": 0.04245283018867924
+          }
+        ],
+        "top_prev_actions": [
+          {
+            "action": "ct abdomen|complete",
+            "count": 34
+          },
+          {
+            "action": "buikoverzicht|complete",
+            "count": 32
+          },
+          {
+            "action": "thorax|complete",
+            "count": 26
+          },
+          {
+            "action": "mri abdomen|complete",
+            "count": 19
+          },
+          {
+            "action": "mri bekken|complete",
+            "count": 16
+          }
+        ],
+        "top_next_actions": [
+          {
+            "action": "190205 klasse 3b        a205|complete",
+            "count": 89
+          },
+          {
+            "action": "ligdagen - alle spec.beh.kinderg.-reval.|complete",
+            "count": 53
+          },
+          {
+            "action": "190021 klinische opname a002|complete",
+            "count": 47
+          },
+          {
+            "action": "190204 klasse 3a        a204|complete",
+            "count": 9
+          },
+          {
+            "action": "190035 dagverpleging    a007|complete",
+            "count": 6
+          }
+        ]
+      },
+      {
+        "from_agent": "Obstetrics & Gynaecology clinic",
+        "to_agent": "Nursing ward",
+        "handover_count": 162,
+        "case_count": 106,
+        "from_event_count": 2874,
+        "to_event_count": 8164,
+        "p_out": 0.17475728155339806,
+        "p_in": 0.07890891378470531,
+        "p_reverse_out": 0.058300395256917,
+        "asymmetry_out_minus_reverse": 0.11645688629648107,
+        "lift_vs_global_in": 0.7305245934200011,
+        "from_out_degree_nonzero": 15,
+        "to_in_degree_nonzero": 20,
+        "from_route_entropy_bits": 2.606305337324503,
+        "edge_rank_from": 2,
+        "top_action_pairs": [
+          {
+            "pair": "vervolgconsult poliklinisch|complete => ligdagen - alle spec.beh.kinderg.-reval.|complete",
+            "count": 43,
+            "share_on_edge": 0.2654320987654321
+          },
+          {
+            "pair": "verlosk.-gynaec.  aanv.kaart kosten-out|complete => ligdagen - alle spec.beh.kinderg.-reval.|complete",
+            "count": 30,
+            "share_on_edge": 0.18518518518518517
+          },
+          {
+            "pair": "administratief tarief       - eerste pol|complete => ligdagen - alle spec.beh.kinderg.-reval.|complete",
+            "count": 28,
+            "share_on_edge": 0.1728395061728395
+          },
+          {
+            "pair": "telefonisch consult|complete => ligdagen - alle spec.beh.kinderg.-reval.|complete",
+            "count": 15,
+            "share_on_edge": 0.09259259259259259
+          },
+          {
+            "pair": "vervolgconsult poliklinisch|complete => 190021 klinische opname a002|complete",
+            "count": 9,
+            "share_on_edge": 0.05555555555555555
+          }
+        ],
+        "top_contexts": [
+          {
+            "input": "vervolgconsult poliklinisch||1",
+            "count": 25,
+            "share_on_edge": 0.15432098765432098
+          },
+          {
+            "input": "ordertarief||1",
+            "count": 19,
+            "share_on_edge": 0.11728395061728394
+          },
+          {
+            "input": "1e consult poliklinisch||1",
+            "count": 18,
+            "share_on_edge": 0.1111111111111111
+          },
+          {
+            "input": "190101 bovenreg.toesl.  a101||1",
+            "count": 9,
+            "share_on_edge": 0.05555555555555555
+          },
+          {
+            "input": "190205 klasse 3b        a205||1",
+            "count": 7,
+            "share_on_edge": 0.043209876543209874
+          }
+        ],
+        "top_prev_actions": [
+          {
+            "action": "vervolgconsult poliklinisch|complete",
+            "count": 63
+          },
+          {
+            "action": "administratief tarief       - eerste pol|complete",
+            "count": 33
+          },
+          {
+            "action": "verlosk.-gynaec.  aanv.kaart kosten-out|complete",
+            "count": 32
+          },
+          {
+            "action": "telefonisch consult|complete",
+            "count": 24
+          },
+          {
+            "action": "verlosk.-gynaec. korte kaart kosten-out|complete",
+            "count": 4
+          }
+        ],
+        "top_next_actions": [
+          {
+            "action": "ligdagen - alle spec.beh.kinderg.-reval.|complete",
+            "count": 123
+          },
+          {
+            "action": "190021 klinische opname a002|complete",
+            "count": 14
+          },
+          {
+            "action": "dagverpleging - alle spec.beh.kind.-rev.|complete",
+            "count": 12
+          },
+          {
+            "action": "190205 klasse 3b        a205|complete",
+            "count": 3
+          },
+          {
+            "action": "vervolgconsult poliklinisch|complete",
+            "count": 3
+          }
+        ]
+      },
+      {
+        "from_agent": "Obstetrics & Gynaecology clinic",
+        "to_agent": "Radiology",
+        "handover_count": 152,
+        "case_count": 100,
+        "from_event_count": 2874,
+        "to_event_count": 824,
+        "p_out": 0.16396979503775622,
+        "p_in": 0.23100303951367782,
+        "p_reverse_out": 0.3485540334855403,
+        "asymmetry_out_minus_reverse": -0.1845842384477841,
+        "lift_vs_global_in": 2.1385847735775436,
+        "from_out_degree_nonzero": 15,
+        "to_in_degree_nonzero": 13,
+        "from_route_entropy_bits": 2.606305337324503,
+        "edge_rank_from": 3,
+        "top_action_pairs": [
+          {
+            "pair": "vervolgconsult poliklinisch|complete => ct abdomen|complete",
+            "count": 26,
+            "share_on_edge": 0.17105263157894737
+          },
+          {
+            "pair": "administratief tarief       - eerste pol|complete => ct abdomen|complete",
+            "count": 15,
+            "share_on_edge": 0.09868421052631579
+          },
+          {
+            "pair": "telefonisch consult|complete => ct abdomen|complete",
+            "count": 13,
+            "share_on_edge": 0.08552631578947369
+          },
+          {
+            "pair": "administratief tarief       - eerste pol|complete => mri bekken|complete",
+            "count": 12,
+            "share_on_edge": 0.07894736842105263
+          },
+          {
+            "pair": "administratief tarief       - eerste pol|complete => mri abdomen|complete",
+            "count": 9,
+            "share_on_edge": 0.05921052631578947
+          }
+        ],
+        "top_contexts": [
+          {
+            "input": "vervolgconsult poliklinisch||1",
+            "count": 47,
+            "share_on_edge": 0.3092105263157895
+          },
+          {
+            "input": "ordertarief||1",
+            "count": 24,
+            "share_on_edge": 0.15789473684210525
+          },
+          {
+            "input": "1e consult poliklinisch||1",
+            "count": 23,
+            "share_on_edge": 0.1513157894736842
+          },
+          {
+            "input": "administratief tarief       - eerste pol||1",
+            "count": 12,
+            "share_on_edge": 0.07894736842105263
+          },
+          {
+            "input": "thorax||1",
+            "count": 9,
+            "share_on_edge": 0.05921052631578947
+          }
+        ],
+        "top_prev_actions": [
+          {
+            "action": "vervolgconsult poliklinisch|complete",
+            "count": 58
+          },
+          {
+            "action": "administratief tarief       - eerste pol|complete",
+            "count": 56
+          },
+          {
+            "action": "telefonisch consult|complete",
+            "count": 30
+          },
+          {
+            "action": "verlosk.-gynaec.   jaarkaart kosten-out|complete",
+            "count": 3
+          },
+          {
+            "action": "verlosk.-gynaec.  aanv.kaart kosten-out|complete",
+            "count": 3
+          }
+        ],
+        "top_next_actions": [
+          {
+            "action": "ct abdomen|complete",
+            "count": 58
+          },
+          {
+            "action": "thorax|complete",
+            "count": 19
+          },
+          {
+            "action": "mri abdomen|complete",
+            "count": 19
+          },
+          {
+            "action": "mri bekken|complete",
+            "count": 17
+          },
+          {
+            "action": "ct thorax|complete",
+            "count": 12
+          }
+        ]
+      },
+      {
+        "from_agent": "Nursing ward",
+        "to_agent": "Operating rooms",
+        "handover_count": 151,
+        "case_count": 106,
+        "from_event_count": 8164,
+        "to_event_count": 238,
+        "p_out": 0.07460474308300395,
+        "p_in": 0.888235294117647,
+        "p_reverse_out": 0.029411764705882353,
+        "asymmetry_out_minus_reverse": 0.0451929783771216,
+        "lift_vs_global_in": 3.7662229714019992,
+        "from_out_degree_nonzero": 21,
+        "to_in_degree_nonzero": 7,
+        "from_route_entropy_bits": 2.4740143164195425,
+        "edge_rank_from": 2,
+        "top_action_pairs": [
+          {
+            "pair": "ligdagen - alle spec.beh.kinderg.-reval.|complete => blaas       - uretrocystoscopie nno|complete",
+            "count": 20,
+            "share_on_edge": 0.13245033112582782
+          },
+          {
+            "pair": "ligdagen - alle spec.beh.kinderg.-reval.|complete => anesthesie  - bij behandeling met radium|complete",
+            "count": 18,
+            "share_on_edge": 0.11920529801324503
+          },
+          {
+            "pair": "ligdagen - alle spec.beh.kinderg.-reval.|complete => vulva       - ruime lokale excisie van a|complete",
+            "count": 12,
+            "share_on_edge": 0.07947019867549669
+          },
+          {
+            "pair": "ligdagen - alle spec.beh.kinderg.-reval.|complete => buik        - stageringslaparotom.-oment|complete",
+            "count": 11,
+            "share_on_edge": 0.0728476821192053
+          },
+          {
+            "pair": "ligdagen - alle spec.beh.kinderg.-reval.|complete => vrw.gesl.org- biopsie-punctie-cytologie|complete",
+            "count": 8,
+            "share_on_edge": 0.052980132450331126
+          }
+        ],
+        "top_contexts": [
+          {
+            "input": "190101 bovenreg.toesl.  a101||1",
+            "count": 55,
+            "share_on_edge": 0.36423841059602646
+          },
+          {
+            "input": "190205 klasse 3b        a205||1",
+            "count": 34,
+            "share_on_edge": 0.2251655629139073
+          },
+          {
+            "input": "190101 bovenreg.toesl.  a101||3",
+            "count": 12,
+            "share_on_edge": 0.07947019867549669
+          },
+          {
+            "input": "190101 bovenreg.toesl.  a101||2",
+            "count": 8,
+            "share_on_edge": 0.052980132450331126
+          },
+          {
+            "input": "190101 bovenreg.toesl.  a101||0",
+            "count": 7,
+            "share_on_edge": 0.046357615894039736
+          }
+        ],
+        "top_prev_actions": [
+          {
+            "action": "ligdagen - alle spec.beh.kinderg.-reval.|complete",
+            "count": 150
+          },
+          {
+            "action": "dagverpleging - alle spec.beh.kind.-rev.|complete",
+            "count": 1
+          }
+        ],
+        "top_next_actions": [
+          {
+            "action": "blaas       - uretrocystoscopie nno|complete",
+            "count": 21
+          },
+          {
+            "action": "anesthesie  - bij behandeling met radium|complete",
+            "count": 18
+          },
+          {
+            "action": "vulva       - ruime lokale excisie van a|complete",
+            "count": 12
+          },
+          {
+            "action": "buik        - stageringslaparotom.-oment|complete",
+            "count": 11
+          },
+          {
+            "action": "vrw.gesl.org- biopsie-punctie-cytologie|complete",
+            "count": 8
+          }
+        ]
+      },
+      {
+        "from_agent": "Pathology",
+        "to_agent": "General Lab Clinical Chemistry",
+        "handover_count": 129,
+        "case_count": 99,
+        "from_event_count": 518,
+        "to_event_count": 26899,
+        "p_out": 0.4069400630914827,
+        "p_in": 0.050292397660818715,
+        "p_reverse_out": 0.0027184466019417475,
+        "asymmetry_out_minus_reverse": 0.4042216164895409,
+        "lift_vs_global_in": 1.3615437120667073,
+        "from_out_degree_nonzero": 9,
+        "to_in_degree_nonzero": 24,
+        "from_route_entropy_bits": 2.1992806495292565,
+        "edge_rank_from": 1,
+        "top_action_pairs": [
+          {
+            "pair": "histologisch onderzoek - grote resectiep|complete => aanname laboratoriumonderzoek|complete",
+            "count": 52,
+            "share_on_edge": 0.40310077519379844
+          },
+          {
+            "pair": "histologisch onderzoek - biopten nno|complete => aanname laboratoriumonderzoek|complete",
+            "count": 17,
+            "share_on_edge": 0.13178294573643412
+          },
+          {
+            "pair": "cito histologisch onderzoek|complete => aanname laboratoriumonderzoek|complete",
+            "count": 15,
+            "share_on_edge": 0.11627906976744186
+          },
+          {
+            "pair": "histologisch onderzoek - kleine resectie|complete => aanname laboratoriumonderzoek|complete",
+            "count": 14,
+            "share_on_edge": 0.10852713178294573
+          },
+          {
+            "pair": "cytologisch onderzoek - ectocervix -|complete => aanname laboratoriumonderzoek|complete",
+            "count": 13,
+            "share_on_edge": 0.10077519379844961
+          }
+        ],
+        "top_contexts": [
+          {
+            "input": "cytologisch onderzoek - ascites -||1",
+            "count": 17,
+            "share_on_edge": 0.13178294573643412
+          },
+          {
+            "input": "immunopathologisch onderzoek||1",
+            "count": 14,
+            "share_on_edge": 0.10852713178294573
+          },
+          {
+            "input": "verlosk.-gynaec. korte kaart kosten-out||1",
+            "count": 9,
+            "share_on_edge": 0.06976744186046512
+          },
+          {
+            "input": "uterus      - carc. cervix vlgs. werthei||1",
+            "count": 6,
+            "share_on_edge": 0.046511627906976744
+          },
+          {
+            "input": "cytologisch onderzoek - ectocervix -||1",
+            "count": 5,
+            "share_on_edge": 0.03875968992248062
+          }
+        ],
+        "top_prev_actions": [
+          {
+            "action": "histologisch onderzoek - grote resectiep|complete",
+            "count": 54
+          },
+          {
+            "action": "histologisch onderzoek - biopten nno|complete",
+            "count": 17
+          },
+          {
+            "action": "cito histologisch onderzoek|complete",
+            "count": 15
+          },
+          {
+            "action": "histologisch onderzoek - kleine resectie|complete",
+            "count": 14
+          },
+          {
+            "action": "cytologisch onderzoek - ectocervix -|complete",
+            "count": 13
+          }
+        ],
+        "top_next_actions": [
+          {
+            "action": "aanname laboratoriumonderzoek|complete",
+            "count": 127
+          },
+          {
+            "action": "kruisproef volledig -drie methoden-|complete",
+            "count": 2
+          }
+        ]
+      }
+    ],
+    "top_agents": [
+      {
+        "agent_id": "General Lab Clinical Chemistry",
+        "event_count": 26899,
+        "out_total": 2575,
+        "in_total": 2565,
+        "out_degree_nonzero": 22,
+        "in_degree_nonzero": 24,
+        "route_entropy_bits": 2.65485354005457,
+        "top_outgoing": [
+          {
+            "to_agent": "Nursing ward",
+            "count": 977,
+            "share": 0.3794174757281553
+          },
+          {
+            "to_agent": "Internal Specialisms clinic",
+            "count": 426,
+            "share": 0.1654368932038835
+          },
+          {
+            "to_agent": "Obstetrics & Gynaecology clinic",
+            "count": 307,
+            "share": 0.11922330097087379
+          },
+          {
+            "to_agent": "Medical Microbiology",
+            "count": 293,
+            "share": 0.1137864077669903
+          },
+          {
+            "to_agent": "Radiology",
+            "count": 293,
+            "share": 0.1137864077669903
+          }
+        ],
+        "top_incoming": [
+          {
+            "from_agent": "Nursing ward",
+            "count": 1144,
+            "share": 0.44600389863547757
+          },
+          {
+            "from_agent": "Medical Microbiology",
+            "count": 435,
+            "share": 0.1695906432748538
+          },
+          {
+            "from_agent": "Obstetrics & Gynaecology clinic",
+            "count": 305,
+            "share": 0.1189083820662768
+          },
+          {
+            "from_agent": "Pathology",
+            "count": 129,
+            "share": 0.050292397660818715
+          },
+          {
+            "from_agent": "Pharmacy Laboratory",
+            "count": 116,
+            "share": 0.045224171539961014
+          }
+        ]
+      },
+      {
+        "agent_id": "Nursing ward",
+        "event_count": 8164,
+        "out_total": 2024,
+        "in_total": 2053,
+        "out_degree_nonzero": 21,
+        "in_degree_nonzero": 20,
+        "route_entropy_bits": 2.4740143164195425,
+        "top_outgoing": [
+          {
+            "to_agent": "General Lab Clinical Chemistry",
+            "count": 1144,
+            "share": 0.5652173913043478
+          },
+          {
+            "to_agent": "Operating rooms",
+            "count": 151,
+            "share": 0.07460474308300395
+          },
+          {
+            "to_agent": "Radiology",
+            "count": 120,
+            "share": 0.05928853754940711
+          },
+          {
+            "to_agent": "Obstetrics & Gynaecology clinic",
+            "count": 118,
+            "share": 0.058300395256917
+          },
+          {
+            "to_agent": "Recovery room / high care",
+            "count": 101,
+            "share": 0.04990118577075099
+          }
+        ],
+        "top_incoming": [
+          {
+            "from_agent": "General Lab Clinical Chemistry",
+            "count": 977,
+            "share": 0.47588894301022894
+          },
+          {
+            "from_agent": "Internal Specialisms clinic",
+            "count": 377,
+            "share": 0.18363370677057964
+          },
+          {
+            "from_agent": "Radiology",
+            "count": 212,
+            "share": 0.10326351680467609
+          },
+          {
+            "from_agent": "Obstetrics & Gynaecology clinic",
+            "count": 162,
+            "share": 0.07890891378470531
+          },
+          {
+            "from_agent": "Radiotherapy",
+            "count": 103,
+            "share": 0.050170482221139796
+          }
+        ]
+      },
+      {
+        "agent_id": "Obstetrics & Gynaecology clinic",
+        "event_count": 2874,
+        "out_total": 927,
+        "in_total": 884,
+        "out_degree_nonzero": 15,
+        "in_degree_nonzero": 12,
+        "route_entropy_bits": 2.606305337324503,
+        "top_outgoing": [
+          {
+            "to_agent": "General Lab Clinical Chemistry",
+            "count": 305,
+            "share": 0.3290183387270766
+          },
+          {
+            "to_agent": "Nursing ward",
+            "count": 162,
+            "share": 0.17475728155339806
+          },
+          {
+            "to_agent": "Radiology",
+            "count": 152,
+            "share": 0.16396979503775622
+          },
+          {
+            "to_agent": "Pathology",
+            "count": 121,
+            "share": 0.13052858683926646
+          },
+          {
+            "to_agent": "Radiotherapy",
+            "count": 119,
+            "share": 0.12837108953613807
+          }
+        ],
+        "top_incoming": [
+          {
+            "from_agent": "General Lab Clinical Chemistry",
+            "count": 307,
+            "share": 0.34728506787330315
+          },
+          {
+            "from_agent": "Radiology",
+            "count": 229,
+            "share": 0.25904977375565613
+          },
+          {
+            "from_agent": "Nursing ward",
+            "count": 118,
+            "share": 0.1334841628959276
+          },
+          {
+            "from_agent": "Radiotherapy",
+            "count": 97,
+            "share": 0.10972850678733032
+          },
+          {
+            "from_agent": "Pathology",
+            "count": 77,
+            "share": 0.08710407239819004
+          }
+        ]
+      },
+      {
+        "agent_id": "Radiology",
+        "event_count": 824,
+        "out_total": 657,
+        "in_total": 658,
+        "out_degree_nonzero": 14,
+        "in_degree_nonzero": 13,
+        "route_entropy_bits": 2.3530929937080987,
+        "top_outgoing": [
+          {
+            "to_agent": "Obstetrics & Gynaecology clinic",
+            "count": 229,
+            "share": 0.3485540334855403
+          },
+          {
+            "to_agent": "Nursing ward",
+            "count": 212,
+            "share": 0.3226788432267884
+          },
+          {
+            "to_agent": "General Lab Clinical Chemistry",
+            "count": 72,
+            "share": 0.1095890410958904
+          },
+          {
+            "to_agent": "Radiotherapy",
+            "count": 60,
+            "share": 0.091324200913242
+          },
+          {
+            "to_agent": "Internal Specialisms clinic",
+            "count": 53,
+            "share": 0.0806697108066971
+          }
+        ],
+        "top_incoming": [
+          {
+            "from_agent": "General Lab Clinical Chemistry",
+            "count": 293,
+            "share": 0.4452887537993921
+          },
+          {
+            "from_agent": "Obstetrics & Gynaecology clinic",
+            "count": 152,
+            "share": 0.23100303951367782
+          },
+          {
+            "from_agent": "Nursing ward",
+            "count": 120,
+            "share": 0.182370820668693
+          },
+          {
+            "from_agent": "Internal Specialisms clinic",
+            "count": 34,
+            "share": 0.05167173252279635
+          },
+          {
+            "from_agent": "Radiotherapy",
+            "count": 27,
+            "share": 0.041033434650455926
+          }
+        ]
+      },
+      {
+        "agent_id": "Internal Specialisms clinic",
+        "event_count": 755,
+        "out_total": 591,
+        "in_total": 590,
+        "out_degree_nonzero": 11,
+        "in_degree_nonzero": 7,
+        "route_entropy_bits": 1.6678620942191342,
+        "top_outgoing": [
+          {
+            "to_agent": "Nursing ward",
+            "count": 377,
+            "share": 0.637901861252115
+          },
+          {
+            "to_agent": "General Lab Clinical Chemistry",
+            "count": 113,
+            "share": 0.19120135363790186
+          },
+          {
+            "to_agent": "Obstetrics & Gynaecology clinic",
+            "count": 37,
+            "share": 0.06260575296108291
+          },
+          {
+            "to_agent": "Radiology",
+            "count": 34,
+            "share": 0.05752961082910321
+          },
+          {
+            "to_agent": "Radiotherapy",
+            "count": 19,
+            "share": 0.032148900169204735
+          }
+        ],
+        "top_incoming": [
+          {
+            "from_agent": "General Lab Clinical Chemistry",
+            "count": 426,
+            "share": 0.7220338983050848
+          },
+          {
+            "from_agent": "Radiology",
+            "count": 53,
+            "share": 0.08983050847457627
+          },
+          {
+            "from_agent": "Nursing ward",
+            "count": 47,
+            "share": 0.07966101694915254
+          },
+          {
+            "from_agent": "Obstetrics & Gynaecology clinic",
+            "count": 34,
+            "share": 0.0576271186440678
+          },
+          {
+            "from_agent": "Radiotherapy",
+            "count": 27,
+            "share": 0.04576271186440678
+          }
+        ]
+      },
+      {
+        "agent_id": "Medical Microbiology",
+        "event_count": 1166,
+        "out_total": 438,
+        "in_total": 438,
+        "out_degree_nonzero": 4,
+        "in_degree_nonzero": 15,
+        "route_entropy_bits": 0.06994883592491903,
+        "top_outgoing": [
+          {
+            "to_agent": "General Lab Clinical Chemistry",
+            "count": 435,
+            "share": 0.9931506849315068
+          },
+          {
+            "to_agent": "Nursing ward",
+            "count": 1,
+            "share": 0.00228310502283105
+          },
+          {
+            "to_agent": "Radiology",
+            "count": 1,
+            "share": 0.00228310502283105
+          },
+          {
+            "to_agent": "Special lab radiology",
+            "count": 1,
+            "share": 0.00228310502283105
+          }
+        ],
+        "top_incoming": [
+          {
+            "from_agent": "General Lab Clinical Chemistry",
+            "count": 293,
+            "share": 0.6689497716894978
+          },
+          {
+            "from_agent": "Nursing ward",
+            "count": 96,
+            "share": 0.2191780821917808
+          },
+          {
+            "from_agent": "Pathology",
+            "count": 13,
+            "share": 0.02968036529680365
+          },
+          {
+            "from_agent": "Obstetrics & Gynaecology clinic",
+            "count": 11,
+            "share": 0.02511415525114155
+          },
+          {
+            "from_agent": "Radiotherapy",
+            "count": 6,
+            "share": 0.0136986301369863
+          }
+        ]
+      },
+      {
+        "agent_id": "Radiotherapy",
+        "event_count": 670,
+        "out_total": 320,
+        "in_total": 347,
+        "out_degree_nonzero": 10,
+        "in_degree_nonzero": 9,
+        "route_entropy_bits": 2.414184560385258,
+        "top_outgoing": [
+          {
+            "to_agent": "Nursing ward",
+            "count": 103,
+            "share": 0.321875
+          },
+          {
+            "to_agent": "Obstetrics & Gynaecology clinic",
+            "count": 97,
+            "share": 0.303125
+          },
+          {
+            "to_agent": "General Lab Clinical Chemistry",
+            "count": 46,
+            "share": 0.14375
+          },
+          {
+            "to_agent": "Internal Specialisms clinic",
+            "count": 27,
+            "share": 0.084375
+          },
+          {
+            "to_agent": "Radiology",
+            "count": 27,
+            "share": 0.084375
+          }
+        ],
+        "top_incoming": [
+          {
+            "from_agent": "Obstetrics & Gynaecology clinic",
+            "count": 119,
+            "share": 0.34293948126801155
+          },
+          {
+            "from_agent": "General Lab Clinical Chemistry",
+            "count": 61,
+            "share": 0.17579250720461095
+          },
+          {
+            "from_agent": "Radiology",
+            "count": 60,
+            "share": 0.1729106628242075
+          },
+          {
+            "from_agent": "Nursing ward",
+            "count": 58,
+            "share": 0.16714697406340057
+          },
+          {
+            "from_agent": "Internal Specialisms clinic",
+            "count": 19,
+            "share": 0.05475504322766571
+          }
+        ]
+      },
+      {
+        "agent_id": "Pathology",
+        "event_count": 518,
+        "out_total": 317,
+        "in_total": 310,
+        "out_degree_nonzero": 9,
+        "in_degree_nonzero": 12,
+        "route_entropy_bits": 2.1992806495292565,
+        "top_outgoing": [
+          {
+            "to_agent": "General Lab Clinical Chemistry",
+            "count": 129,
+            "share": 0.4069400630914827
+          },
+          {
+            "to_agent": "Obstetrics & Gynaecology clinic",
+            "count": 77,
+            "share": 0.24290220820189273
+          },
+          {
+            "to_agent": "Nursing ward",
+            "count": 60,
+            "share": 0.1892744479495268
+          },
+          {
+            "to_agent": "Radiology",
+            "count": 23,
+            "share": 0.07255520504731862
+          },
+          {
+            "to_agent": "Medical Microbiology",
+            "count": 13,
+            "share": 0.04100946372239748
+          }
+        ],
+        "top_incoming": [
+          {
+            "from_agent": "Operating rooms",
+            "count": 127,
+            "share": 0.4096774193548387
+          },
+          {
+            "from_agent": "Obstetrics & Gynaecology clinic",
+            "count": 121,
+            "share": 0.3903225806451613
+          },
+          {
+            "from_agent": "Nursing ward",
+            "count": 19,
+            "share": 0.06129032258064516
+          },
+          {
+            "from_agent": "Radiotherapy",
+            "count": 10,
+            "share": 0.03225806451612903
+          },
+          {
+            "from_agent": "Recovery room / high care",
+            "count": 10,
+            "share": 0.03225806451612903
+          }
+        ]
+      },
+      {
+        "agent_id": "Operating rooms",
+        "event_count": 238,
+        "out_total": 170,
+        "in_total": 170,
+        "out_degree_nonzero": 8,
+        "in_degree_nonzero": 7,
+        "route_entropy_bits": 1.396257022058021,
+        "top_outgoing": [
+          {
+            "to_agent": "Pathology",
+            "count": 127,
+            "share": 0.7470588235294118
+          },
+          {
+            "to_agent": "Radiotherapy",
+            "count": 14,
+            "share": 0.08235294117647059
+          },
+          {
+            "to_agent": "Recovery room / high care",
+            "count": 13,
+            "share": 0.07647058823529412
+          },
+          {
+            "to_agent": "General Lab Clinical Chemistry",
+            "count": 7,
+            "share": 0.041176470588235294
+          },
+          {
+            "to_agent": "Nursing ward",
+            "count": 5,
+            "share": 0.029411764705882353
+          }
+        ],
+        "top_incoming": [
+          {
+            "from_agent": "Nursing ward",
+            "count": 151,
+            "share": 0.888235294117647
+          },
+          {
+            "from_agent": "Recovery room / high care",
+            "count": 8,
+            "share": 0.047058823529411764
+          },
+          {
+            "from_agent": "Nuclear Medicine",
+            "count": 5,
+            "share": 0.029411764705882353
+          },
+          {
+            "from_agent": "Cardiovascular clinics",
+            "count": 3,
+            "share": 0.01764705882352941
+          },
+          {
+            "from_agent": "Radiology",
+            "count": 1,
+            "share": 0.0058823529411764705
+          }
+        ]
+      },
+      {
+        "agent_id": "Recovery room / high care",
+        "event_count": 162,
+        "out_total": 138,
+        "in_total": 138,
+        "out_degree_nonzero": 8,
+        "in_degree_nonzero": 9,
+        "route_entropy_bits": 1.8545024930760272,
+        "top_outgoing": [
+          {
+            "to_agent": "General Lab Clinical Chemistry",
+            "count": 68,
+            "share": 0.4927536231884058
+          },
+          {
+            "to_agent": "Nursing ward",
+            "count": 45,
+            "share": 0.32608695652173914
+          },
+          {
+            "to_agent": "Pathology",
+            "count": 10,
+            "share": 0.07246376811594203
+          },
+          {
+            "to_agent": "Operating rooms",
+            "count": 8,
+            "share": 0.057971014492753624
+          },
+          {
+            "to_agent": "Medical Microbiology",
+            "count": 3,
+            "share": 0.021739130434782608
+          }
+        ],
+        "top_incoming": [
+          {
+            "from_agent": "Nursing ward",
+            "count": 101,
+            "share": 0.7318840579710145
+          },
+          {
+            "from_agent": "Operating rooms",
+            "count": 13,
+            "share": 0.09420289855072464
+          },
+          {
+            "from_agent": "General Lab Clinical Chemistry",
+            "count": 10,
+            "share": 0.07246376811594203
+          },
+          {
+            "from_agent": "Radiology",
+            "count": 6,
+            "share": 0.043478260869565216
+          },
+          {
+            "from_agent": "Internal Specialisms clinic",
+            "count": 2,
+            "share": 0.014492753623188406
+          }
+        ]
+      },
+      {
+        "agent_id": "Pharmacy Laboratory",
+        "event_count": 117,
+        "out_total": 116,
+        "in_total": 116,
+        "out_degree_nonzero": 1,
+        "in_degree_nonzero": 2,
+        "route_entropy_bits": 0.0,
+        "top_outgoing": [
+          {
+            "to_agent": "General Lab Clinical Chemistry",
+            "count": 116,
+            "share": 1.0
+          }
+        ],
+        "top_incoming": [
+          {
+            "from_agent": "General Lab Clinical Chemistry",
+            "count": 114,
+            "share": 0.9827586206896551
+          },
+          {
+            "from_agent": "Special lab radiology",
+            "count": 2,
+            "share": 0.017241379310344827
+          }
+        ]
+      },
+      {
+        "agent_id": "Diet Studies",
+        "event_count": 77,
+        "out_total": 75,
+        "in_total": 75,
+        "out_degree_nonzero": 6,
+        "in_degree_nonzero": 1,
+        "route_entropy_bits": 1.1849223874241475,
+        "top_outgoing": [
+          {
+            "to_agent": "Nursing ward",
+            "count": 58,
+            "share": 0.7733333333333333
+          },
+          {
+            "to_agent": "General Lab Clinical Chemistry",
+            "count": 9,
+            "share": 0.12
+          },
+          {
+            "to_agent": "Obstetrics & Gynaecology clinic",
+            "count": 4,
+            "share": 0.05333333333333334
+          },
+          {
+            "to_agent": "Radiology",
+            "count": 2,
+            "share": 0.02666666666666667
+          },
+          {
+            "to_agent": "Medical Microbiology",
+            "count": 1,
+            "share": 0.013333333333333334
+          }
+        ],
+        "top_incoming": [
+          {
+            "from_agent": "Nursing ward",
+            "count": 75,
+            "share": 1.0
+          }
+        ]
+      },
+      {
+        "agent_id": "Special lab radiology",
+        "event_count": 102,
+        "out_total": 60,
+        "in_total": 60,
+        "out_degree_nonzero": 3,
+        "in_degree_nonzero": 3,
+        "route_entropy_bits": 0.420026001688088,
+        "top_outgoing": [
+          {
+            "to_agent": "General Lab Clinical Chemistry",
+            "count": 56,
+            "share": 0.9333333333333333
+          },
+          {
+            "to_agent": "Pharmacy Laboratory",
+            "count": 2,
+            "share": 0.03333333333333333
+          },
+          {
+            "to_agent": "Medical Microbiology",
+            "count": 2,
+            "share": 0.03333333333333333
+          }
+        ],
+        "top_incoming": [
+          {
+            "from_agent": "General Lab Clinical Chemistry",
+            "count": 57,
+            "share": 0.95
+          },
+          {
+            "from_agent": "Nursing ward",
+            "count": 2,
+            "share": 0.03333333333333333
+          },
+          {
+            "from_agent": "Medical Microbiology",
+            "count": 1,
+            "share": 0.016666666666666666
+          }
+        ]
+      },
+      {
+        "agent_id": "Nuclear Medicine",
+        "event_count": 95,
+        "out_total": 47,
+        "in_total": 48,
+        "out_degree_nonzero": 10,
+        "in_degree_nonzero": 7,
+        "route_entropy_bits": 2.599400490197188,
+        "top_outgoing": [
+          {
+            "to_agent": "General Lab Clinical Chemistry",
+            "count": 16,
+            "share": 0.3404255319148936
+          },
+          {
+            "to_agent": "Nursing ward",
+            "count": 12,
+            "share": 0.2553191489361702
+          },
+          {
+            "to_agent": "Obstetrics & Gynaecology clinic",
+            "count": 6,
+            "share": 0.1276595744680851
+          },
+          {
+            "to_agent": "Operating rooms",
+            "count": 5,
+            "share": 0.10638297872340426
+          },
+          {
+            "to_agent": "Radiotherapy",
+            "count": 3,
+            "share": 0.06382978723404255
+          }
+        ],
+        "top_incoming": [
+          {
+            "from_agent": "Nursing ward",
+            "count": 31,
+            "share": 0.6458333333333334
+          },
+          {
+            "from_agent": "Obstetrics & Gynaecology clinic",
+            "count": 8,
+            "share": 0.16666666666666666
+          },
+          {
+            "from_agent": "General Lab Clinical Chemistry",
+            "count": 4,
+            "share": 0.08333333333333333
+          },
+          {
+            "from_agent": "Radiotherapy",
+            "count": 2,
+            "share": 0.041666666666666664
+          },
+          {
+            "from_agent": "Radiology",
+            "count": 1,
+            "share": 0.020833333333333332
+          }
+        ]
+      },
+      {
+        "agent_id": "Cardiovascular clinics",
+        "event_count": 52,
+        "out_total": 44,
+        "in_total": 44,
+        "out_degree_nonzero": 8,
+        "in_degree_nonzero": 4,
+        "route_entropy_bits": 2.1204286432465183,
+        "top_outgoing": [
+          {
+            "to_agent": "General Lab Clinical Chemistry",
+            "count": 22,
+            "share": 0.5
+          },
+          {
+            "to_agent": "Nursing ward",
+            "count": 11,
+            "share": 0.25
+          },
+          {
+            "to_agent": "Operating rooms",
+            "count": 3,
+            "share": 0.06818181818181818
+          },
+          {
+            "to_agent": "Medical Microbiology",
+            "count": 2,
+            "share": 0.045454545454545456
+          },
+          {
+            "to_agent": "Recovery room / high care",
+            "count": 2,
+            "share": 0.045454545454545456
+          }
+        ],
+        "top_incoming": [
+          {
+            "from_agent": "Nursing ward",
+            "count": 40,
+            "share": 0.9090909090909091
+          },
+          {
+            "from_agent": "ICU Adults",
+            "count": 2,
+            "share": 0.045454545454545456
+          },
+          {
+            "from_agent": "Operating rooms",
+            "count": 1,
+            "share": 0.022727272727272728
+          },
+          {
+            "from_agent": "Nuclear Medicine",
+            "count": 1,
+            "share": 0.022727272727272728
+          }
+        ]
+      }
+    ]
+  },
+  "entity_field_summary": {
+    "n_entities": 596,
+    "n_edges": 4793,
+    "entity_type_counts": {
+      "agent": 33,
+      "action": 420,
+      "information_field": 128,
+      "membrane": 15
+    },
+    "edge_type_counts": {
+      "agent_to_action": 487,
+      "membrane_to_action": 453,
+      "membrane_to_information_field": 1186,
+      "action_to_action": 2483,
+      "agent_to_agent": 184
+    },
+    "top_edges_by_type": {
+      "action_to_action": [
+        {
+          "from_id": "action:aanname laboratoriumonderzoek|complete",
+          "to_id": "action:aanname laboratoriumonderzoek|complete",
+          "edge_type": "action_to_action",
+          "count": 2366,
+          "p_out_type": 0.5410473359249943,
+          "context_entropy_bits": 4.311879597671911,
+          "case_count": 192,
+          "top_contexts": [
+            {
+              "context": "aanname laboratoriumonderzoek||1",
+              "count": 704,
+              "share_on_edge": 0.2975486052409129
+            },
+            {
+              "context": "ligdagen - alle spec.beh.kinderg.-reval.||1",
+              "count": 456,
+              "share_on_edge": 0.19273034657650043
+            },
+            {
+              "context": "vervolgconsult poliklinisch||1",
+              "count": 124,
+              "share_on_edge": 0.052409129332206254
+            },
+            {
+              "context": "190101 bovenreg.toesl.  a101||1",
+              "count": 72,
+              "share_on_edge": 0.030431107354184278
+            },
+            {
+              "context": "dagverpleging - alle spec.beh.kind.-rev.||1",
+              "count": 69,
+              "share_on_edge": 0.029163144547759933
+            }
+          ]
+        },
+        {
+          "from_id": "action:190205 klasse 3b        a205|complete",
+          "to_id": "action:190101 bovenreg.toesl.  a101|complete",
+          "edge_type": "action_to_action",
+          "count": 1285,
+          "p_out_type": 0.6010289990645463,
+          "context_entropy_bits": 3.664144912550746,
+          "case_count": 83,
+          "top_contexts": [
+            {
+              "context": "ligdagen - alle spec.beh.kinderg.-reval.||1",
+              "count": 448,
+              "share_on_edge": 0.3486381322957198
+            },
+            {
+              "context": "190021 klinische opname a002||1",
+              "count": 206,
+              "share_on_edge": 0.16031128404669262
+            },
+            {
+              "context": "ordertarief||1",
+              "count": 180,
+              "share_on_edge": 0.14007782101167315
+            },
+            {
+              "context": "ligdagen - alle spec.beh.kinderg.-reval.||0",
+              "count": 67,
+              "share_on_edge": 0.052140077821011675
+            },
+            {
+              "context": "ligdagen - alle spec.beh.kinderg.-reval.||2",
+              "count": 41,
+              "share_on_edge": 0.031906614785992216
+            }
+          ]
+        },
+        {
+          "from_id": "action:190101 bovenreg.toesl.  a101|complete",
+          "to_id": "action:ligdagen - alle spec.beh.kinderg.-reval.|complete",
+          "edge_type": "action_to_action",
+          "count": 1164,
+          "p_out_type": 0.7471116816431322,
+          "context_entropy_bits": 1.8111815364888963,
+          "case_count": 95,
+          "top_contexts": [
+            {
+              "context": "190205 klasse 3b        a205||1",
+              "count": 708,
+              "share_on_edge": 0.6082474226804123
+            },
+            {
+              "context": "190204 klasse 3a        a204||1",
+              "count": 181,
+              "share_on_edge": 0.15549828178694158
+            },
+            {
+              "context": "190205 klasse 3b        a205||0",
+              "count": 118,
+              "share_on_edge": 0.1013745704467354
+            },
+            {
+              "context": "190205 klasse 3b        a205||2",
+              "count": 68,
+              "share_on_edge": 0.058419243986254296
+            },
+            {
+              "context": "190205 klasse 3b        a205||3",
+              "count": 61,
+              "share_on_edge": 0.05240549828178694
+            }
+          ]
+        },
+        {
+          "from_id": "action:ligdagen - alle spec.beh.kinderg.-reval.|complete",
+          "to_id": "action:190205 klasse 3b        a205|complete",
+          "edge_type": "action_to_action",
+          "count": 991,
+          "p_out_type": 0.3585383502170767,
+          "context_entropy_bits": 2.4485966562049737,
+          "case_count": 119,
+          "top_contexts": [
+            {
+              "context": "190101 bovenreg.toesl.  a101||1",
+              "count": 403,
+              "share_on_edge": 0.4066599394550959
+            },
+            {
+              "context": "190205 klasse 3b        a205||1",
+              "count": 340,
+              "share_on_edge": 0.343087790110999
+            },
+            {
+              "context": "190101 bovenreg.toesl.  a101||0",
+              "count": 60,
+              "share_on_edge": 0.060544904137235116
+            },
+            {
+              "context": "190101 bovenreg.toesl.  a101||2",
+              "count": 36,
+              "share_on_edge": 0.03632694248234107
+            },
+            {
+              "context": "gefiltreerd erytrocytenconcentraat||1",
+              "count": 35,
+              "share_on_edge": 0.035317860746720484
+            }
+          ]
+        },
+        {
+          "from_id": "action:natrium vlamfotometrisch|complete",
+          "to_id": "action:kalium potentiometrisch|complete",
+          "edge_type": "action_to_action",
+          "count": 772,
+          "p_out_type": 0.9018691588785047,
+          "context_entropy_bits": 2.151105484509075,
+          "case_count": 172,
+          "top_contexts": [
+            {
+              "context": "creatinine||1",
+              "count": 389,
+              "share_on_edge": 0.5038860103626943
+            },
+            {
+              "context": "alkalische fosfatase -kinetisch-||1",
+              "count": 241,
+              "share_on_edge": 0.3121761658031088
+            },
+            {
+              "context": "creatinine||2",
+              "count": 20,
+              "share_on_edge": 0.025906735751295335
+            },
+            {
+              "context": "natrium vlamfotometrisch||1",
+              "count": 17,
+              "share_on_edge": 0.022020725388601035
+            },
+            {
+              "context": "alkalische fosfatase -kinetisch-||3",
+              "count": 16,
+              "share_on_edge": 0.02072538860103627
+            }
+          ]
+        },
+        {
+          "from_id": "action:ligdagen - alle spec.beh.kinderg.-reval.|complete",
+          "to_id": "action:aanname laboratoriumonderzoek|complete",
+          "edge_type": "action_to_action",
+          "count": 766,
+          "p_out_type": 0.2771345875542692,
+          "context_entropy_bits": 4.142572992165671,
+          "case_count": 140,
+          "top_contexts": [
+            {
+              "context": "190101 bovenreg.toesl.  a101||1",
+              "count": 210,
+              "share_on_edge": 0.2741514360313316
+            },
+            {
+              "context": "190205 klasse 3b        a205||1",
+              "count": 130,
+              "share_on_edge": 0.16971279373368145
+            },
+            {
+              "context": "vervolgconsult poliklinisch||1",
+              "count": 60,
+              "share_on_edge": 0.0783289817232376
+            },
+            {
+              "context": "190204 klasse 3a        a204||1",
+              "count": 41,
+              "share_on_edge": 0.05352480417754569
+            },
+            {
+              "context": "190101 bovenreg.toesl.  a101||0",
+              "count": 35,
+              "share_on_edge": 0.04569190600522193
+            }
+          ]
+        },
+        {
+          "from_id": "action:ordertarief|complete",
+          "to_id": "action:vervolgconsult poliklinisch|complete",
+          "edge_type": "action_to_action",
+          "count": 703,
+          "p_out_type": 0.2753623188405797,
+          "context_entropy_bits": 3.79472690469938,
+          "case_count": 153,
+          "top_contexts": [
+            {
+              "context": "ca-125 mbv meia||1",
+              "count": 190,
+              "share_on_edge": 0.2702702702702703
+            },
+            {
+              "context": "leucocyten tellen -electronisch- spoed||1",
+              "count": 174,
+              "share_on_edge": 0.24751066856330015
+            },
+            {
+              "context": "trombocyten tellen - elektronisch||1",
+              "count": 59,
+              "share_on_edge": 0.08392603129445235
+            },
+            {
+              "context": "ordertarief||1",
+              "count": 44,
+              "share_on_edge": 0.06258890469416785
+            },
+            {
+              "context": "aanname laboratoriumonderzoek||1",
+              "count": 30,
+              "share_on_edge": 0.04267425320056899
+            }
+          ]
+        },
+        {
+          "from_id": "action:hemoglobine foto-elektrisch|complete",
+          "to_id": "action:creatinine|complete",
+          "edge_type": "action_to_action",
+          "count": 642,
+          "p_out_type": 0.7205387205387206,
+          "context_entropy_bits": 2.4078197764007556,
+          "case_count": 173,
+          "top_contexts": [
+            {
+              "context": "aanname laboratoriumonderzoek||1",
+              "count": 267,
+              "share_on_edge": 0.4158878504672897
+            },
+            {
+              "context": "ureum||1",
+              "count": 221,
+              "share_on_edge": 0.3442367601246106
+            },
+            {
+              "context": "bilirubine - totaal||1",
+              "count": 22,
+              "share_on_edge": 0.03426791277258567
+            },
+            {
+              "context": "ureum||2",
+              "count": 22,
+              "share_on_edge": 0.03426791277258567
+            },
+            {
+              "context": "glucose||1",
+              "count": 21,
+              "share_on_edge": 0.03271028037383177
+            }
+          ]
+        }
+      ],
+      "agent_to_action": [
+        {
+          "from_id": "agent:General Lab Clinical Chemistry",
+          "to_id": "action:aanname laboratoriumonderzoek|complete",
+          "edge_type": "agent_to_action",
+          "count": 4048,
+          "p_out_type": 0.15048886575709133,
+          "context_entropy_bits": 0.0006006686534198765,
+          "case_count": 0,
+          "top_contexts": [
+            {
+              "context": "event_count",
+              "count": 4048,
+              "share_on_edge": 1.0
+            },
+            {
+              "context": "share_of_agent_events",
+              "count": 0,
+              "share_on_edge": 3.7176103200862486e-05
+            }
+          ]
+        },
+        {
+          "from_id": "agent:Nursing ward",
+          "to_id": "action:ligdagen - alle spec.beh.kinderg.-reval.|complete",
+          "edge_type": "agent_to_action",
+          "count": 2750,
+          "p_out_type": 0.3368446839784419,
+          "context_entropy_bits": 0.0017682601177507048,
+          "case_count": 0,
+          "top_contexts": [
+            {
+              "context": "event_count",
+              "count": 2750,
+              "share_on_edge": 1.0
+            },
+            {
+              "context": "share_of_agent_events",
+              "count": 0,
+              "share_on_edge": 0.0001224889759921607
+            }
+          ]
+        },
+        {
+          "from_id": "agent:General Lab Clinical Chemistry",
+          "to_id": "action:ordertarief|complete",
+          "edge_type": "agent_to_action",
+          "count": 2558,
+          "p_out_type": 0.09509647198780624,
+          "context_entropy_bits": 0.0006006686534198765,
+          "case_count": 0,
+          "top_contexts": [
+            {
+              "context": "event_count",
+              "count": 2558,
+              "share_on_edge": 1.0
+            },
+            {
+              "context": "share_of_agent_events",
+              "count": 0,
+              "share_on_edge": 3.7176103200862486e-05
+            }
+          ]
+        },
+        {
+          "from_id": "agent:Nursing ward",
+          "to_id": "action:190205 klasse 3b        a205|complete",
+          "edge_type": "agent_to_action",
+          "count": 2125,
+          "p_out_type": 0.2602890739833415,
+          "context_entropy_bits": 0.0017682601177503845,
+          "case_count": 0,
+          "top_contexts": [
+            {
+              "context": "event_count",
+              "count": 2125,
+              "share_on_edge": 1.0
+            },
+            {
+              "context": "share_of_agent_events",
+              "count": 0,
+              "share_on_edge": 0.0001224889759921607
+            }
+          ]
+        },
+        {
+          "from_id": "agent:Nursing ward",
+          "to_id": "action:190101 bovenreg.toesl.  a101|complete",
+          "edge_type": "agent_to_action",
+          "count": 1575,
+          "p_out_type": 0.1929201371876531,
+          "context_entropy_bits": 0.0017682601177505446,
+          "case_count": 0,
+          "top_contexts": [
+            {
+              "context": "event_count",
+              "count": 1575,
+              "share_on_edge": 1.0
+            },
+            {
+              "context": "share_of_agent_events",
+              "count": 0,
+              "share_on_edge": 0.0001224889759921607
+            }
+          ]
+        },
+        {
+          "from_id": "agent:Obstetrics & Gynaecology clinic",
+          "to_id": "action:vervolgconsult poliklinisch|complete",
+          "edge_type": "agent_to_action",
+          "count": 1329,
+          "p_out_type": 0.46242171189979125,
+          "context_entropy_bits": 0.004498014034444422,
+          "case_count": 0,
+          "top_contexts": [
+            {
+              "context": "event_count",
+              "count": 1329,
+              "share_on_edge": 1.0
+            },
+            {
+              "context": "share_of_agent_events",
+              "count": 0,
+              "share_on_edge": 0.0003479471120389701
+            }
+          ]
+        },
+        {
+          "from_id": "agent:General Lab Clinical Chemistry",
+          "to_id": "action:hemoglobine foto-elektrisch|complete",
+          "edge_type": "agent_to_action",
+          "count": 891,
+          "p_out_type": 0.03312390795196848,
+          "context_entropy_bits": 0.0006006686534200367,
+          "case_count": 0,
+          "top_contexts": [
+            {
+              "context": "event_count",
+              "count": 891,
+              "share_on_edge": 1.0
+            },
+            {
+              "context": "share_of_agent_events",
+              "count": 0,
+              "share_on_edge": 3.7176103200862486e-05
+            }
+          ]
+        },
+        {
+          "from_id": "agent:General Lab Clinical Chemistry",
+          "to_id": "action:kalium potentiometrisch|complete",
+          "edge_type": "agent_to_action",
+          "count": 868,
+          "p_out_type": 0.03226885757834864,
+          "context_entropy_bits": 0.0006006686534200367,
+          "case_count": 0,
+          "top_contexts": [
+            {
+              "context": "event_count",
+              "count": 868,
+              "share_on_edge": 1.0
+            },
+            {
+              "context": "share_of_agent_events",
+              "count": 0,
+              "share_on_edge": 3.7176103200862486e-05
+            }
+          ]
+        }
+      ],
+      "agent_to_agent": [
+        {
+          "from_id": "agent:Nursing ward",
+          "to_id": "agent:General Lab Clinical Chemistry",
+          "edge_type": "agent_to_agent",
+          "count": 1144,
+          "p_out_type": 0.5652173913043478,
+          "context_entropy_bits": 2.3915268095865163,
+          "case_count": 148,
+          "top_contexts": [
+            {
+              "context": "ligdagen - alle spec.beh.kinderg.-reval.|complete => aanname laboratoriumonderzoek|complete",
+              "count": 683,
+              "share_on_edge": 0.597027972027972
+            },
+            {
+              "context": "dagverpleging - alle spec.beh.kind.-rev.|complete => aanname laboratoriumonderzoek|complete",
+              "count": 93,
+              "share_on_edge": 0.08129370629370629
+            },
+            {
+              "context": "190101 bovenreg.toesl.  a101|complete => aanname laboratoriumonderzoek|complete",
+              "count": 81,
+              "share_on_edge": 0.07080419580419581
+            },
+            {
+              "context": "190101 bovenreg.toesl.  a101|complete => gefiltreerd erytrocytenconcentraat|complete",
+              "count": 59,
+              "share_on_edge": 0.051573426573426576
+            },
+            {
+              "context": "190205 klasse 3b        a205|complete => gefiltreerd erytrocytenconcentraat|complete",
+              "count": 44,
+              "share_on_edge": 0.038461538461538464
+            }
+          ]
+        },
+        {
+          "from_id": "agent:General Lab Clinical Chemistry",
+          "to_id": "agent:Nursing ward",
+          "edge_type": "agent_to_agent",
+          "count": 977,
+          "p_out_type": 0.3794174757281553,
+          "context_entropy_bits": 2.4839251537020766,
+          "case_count": 147,
+          "top_contexts": [
+            {
+              "context": "ordertarief|complete => 190205 klasse 3b        a205|complete",
+              "count": 431,
+              "share_on_edge": 0.44114636642784033
+            },
+            {
+              "context": "ordertarief|complete => 190021 klinische opname a002|complete",
+              "count": 209,
+              "share_on_edge": 0.21392016376663256
+            },
+            {
+              "context": "gefiltreerd erytrocytenconcentraat|complete => ligdagen - alle spec.beh.kinderg.-reval.|complete",
+              "count": 114,
+              "share_on_edge": 0.11668372569089049
+            },
+            {
+              "context": "ordertarief|complete => 190204 klasse 3a        a204|complete",
+              "count": 79,
+              "share_on_edge": 0.08085977482088025
+            },
+            {
+              "context": "ordertarief|complete => 190035 dagverpleging    a007|complete",
+              "count": 44,
+              "share_on_edge": 0.04503582395087001
+            }
+          ]
+        },
+        {
+          "from_id": "agent:Medical Microbiology",
+          "to_id": "agent:General Lab Clinical Chemistry",
+          "edge_type": "agent_to_agent",
+          "count": 435,
+          "p_out_type": 0.9931506849315068,
+          "context_entropy_bits": 4.27246037712663,
+          "case_count": 91,
+          "top_contexts": [
+            {
+              "context": "aanname laboratoriumonderzoek|complete => aanname laboratoriumonderzoek|complete",
+              "count": 111,
+              "share_on_edge": 0.25517241379310346
+            },
+            {
+              "context": "hepatitis-b surface antigeen confirmatie|complete => ordertarief|complete",
+              "count": 42,
+              "share_on_edge": 0.09655172413793103
+            },
+            {
+              "context": "bacteriologisch onderzoek met kweek -nie|complete => ordertarief|complete",
+              "count": 40,
+              "share_on_edge": 0.09195402298850575
+            },
+            {
+              "context": "hepatitis-b surface antigeen confirmatie|complete => urine onderzoek - kwalitatief|complete",
+              "count": 29,
+              "share_on_edge": 0.06666666666666667
+            },
+            {
+              "context": "bacteriologisch onderzoek met kweek -nie|complete => differentiele telling automatisch|complete",
+              "count": 23,
+              "share_on_edge": 0.052873563218390804
+            }
+          ]
+        },
+        {
+          "from_id": "agent:General Lab Clinical Chemistry",
+          "to_id": "agent:Internal Specialisms clinic",
+          "edge_type": "agent_to_agent",
+          "count": 426,
+          "p_out_type": 0.1654368932038835,
+          "context_entropy_bits": 0.46043236850291847,
+          "case_count": 53,
+          "top_contexts": [
+            {
+              "context": "ordertarief|complete => vervolgconsult poliklinisch|complete",
+              "count": 398,
+              "share_on_edge": 0.9342723004694836
+            },
+            {
+              "context": "ordertarief|complete => 1e consult poliklinisch|complete",
+              "count": 19,
+              "share_on_edge": 0.04460093896713615
+            },
+            {
+              "context": "ordertarief|complete => inwend.geneesk.  korte kaart kosten-out|complete",
+              "count": 3,
+              "share_on_edge": 0.007042253521126761
+            },
+            {
+              "context": "ordertarief|complete => telefonisch consult|complete",
+              "count": 2,
+              "share_on_edge": 0.004694835680751174
+            },
+            {
+              "context": "ordertarief|complete => inwend.geneesk.   aanv.kaart kosten-out|complete",
+              "count": 1,
+              "share_on_edge": 0.002347417840375587
+            }
+          ]
+        },
+        {
+          "from_id": "agent:Internal Specialisms clinic",
+          "to_id": "agent:Nursing ward",
+          "edge_type": "agent_to_agent",
+          "count": 377,
+          "p_out_type": 0.637901861252115,
+          "context_entropy_bits": 2.9334004099300337,
+          "case_count": 52,
+          "top_contexts": [
+            {
+              "context": "vervolgconsult poliklinisch|complete => ligdagen - alle spec.beh.kinderg.-reval.|complete",
+              "count": 110,
+              "share_on_edge": 0.2917771883289125
+            },
+            {
+              "context": "vervolgconsult poliklinisch|complete => 190021 klinische opname a002|complete",
+              "count": 92,
+              "share_on_edge": 0.2440318302387268
+            },
+            {
+              "context": "vervolgconsult poliklinisch|complete => dagverpleging - alle spec.beh.kind.-rev.|complete",
+              "count": 80,
+              "share_on_edge": 0.21220159151193635
+            },
+            {
+              "context": "vervolgconsult poliklinisch|complete => 190035 dagverpleging    a007|complete",
+              "count": 24,
+              "share_on_edge": 0.0636604774535809
+            },
+            {
+              "context": "vervolgconsult poliklinisch|complete => 190205 klasse 3b        a205|complete",
+              "count": 11,
+              "share_on_edge": 0.029177718832891247
+            }
+          ]
+        },
+        {
+          "from_id": "agent:General Lab Clinical Chemistry",
+          "to_id": "agent:Obstetrics & Gynaecology clinic",
+          "edge_type": "agent_to_agent",
+          "count": 307,
+          "p_out_type": 0.11922330097087379,
+          "context_entropy_bits": 0.8549684314186021,
+          "case_count": 134,
+          "top_contexts": [
+            {
+              "context": "ordertarief|complete => vervolgconsult poliklinisch|complete",
+              "count": 262,
+              "share_on_edge": 0.8534201954397395
+            },
+            {
+              "context": "ordertarief|complete => 1e consult poliklinisch|complete",
+              "count": 26,
+              "share_on_edge": 0.08469055374592833
+            },
+            {
+              "context": "ordertarief|complete => telefonisch consult|complete",
+              "count": 12,
+              "share_on_edge": 0.03908794788273615
+            },
+            {
+              "context": "ordertarief|complete => verlosk.-gynaec.   jaarkaart kosten-out|complete",
+              "count": 2,
+              "share_on_edge": 0.006514657980456026
+            },
+            {
+              "context": "gefiltreerd erytrocytenconcentraat|complete => telefonisch consult|complete",
+              "count": 2,
+              "share_on_edge": 0.006514657980456026
+            }
+          ]
+        },
+        {
+          "from_id": "agent:Obstetrics & Gynaecology clinic",
+          "to_id": "agent:General Lab Clinical Chemistry",
+          "edge_type": "agent_to_agent",
+          "count": 305,
+          "p_out_type": 0.3290183387270766,
+          "context_entropy_bits": 2.6992013820323555,
+          "case_count": 158,
+          "top_contexts": [
+            {
+              "context": "telefonisch consult|complete => aanname laboratoriumonderzoek|complete",
+              "count": 87,
+              "share_on_edge": 0.28524590163934427
+            },
+            {
+              "context": "vervolgconsult poliklinisch|complete => aanname laboratoriumonderzoek|complete",
+              "count": 80,
+              "share_on_edge": 0.26229508196721313
+            },
+            {
+              "context": "verlosk.-gynaec. korte kaart kosten-out|complete => aanname laboratoriumonderzoek|complete",
+              "count": 46,
+              "share_on_edge": 0.15081967213114755
+            },
+            {
+              "context": "administratief tarief       - eerste pol|complete => aanname laboratoriumonderzoek|complete",
+              "count": 36,
+              "share_on_edge": 0.1180327868852459
+            },
+            {
+              "context": "verlosk.-gynaec.   jaarkaart kosten-out|complete => aanname laboratoriumonderzoek|complete",
+              "count": 17,
+              "share_on_edge": 0.05573770491803279
+            }
+          ]
+        },
+        {
+          "from_id": "agent:General Lab Clinical Chemistry",
+          "to_id": "agent:Medical Microbiology",
+          "edge_type": "agent_to_agent",
+          "count": 293,
+          "p_out_type": 0.1137864077669903,
+          "context_entropy_bits": 3.839901123731979,
+          "case_count": 73,
+          "top_contexts": [
+            {
+              "context": "aanname laboratoriumonderzoek|complete => aanname laboratoriumonderzoek|complete",
+              "count": 113,
+              "share_on_edge": 0.3856655290102389
+            },
+            {
+              "context": "sediment - spoed|complete => bacteriologisch onderzoek met kweek -nie|complete",
+              "count": 21,
+              "share_on_edge": 0.07167235494880546
+            },
+            {
+              "context": "kalium vlamfotometrisch - spoed|complete => bacteriologisch onderzoek met kweek -nie|complete",
+              "count": 17,
+              "share_on_edge": 0.05802047781569966
+            },
+            {
+              "context": "kalium potentiometrisch|complete => microscopisch onderzoek - gekleurd en on|complete",
+              "count": 16,
+              "share_on_edge": 0.05460750853242321
+            },
+            {
+              "context": "sgot asat kinetisch - spoed|complete => bacteriologisch onderzoek met kweek -nie|complete",
+              "count": 11,
+              "share_on_edge": 0.03754266211604096
+            }
+          ]
+        }
+      ],
+      "membrane_to_action": [
+        {
+          "from_id": "membrane:86",
+          "to_id": "action:aanname laboratoriumonderzoek|complete",
+          "edge_type": "membrane_to_action",
+          "count": 4051,
+          "p_out_type": 0.1493291064582719,
+          "context_entropy_bits": 0.0,
+          "case_count": 0,
+          "top_contexts": []
+        },
+        {
+          "from_id": "membrane:7",
+          "to_id": "action:ligdagen - alle spec.beh.kinderg.-reval.|complete",
+          "edge_type": "membrane_to_action",
+          "count": 2750,
+          "p_out_type": 0.24362154500354358,
+          "context_entropy_bits": 0.0,
+          "case_count": 0,
+          "top_contexts": []
+        },
+        {
+          "from_id": "membrane:86",
+          "to_id": "action:ordertarief|complete",
+          "edge_type": "membrane_to_action",
+          "count": 2558,
+          "p_out_type": 0.09429371866705986,
+          "context_entropy_bits": 0.0,
+          "case_count": 0,
+          "top_contexts": []
+        },
+        {
+          "from_id": "membrane:7",
+          "to_id": "action:190205 klasse 3b        a205|complete",
+          "edge_type": "membrane_to_action",
+          "count": 2125,
+          "p_out_type": 0.18825301204819278,
+          "context_entropy_bits": 0.0,
+          "case_count": 0,
+          "top_contexts": []
+        },
+        {
+          "from_id": "membrane:7",
+          "to_id": "action:190101 bovenreg.toesl.  a101|complete",
+          "edge_type": "membrane_to_action",
+          "count": 1575,
+          "p_out_type": 0.13952870304748405,
+          "context_entropy_bits": 0.0,
+          "case_count": 0,
+          "top_contexts": []
+        },
+        {
+          "from_id": "membrane:7",
+          "to_id": "action:vervolgconsult poliklinisch|complete",
+          "edge_type": "membrane_to_action",
+          "count": 1345,
+          "p_out_type": 0.11915308291991496,
+          "context_entropy_bits": 0.0,
+          "case_count": 0,
+          "top_contexts": []
+        },
+        {
+          "from_id": "membrane:86",
+          "to_id": "action:hemoglobine foto-elektrisch|complete",
+          "edge_type": "membrane_to_action",
+          "count": 891,
+          "p_out_type": 0.03284429371866706,
+          "context_entropy_bits": 0.0,
+          "case_count": 0,
+          "top_contexts": []
+        },
+        {
+          "from_id": "membrane:86",
+          "to_id": "action:kalium potentiometrisch|complete",
+          "edge_type": "membrane_to_action",
+          "count": 868,
+          "p_out_type": 0.0319964612208788,
+          "context_entropy_bits": 0.0,
+          "case_count": 0,
+          "top_contexts": []
+        }
+      ],
+      "membrane_to_information_field": [
+        {
+          "from_id": "membrane:13",
+          "to_id": "information_field:Activity code",
+          "edge_type": "membrane_to_information_field",
+          "count": 1,
+          "p_out_type": 0.01098901098901099,
+          "context_entropy_bits": 0.0,
+          "case_count": 0,
+          "top_contexts": []
+        },
+        {
+          "from_id": "membrane:13",
+          "to_id": "information_field:Number of executions",
+          "edge_type": "membrane_to_information_field",
+          "count": 1,
+          "p_out_type": 0.01098901098901099,
+          "context_entropy_bits": 0.0,
+          "case_count": 0,
+          "top_contexts": []
+        },
+        {
+          "from_id": "membrane:13",
+          "to_id": "information_field:Producer code",
+          "edge_type": "membrane_to_information_field",
+          "count": 1,
+          "p_out_type": 0.01098901098901099,
+          "context_entropy_bits": 0.0,
+          "case_count": 0,
+          "top_contexts": []
+        },
+        {
+          "from_id": "membrane:13",
+          "to_id": "information_field:Section",
+          "edge_type": "membrane_to_information_field",
+          "count": 1,
+          "p_out_type": 0.01098901098901099,
+          "context_entropy_bits": 0.0,
+          "case_count": 0,
+          "top_contexts": []
+        },
+        {
+          "from_id": "membrane:13",
+          "to_id": "information_field:Specialism code",
+          "edge_type": "membrane_to_information_field",
+          "count": 1,
+          "p_out_type": 0.01098901098901099,
+          "context_entropy_bits": 0.0,
+          "case_count": 0,
+          "top_contexts": []
+        },
+        {
+          "from_id": "membrane:13",
+          "to_id": "information_field:case:Age",
+          "edge_type": "membrane_to_information_field",
+          "count": 1,
+          "p_out_type": 0.01098901098901099,
+          "context_entropy_bits": 0.0,
+          "case_count": 0,
+          "top_contexts": []
+        },
+        {
+          "from_id": "membrane:13",
+          "to_id": "information_field:case:Age:1",
+          "edge_type": "membrane_to_information_field",
+          "count": 1,
+          "p_out_type": 0.01098901098901099,
+          "context_entropy_bits": 0.0,
+          "case_count": 0,
+          "top_contexts": []
+        },
+        {
+          "from_id": "membrane:13",
+          "to_id": "information_field:case:Age:2",
+          "edge_type": "membrane_to_information_field",
+          "count": 1,
+          "p_out_type": 0.01098901098901099,
+          "context_entropy_bits": 0.0,
+          "case_count": 0,
+          "top_contexts": []
+        }
+      ]
+    }
+  },
+  "decisions": [
+    "Критический путь agent_rules: счётчики + A/B softmax по CE",
+    "FEP / case-head / stress / prune вне рецепта",
+    "Второй организм HOSPITAL2011, не склеивать с BPIC2012",
+    "Контур=diagnostic; scripts/run_diagnostic.py (версия 0.8.0)",
+    "package_version=0.10.0",
+    "FEP / case-head / stress top-3 / prune_min_support вне критического пути",
+    "λ не входит в обучение; softmax — только A/B по CE holdout",
+    "Softmax CE holdout лучше счётчиков (1.2965 < 2.2234) — политика = softmax",
+    "Диагностика: агентов=33, незаменимых частых действий (уник. носитель)=61",
+    "Directed edges: E=184 из 1056 возможных",
+    "Entity field: сущностей=596, рёбер=4793, типов={'agent_to_action': 487, 'membrane_to_action': 453, 'membrane_to_information_field': 1186, 'action_to_action': 2483, 'agent_to_agent': 184}"
+  ],
+  "failures": [],
+  "notes_ru": "0.8.0: Hospital BPIC2011; agent_rules; org:group; split 7+3."
+}

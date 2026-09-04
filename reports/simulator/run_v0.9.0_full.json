@@ -1,0 +1,703 @@
+{
+  "version": "0.9.0",
+  "contour": "simulator",
+  "recipe": "softmax_fep_ab",
+  "timestamp_utc": "2026-09-03T14:38:16.493506+00:00",
+  "config_path": "configs/simulator/v0.9.0.json",
+  "config": {
+    "donor_id": "BPIC2019",
+    "donor_doi": "10.4121/uuid:d06aff4b-79f0-45e6-8ec8-e19730c248f1",
+    "split": {
+      "fit_months": 3,
+      "holdout_months": 2,
+      "target_fit_months": 7,
+      "target_holdout_months": 3
+    },
+    "policy": {
+      "lambda_entropy": 0.05,
+      "max_iter": 250,
+      "C": 1.0,
+      "random_state": 42,
+      "solver": "saga",
+      "tol": 0.001,
+      "amount_quantiles": [
+        0.0,
+        0.25,
+        0.5,
+        0.75,
+        1.0
+      ],
+      "prune_min_support": 30,
+      "terminal_prefixes": [
+        "Clear Invoice",
+        "Delete Purchase Order Item",
+        "Cancel Invoice Receipt"
+      ]
+    },
+    "fep": {
+      "dirichlet_alpha": 0.5,
+      "gamma_precision": 4.0,
+      "preference_power": 1.0,
+      "habit_weight": 1.0,
+      "ambiguity_weight": 0.0,
+      "risk_weight": 0.0,
+      "empty_transition_entropy": 3.0,
+      "mode": "habit_only",
+      "tune_on_fit": true,
+      "tune_eval_max_rows": 25000
+    },
+    "timing": {
+      "dt_min_sec": 0.0,
+      "dt_max_sec": 2592000.0,
+      "default_latency_sec": 3600.0,
+      "latency_noise_low": 1.0,
+      "latency_noise_high": 1.0,
+      "ridge_alpha": 1.0,
+      "min_train_dt_samples": 100
+    },
+    "sim": {
+      "max_steps_per_case": 50,
+      "seed": 42,
+      "queue_mode": false,
+      "agent_capacity": 1,
+      "input_flow_multiplier": 1.0,
+      "max_sim_horizon_sec": null
+    },
+    "eval": {
+      "top_k_actions": 20,
+      "next_step_top_k": 3
+    },
+    "donor_adapt": {
+      "agent_column": "org:resource",
+      "context_column": "Cumulative net worth (EUR)",
+      "role_mode": "procurement",
+      "count_min_support": 3,
+      "compare_softmax": true,
+      "run_sim": false,
+      "min_input_support": 20,
+      "min_unique_action_support": 30,
+      "unique_share": 0.8,
+      "top1_stuck_threshold": 0.8
+    }
+  },
+  "split_meta": {
+    "t0": "2018-01-01 02:42:00+00:00",
+    "t1": "2020-04-09 21:59:00+00:00",
+    "fit_end": "2018-04-01 02:42:00+00:00",
+    "hold_end": "2018-06-01 02:42:00+00:00",
+    "fit_cases": 12000,
+    "hold_cases": 8000,
+    "fit_events": 78556,
+    "hold_events": 50293,
+    "fit_months": 3,
+    "holdout_months": 2,
+    "seed": 42,
+    "fit_cases_sampled": 12000,
+    "hold_cases_sampled": 8000,
+    "donor_filter": {
+      "time_from": "2018-01-01 00:00:00+00:00",
+      "cases_after_time_filter": 251470,
+      "events_after_time_filter": 1587925
+    }
+  },
+  "prune_softmax": {
+    "pruned_actions_by_role": {
+      "CHANGE": [
+        "Change Quantity",
+        "Change Delivery Indicator",
+        "Create Purchase Order Item",
+        "Change Approval for Purchase Order",
+        "Release Purchase Order",
+        "Delete Purchase Order Item"
+      ],
+      "GR": [
+        "Update Order Confirmation",
+        "Change Delivery Indicator",
+        "Delete Purchase Order Item",
+        "Change Storage Location",
+        "Block Purchase Order Item",
+        "Reactivate Purchase Order Item",
+        "Create Purchase Requisition Item"
+      ],
+      "INV": [
+        "Cancel Subsequent Invoice",
+        "Record Subsequent Invoice",
+        "Set Payment Block",
+        "SRM: Deleted",
+        "SRM: Incomplete",
+        "SRM: Held",
+        "Create Purchase Requisition Item"
+      ],
+      "PO": [
+        "Block Purchase Order Item",
+        "Change Storage Location",
+        "Cancel Goods Receipt",
+        "Create Purchase Requisition Item",
+        "Change Currency"
+      ]
+    },
+    "shannon_upper_bits_after": {
+      "CHANGE": 0.0,
+      "GR": 2.584962500721156,
+      "INV": 4.087462841250339,
+      "OTHER": 2.807354922057604,
+      "PO": 3.321928094887362,
+      "PR": 0.0
+    },
+    "lambda_entropy": 0.05
+  },
+  "tune_habit_grid": [
+    {
+      "mode": "habit_only",
+      "gamma": 1.0,
+      "risk_w": 0.0,
+      "amb_w": 0.0,
+      "habit_w": 1.0,
+      "fit_acc": 0.951,
+      "fit_top3": 0.99916,
+      "fit_ce": 0.28978699302140676,
+      "n_eval": 25000
+    },
+    {
+      "mode": "habit_only",
+      "gamma": 2.0,
+      "risk_w": 0.0,
+      "amb_w": 0.0,
+      "habit_w": 1.0,
+      "fit_acc": 0.951,
+      "fit_top3": 0.99916,
+      "fit_ce": 0.185537645104024,
+      "n_eval": 25000
+    },
+    {
+      "mode": "habit_only",
+      "gamma": 4.0,
+      "risk_w": 0.0,
+      "amb_w": 0.0,
+      "habit_w": 1.0,
+      "fit_acc": 0.951,
+      "fit_top3": 0.99916,
+      "fit_ce": 0.2724594823343229,
+      "n_eval": 25000
+    },
+    {
+      "mode": "habit_only",
+      "gamma": 8.0,
+      "risk_w": 0.0,
+      "amb_w": 0.0,
+      "habit_w": 1.0,
+      "fit_acc": 0.951,
+      "fit_top3": 0.99916,
+      "fit_ce": 0.4954929254618533,
+      "n_eval": 25000
+    }
+  ],
+  "tune_full_grid": [
+    {
+      "mode": "full_efe",
+      "gamma": 2.0,
+      "risk_w": 0.25,
+      "amb_w": 0.25,
+      "habit_w": 1.0,
+      "fit_acc": 0.949,
+      "fit_top3": 0.9986,
+      "fit_ce": 0.21966210398653252,
+      "n_eval": 25000
+    },
+    {
+      "mode": "full_efe",
+      "gamma": 2.0,
+      "risk_w": 0.5,
+      "amb_w": 0.5,
+      "habit_w": 1.0,
+      "fit_acc": 0.93904,
+      "fit_top3": 0.99116,
+      "fit_ce": 0.2725773762729474,
+      "n_eval": 25000
+    },
+    {
+      "mode": "full_efe",
+      "gamma": 2.0,
+      "risk_w": 1.0,
+      "amb_w": 0.25,
+      "habit_w": 1.0,
+      "fit_acc": 0.9364,
+      "fit_top3": 0.98896,
+      "fit_ce": 0.2997018822971054,
+      "n_eval": 25000
+    },
+    {
+      "mode": "full_efe",
+      "gamma": 2.0,
+      "risk_w": 0.25,
+      "amb_w": 1.0,
+      "habit_w": 1.0,
+      "fit_acc": 0.91888,
+      "fit_top3": 0.98452,
+      "fit_ce": 0.33591754224017045,
+      "n_eval": 25000
+    },
+    {
+      "mode": "full_efe",
+      "gamma": 4.0,
+      "risk_w": 0.25,
+      "amb_w": 0.25,
+      "habit_w": 1.0,
+      "fit_acc": 0.949,
+      "fit_top3": 0.9986,
+      "fit_ce": 0.3384072160743944,
+      "n_eval": 25000
+    },
+    {
+      "mode": "full_efe",
+      "gamma": 4.0,
+      "risk_w": 0.5,
+      "amb_w": 0.5,
+      "habit_w": 1.0,
+      "fit_acc": 0.93904,
+      "fit_top3": 0.99116,
+      "fit_ce": 0.4366747497507086,
+      "n_eval": 25000
+    },
+    {
+      "mode": "full_efe",
+      "gamma": 4.0,
+      "risk_w": 1.0,
+      "amb_w": 0.25,
+      "habit_w": 1.0,
+      "fit_acc": 0.9364,
+      "fit_top3": 0.98896,
+      "fit_ce": 0.4990330462774243,
+      "n_eval": 25000
+    },
+    {
+      "mode": "full_efe",
+      "gamma": 4.0,
+      "risk_w": 0.25,
+      "amb_w": 1.0,
+      "habit_w": 1.0,
+      "fit_acc": 0.91888,
+      "fit_top3": 0.98452,
+      "fit_ce": 0.5509597484455631,
+      "n_eval": 25000
+    }
+  ],
+  "arms": {
+    "softmax": {
+      "policy_kind": "softmax",
+      "wall_sec": 9.719225548004033,
+      "fep_cfg": null,
+      "train_metrics": {
+        "n_samples": 78556,
+        "n_actions": 38,
+        "n_agents": 317,
+        "cross_entropy": 0.18545264370672726,
+        "policy_entropy_nats": 0.2487776674070412,
+        "lambda_entropy": 0.05,
+        "free_energy_proxy": 0.19789152707707933,
+        "fit_action_accuracy": 0.9357910280564183,
+        "fail_rate_proxy": 0.06420897194358166,
+        "loss_audit_form": "L ≈ E[fail] + λ H(policy) ≈ fail_rate + λ * entropy"
+      },
+      "metrics_raw": {
+        "weekly_events_mae": 880.7209302325581,
+        "weekly_events_mape": 0.8504193647310347,
+        "weekly_events_corr": 0.9662901205314159,
+        "case_duration_log_mae": 1.9575357391764854,
+        "case_duration_spearman": -0.00903555973151334,
+        "n_cases_compared": 8000,
+        "top20_action_overlap": 19,
+        "sim_events": 69804,
+        "hold_events": 50293,
+        "terminal_share_actual": {
+          "A_CANCELLED": 0.0,
+          "A_DECLINED": 0.0,
+          "A_APPROVED": 0.0,
+          "A_REGISTERED": 0.0
+        },
+        "terminal_share_pred": {
+          "A_CANCELLED": 0.0,
+          "A_DECLINED": 0.0,
+          "A_APPROVED": 0.0,
+          "A_REGISTERED": 0.0
+        },
+        "holdout_next_step_accuracy": 0.9368606138107417,
+        "holdout_next_step_top3": 0.986233216112532,
+        "holdout_next_step_ce": 0.42621737483524524,
+        "holdout_next_step_n": 50048,
+        "holdout_free_energy_proxy": 0.4386562582055973,
+        "policy_kind": "softmax",
+        "sim_case_duration_spearman": -0.00903555973151334,
+        "sim_wall_sec": 9.719225548004033
+      },
+      "metrics_cal": {
+        "weekly_events_mae": 565.5,
+        "weekly_events_mape": 1.0795988606496116,
+        "weekly_events_corr": 0.9430363161358982,
+        "case_duration_log_mae": 0.7303349397763162,
+        "case_duration_spearman": 0.41239517065099607,
+        "n_cases_compared": 8000,
+        "top20_action_overlap": 19,
+        "sim_events": 69804,
+        "hold_events": 50293,
+        "terminal_share_actual": {
+          "A_CANCELLED": 0.0,
+          "A_DECLINED": 0.0,
+          "A_APPROVED": 0.0,
+          "A_REGISTERED": 0.0
+        },
+        "terminal_share_pred": {
+          "A_CANCELLED": 0.0,
+          "A_DECLINED": 0.0,
+          "A_APPROVED": 0.0,
+          "A_REGISTERED": 0.0
+        },
+        "holdout_next_step_accuracy": 0.9368606138107417,
+        "holdout_next_step_top3": 0.986233216112532,
+        "holdout_next_step_ce": 0.42621737483524524,
+        "holdout_next_step_n": 50048,
+        "holdout_free_energy_proxy": 0.4386562582055973,
+        "policy_kind": "softmax",
+        "sim_case_duration_spearman": 0.41239517065099607
+      },
+      "sim_meta": {
+        "max_steps_per_case": 50,
+        "n_cases": 8000,
+        "n_hit_max_steps": 1,
+        "n_terminal_stop": 7999,
+        "timing_used": true,
+        "batch_encode": true,
+        "policy_kind": "softmax",
+        "calibrate_duration": false,
+        "latency_noise": [
+          1.0,
+          1.0
+        ],
+        "seed": 42
+      }
+    },
+    "fep_habit_only": {
+      "policy_kind": "fep_habit_only",
+      "wall_sec": 11.963344589996268,
+      "fep_cfg": {
+        "dirichlet_alpha": 0.5,
+        "gamma_precision": 1.0,
+        "preference_power": 1.0,
+        "habit_weight": 1.0,
+        "ambiguity_weight": 0.0,
+        "risk_weight": 0.0,
+        "empty_transition_entropy": 3.0,
+        "mode": "habit_only"
+      },
+      "train_metrics": {
+        "n_samples": 78556,
+        "n_actions": 38,
+        "n_outcomes": 37,
+        "n_agents": 317,
+        "n_habit_agent_contexts": 3412,
+        "n_habit_role_contexts": 337,
+        "n_trans_agent": 4161,
+        "n_trans_ctx": 799,
+        "fit_action_accuracy": 0.9507,
+        "fit_top3_accuracy": 0.9991,
+        "generative_cross_entropy": 0.2908835704606202,
+        "variational_free_energy_nats": 0.2738889768061188,
+        "mean_G_truth": 0.431013365759731,
+        "mean_risk": 0.0,
+        "mean_ambiguity": 0.0,
+        "mean_habit_term": -0.431013365759731,
+        "fep_cfg": {
+          "mode": "habit_only",
+          "dirichlet_alpha": 0.5,
+          "gamma_precision": 4.0,
+          "preference_power": 1.0,
+          "habit_weight": 1.0,
+          "ambiguity_weight": 0.0,
+          "risk_weight": 0.0,
+          "empty_transition_entropy": 3.0
+        },
+        "parity_fixes": [
+          "habit_key=(prev,amount_bin,agent) + backoff role/global",
+          "transition backoff agent→ctx",
+          "C(o|prev,amount_bin,role)",
+          "tune on fit only if tune=True"
+        ],
+        "loss_form": "G=w_r·KL(q(o'|a)||C)+w_a·H(q)−w_h·ln P_habit; π∝exp(−γG)",
+        "note": "0.6: agent-level habit; 0.5 был role-level habit (непаритет с softmax)",
+        "tune_selected": {
+          "mode": "habit_only",
+          "gamma": 1.0,
+          "risk_w": 0.0,
+          "amb_w": 0.0,
+          "habit_w": 1.0,
+          "fit_acc": 0.951
+        }
+      },
+      "metrics_raw": {
+        "weekly_events_mae": 1009.5,
+        "weekly_events_mape": 0.9422047073637272,
+        "weekly_events_corr": 0.9795073515594247,
+        "case_duration_log_mae": 1.940274499673529,
+        "case_duration_spearman": -0.010075463795302955,
+        "n_cases_compared": 8000,
+        "top20_action_overlap": 16,
+        "sim_events": 89932,
+        "hold_events": 50293,
+        "terminal_share_actual": {
+          "A_CANCELLED": 0.0,
+          "A_DECLINED": 0.0,
+          "A_APPROVED": 0.0,
+          "A_REGISTERED": 0.0
+        },
+        "terminal_share_pred": {
+          "A_CANCELLED": 0.0,
+          "A_DECLINED": 0.0,
+          "A_APPROVED": 0.0,
+          "A_REGISTERED": 0.0
+        },
+        "holdout_next_step_accuracy": 0.9355019181585678,
+        "holdout_next_step_top3": 0.9865129475703325,
+        "holdout_next_step_ce": 0.31668880984960185,
+        "holdout_next_step_n": 50048,
+        "holdout_mean_G_truth": 0.45270166460263256,
+        "holdout_variational_FE": 0.31668880984960185,
+        "policy_kind": "fep_habit_only",
+        "sim_case_duration_spearman": -0.010075463795302955,
+        "sim_wall_sec": 11.963344589996268
+      },
+      "metrics_cal": {
+        "weekly_events_mae": 875.1176470588235,
+        "weekly_events_mape": 1.2872001643564894,
+        "weekly_events_corr": 0.9339596938184876,
+        "case_duration_log_mae": 0.7303349397763162,
+        "case_duration_spearman": 0.4125821143251997,
+        "n_cases_compared": 8000,
+        "top20_action_overlap": 16,
+        "sim_events": 89932,
+        "hold_events": 50293,
+        "terminal_share_actual": {
+          "A_CANCELLED": 0.0,
+          "A_DECLINED": 0.0,
+          "A_APPROVED": 0.0,
+          "A_REGISTERED": 0.0
+        },
+        "terminal_share_pred": {
+          "A_CANCELLED": 0.0,
+          "A_DECLINED": 0.0,
+          "A_APPROVED": 0.0,
+          "A_REGISTERED": 0.0
+        },
+        "holdout_next_step_accuracy": 0.9355019181585678,
+        "holdout_next_step_top3": 0.9865129475703325,
+        "holdout_next_step_ce": 0.31668880984960185,
+        "holdout_next_step_n": 50048,
+        "holdout_mean_G_truth": 0.45270166460263256,
+        "holdout_variational_FE": 0.31668880984960185,
+        "policy_kind": "fep_habit_only",
+        "sim_case_duration_spearman": 0.4125821143251997
+      },
+      "sim_meta": {
+        "max_steps_per_case": 50,
+        "n_cases": 8000,
+        "n_hit_max_steps": 53,
+        "n_terminal_stop": 7947,
+        "timing_used": true,
+        "batch_encode": true,
+        "policy_kind": "fep_habit_only",
+        "calibrate_duration": false,
+        "latency_noise": [
+          1.0,
+          1.0
+        ],
+        "seed": 42
+      }
+    },
+    "fep_full_efe": {
+      "policy_kind": "fep_full_efe",
+      "wall_sec": 12.503430662000028,
+      "fep_cfg": {
+        "dirichlet_alpha": 0.5,
+        "gamma_precision": 2.0,
+        "preference_power": 1.0,
+        "habit_weight": 1.0,
+        "ambiguity_weight": 0.25,
+        "risk_weight": 0.25,
+        "empty_transition_entropy": 3.0,
+        "mode": "full_efe"
+      },
+      "train_metrics": {
+        "n_samples": 78556,
+        "n_actions": 38,
+        "n_outcomes": 37,
+        "n_agents": 317,
+        "n_habit_agent_contexts": 3412,
+        "n_habit_role_contexts": 337,
+        "n_trans_agent": 4161,
+        "n_trans_ctx": 799,
+        "fit_action_accuracy": 0.948375,
+        "fit_top3_accuracy": 0.998525,
+        "generative_cross_entropy": 0.22140565266366494,
+        "variational_free_energy_nats": 0.2738889768061188,
+        "mean_G_truth": 0.9435595450238392,
+        "mean_risk": 0.0,
+        "mean_ambiguity": 0.0,
+        "mean_habit_term": -0.431013365759731,
+        "fep_cfg": {
+          "mode": "habit_only",
+          "dirichlet_alpha": 0.5,
+          "gamma_precision": 4.0,
+          "preference_power": 1.0,
+          "habit_weight": 1.0,
+          "ambiguity_weight": 0.0,
+          "risk_weight": 0.0,
+          "empty_transition_entropy": 3.0
+        },
+        "parity_fixes": [
+          "habit_key=(prev,amount_bin,agent) + backoff role/global",
+          "transition backoff agent→ctx",
+          "C(o|prev,amount_bin,role)",
+          "tune on fit only if tune=True"
+        ],
+        "loss_form": "G=w_r·KL(q(o'|a)||C)+w_a·H(q)−w_h·ln P_habit; π∝exp(−γG)",
+        "note": "0.6: agent-level habit; 0.5 был role-level habit (непаритет с softmax)",
+        "tune_selected": {
+          "mode": "full_efe",
+          "gamma": 2.0,
+          "risk_w": 0.25,
+          "amb_w": 0.25,
+          "habit_w": 1.0,
+          "fit_acc": 0.949
+        }
+      },
+      "metrics_raw": {
+        "weekly_events_mae": 961.0232558139535,
+        "weekly_events_mape": 0.8401629478178849,
+        "weekly_events_corr": 0.9716190577960705,
+        "case_duration_log_mae": 2.0013371182983013,
+        "case_duration_spearman": 0.027970310377989263,
+        "n_cases_compared": 8000,
+        "top20_action_overlap": 18,
+        "sim_events": 76061,
+        "hold_events": 50293,
+        "terminal_share_actual": {
+          "A_CANCELLED": 0.0,
+          "A_DECLINED": 0.0,
+          "A_APPROVED": 0.0,
+          "A_REGISTERED": 0.0
+        },
+        "terminal_share_pred": {
+          "A_CANCELLED": 0.0,
+          "A_DECLINED": 0.0,
+          "A_APPROVED": 0.0,
+          "A_REGISTERED": 0.0
+        },
+        "holdout_next_step_accuracy": 0.9349224744245525,
+        "holdout_next_step_top3": 0.98909047314578,
+        "holdout_next_step_ce": 0.29186538708784887,
+        "holdout_next_step_n": 50048,
+        "holdout_mean_G_truth": 0.9406677840552848,
+        "holdout_variational_FE": 0.29186538708784887,
+        "policy_kind": "fep_full_efe",
+        "sim_case_duration_spearman": 0.027970310377989263,
+        "sim_wall_sec": 12.503430662000028
+      },
+      "metrics_cal": {
+        "weekly_events_mae": 624.1509433962265,
+        "weekly_events_mape": 1.3674012126144548,
+        "weekly_events_corr": 0.9345282832628979,
+        "case_duration_log_mae": 0.7303349397763162,
+        "case_duration_spearman": 0.41264583588215387,
+        "n_cases_compared": 8000,
+        "top20_action_overlap": 18,
+        "sim_events": 76061,
+        "hold_events": 50293,
+        "terminal_share_actual": {
+          "A_CANCELLED": 0.0,
+          "A_DECLINED": 0.0,
+          "A_APPROVED": 0.0,
+          "A_REGISTERED": 0.0
+        },
+        "terminal_share_pred": {
+          "A_CANCELLED": 0.0,
+          "A_DECLINED": 0.0,
+          "A_APPROVED": 0.0,
+          "A_REGISTERED": 0.0
+        },
+        "holdout_next_step_accuracy": 0.9349224744245525,
+        "holdout_next_step_top3": 0.98909047314578,
+        "holdout_next_step_ce": 0.29186538708784887,
+        "holdout_next_step_n": 50048,
+        "holdout_mean_G_truth": 0.9406677840552848,
+        "holdout_variational_FE": 0.29186538708784887,
+        "policy_kind": "fep_full_efe",
+        "sim_case_duration_spearman": 0.41264583588215387
+      },
+      "sim_meta": {
+        "max_steps_per_case": 50,
+        "n_cases": 8000,
+        "n_hit_max_steps": 10,
+        "n_terminal_stop": 7990,
+        "timing_used": true,
+        "batch_encode": true,
+        "policy_kind": "fep_full_efe",
+        "calibrate_duration": false,
+        "latency_noise": [
+          1.0,
+          1.0
+        ],
+        "seed": 42
+      }
+    }
+  },
+  "comparison": {
+    "next_step_accuracy": {
+      "softmax": 0.9368606138107417,
+      "fep_habit_only": 0.9355019181585678,
+      "fep_full_efe": 0.9349224744245525
+    },
+    "top3_accuracy": {
+      "softmax": 0.986233216112532,
+      "fep_habit_only": 0.9865129475703325,
+      "fep_full_efe": 0.98909047314578
+    },
+    "weekly_events_corr": {
+      "softmax": 0.9662901205314159,
+      "fep_habit_only": 0.9795073515594247,
+      "fep_full_efe": 0.9716190577960705
+    },
+    "cross_entropy": {
+      "softmax": 0.42621737483524524,
+      "fep_habit_only": 0.31668880984960185,
+      "fep_full_efe": 0.29186538708784887
+    },
+    "sim_wall_sec": {
+      "softmax": 9.719225548004033,
+      "fep_habit_only": 11.963344589996268,
+      "fep_full_efe": 12.503430662000028
+    }
+  },
+  "winner_next_step": "softmax",
+  "winner_weekly": "fep_habit_only",
+  "decisions": [
+    "BPIC2019: ingest обобщён (amount/roles/filters/subsample)",
+    "Subsample для сопоставимого wall-time",
+    "Timing — Ridge sidecar, не приоритет",
+    "Контур=simulator; scripts/run_simulator.py (версия 0.9.0)",
+    "package_version=0.10.0",
+    "Фильтр донора: {'time_from': '2018-01-01 00:00:00+00:00', 'cases_after_time_filter': 251470, 'events_after_time_filter': 1587925}",
+    "Subsample кейсов: {'seed': 42, 'fit_cases_sampled': 12000, 'hold_cases_sampled': 8000, 'fit_cases': 12000, 'hold_cases': 8000, 'fit_events': 78556, 'hold_events': 50293}",
+    "FEP habit selected: {'mode': 'habit_only', 'gamma': 1.0, 'risk_w': 0.0, 'amb_w': 0.0, 'habit_w': 1.0, 'fit_acc': 0.951}",
+    "FEP full selected: {'mode': 'full_efe', 'gamma': 2.0, 'risk_w': 0.25, 'amb_w': 0.25, 'habit_w': 1.0, 'fit_acc': 0.949}",
+    "Победитель next-step: softmax",
+    "Победитель weekly_corr: fep_habit_only"
+  ],
+  "failures": [
+    {
+      "id": "SPLIT_NOT_7_3",
+      "severity": "critical_limitation",
+      "detail": "split 3+2, цель 7+3"
+    }
+  ],
+  "notes_ru": "0.9.0: третий организм BPIC2019 (закупки NL). Фильтр с 2018-01-01; subsample 12k+8k; amount=Cumulative net worth (EUR); роли procurement.",
+  "notes_zh": "0.9.0：第三数据源 BPIC2019（荷兰采购）。自 2018-01-01 过滤；子采样 12k+8k；金额=Cumulative net worth (EUR)；角色 procurement。"
+}

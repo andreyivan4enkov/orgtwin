@@ -1,0 +1,48 @@
+{
+  "version": "0.8.1",
+  "require_package_version": "0.10.0",
+  "recipe": "agent_rules",
+  "donor": {
+    "id": "SEPSIS2016",
+    "doi": "10.4121/uuid:915d2bfb-7e84-49ad-a286-dc35f063a460",
+    "xes_path": "data/raw/Sepsis_Cases_Event_Log.xes"
+  },
+  "notes_ru": "0.8.1: Sepsis Cases (NL hospital ERP). 16 активностей, циклы ER→лаборатория→release. Агент=org:group, контекст=Age. Split 7+3 мес. Проверка гипотезы: детерминированный медлог → высокий next-step на holdout.",
+  "decisions_seed": [
+    "Медицинский донор #2: Sepsis, не склеивать с Hospital2011/BPIC2012",
+    "role_mode=agent: мембрана = отделение (org:group)"
+  ],
+  "experiment": {
+    "donor_id": "SEPSIS2016",
+    "donor_doi": "10.4121/uuid:915d2bfb-7e84-49ad-a286-dc35f063a460",
+    "split": {
+      "fit_months": 7,
+      "holdout_months": 3,
+      "target_fit_months": 7,
+      "target_holdout_months": 3
+    },
+    "policy": {
+      "lambda_entropy": 0.05,
+      "max_iter": 250,
+      "C": 1.0,
+      "random_state": 42,
+      "solver": "saga",
+      "tol": 0.001,
+      "prune_min_support": 0
+    },
+    "donor_adapt": {
+      "agent_column": "org:group",
+      "context_column": "Age",
+      "role_mode": "agent",
+      "count_min_support": 3,
+      "compare_softmax": true,
+      "run_sim": false,
+      "min_input_support": 15,
+      "min_unique_action_support": 20,
+      "unique_share": 0.75,
+      "top1_stuck_threshold": 0.85
+    },
+    "sim": {"max_steps_per_case": 40, "seed": 42},
+    "eval": {"top_k_actions": 20, "next_step_top_k": 3}
+  }
+}

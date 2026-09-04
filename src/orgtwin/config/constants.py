@@ -61,10 +61,13 @@ class TimingConfig:
 
 @dataclass(frozen=True)
 class SimConfig:
-    max_steps_per_case: int = 40  # ПОДОЗРЕНИЕ: обрезает длинные кейсы
+    max_steps_per_case: int = 40  # обрезает длинные кейсы в legacy batch-режиме
     seed: int = 42
-    # hand-over stay mass = sum(outgoing) — эвристика v1, не из данных напрямую
-    # в softmax.py: stay = s; probs[a]=stay/(s+stay)
+    # --- честный DES (queue_des) ---
+    queue_mode: bool = False
+    agent_capacity: int = 1
+    input_flow_multiplier: float = 1.0
+    max_sim_horizon_sec: float | None = None  # обрезка горизонта (сек сим-времени)
 
 
 @dataclass(frozen=True)
@@ -90,6 +93,22 @@ class FEPPolicyConfig:
 
 
 @dataclass(frozen=True)
+class DonorAdaptConfig:
+    """Как читать агента и видимую информацию с конкретного лога."""
+
+    agent_column: str = "org:resource"
+    context_column: str = ""  # пусто = авто (AMOUNT_REQ / Age)
+    role_mode: str = "activity_prefix"  # activity_prefix | agent | specialism
+    count_min_support: int = 3
+    compare_softmax: bool = True
+    run_sim: bool = False
+    min_input_support: int = 20
+    min_unique_action_support: int = 30
+    unique_share: float = 0.8
+    top1_stuck_threshold: float = 0.8
+
+
+@dataclass(frozen=True)
 class ExperimentConfig:
     donor_id: str = "BPIC2012"
     donor_doi: str = "10.4121/uuid:3926db30-f712-4394-aebc-75976070e91f"
@@ -99,6 +118,7 @@ class ExperimentConfig:
     timing: TimingConfig = TimingConfig()
     sim: SimConfig = SimConfig()
     eval: EvalConfig = EvalConfig()
+    donor_adapt: DonorAdaptConfig = DonorAdaptConfig()
 
     def to_dict(self) -> dict:
         return asdict(self)

@@ -1,0 +1,43 @@
+{
+  "version": "0.8.6",
+  "contour": "diagnostic",
+  "require_package_version": "0.10.0",
+  "recipe": "agent_rules",
+  "donor": {
+    "id": "SEPSIS2016",
+    "doi": "10.4121/uuid:915d2bfb-7e84-49ad-a286-dc35f063a460",
+    "xes_path": "data/raw/Sepsis_Cases_Event_Log.xes"
+  },
+  "notes_ru": "0.8.6: Sepsis Cases; исправлено исключение агент-идентификаторов (org:resource/org:group) при поиске changed Information-полей.",
+  "notes_zh": "0.8.6：Sepsis Cases；修复 changed 信息字段时的标识符排除（org:resource/org:group）。",
+  "decisions_seed": [
+    "Следующий естественный шаг: на ребре A→B посчитать changed Information fields между event i и i+1 внутри кейса.",
+    "Контур diagnostic: agent_rules (счётчики + A/B softmax по CE)."
+  ],
+  "experiment": {
+    "donor_id": "SEPSIS2016",
+    "donor_doi": "10.4121/uuid:915d2bfb-7e84-49ad-a286-dc35f063a460",
+    "split": {
+      "fit_months": 7,
+      "holdout_months": 3,
+      "target_fit_months": 7,
+      "target_holdout_months": 3
+    },
+    "donor_adapt": {
+      "agent_column": "org:group",
+      "context_column": "Age",
+      "role_mode": "agent",
+      "count_min_support": 3,
+      "compare_softmax": true,
+      "run_sim": false,
+      "min_input_support": 15,
+      "min_unique_action_support": 20,
+      "unique_share": 0.75,
+      "top1_stuck_threshold": 0.85
+    },
+    "policy": {
+      "prune_min_support": 0
+    }
+  }
+}
+

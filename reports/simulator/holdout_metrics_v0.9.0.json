@@ -1,0 +1,126 @@
+{
+  "comparison": {
+    "next_step_accuracy": {
+      "softmax": 0.9368606138107417,
+      "fep_habit_only": 0.9355019181585678,
+      "fep_full_efe": 0.9349224744245525
+    },
+    "top3_accuracy": {
+      "softmax": 0.986233216112532,
+      "fep_habit_only": 0.9865129475703325,
+      "fep_full_efe": 0.98909047314578
+    },
+    "weekly_events_corr": {
+      "softmax": 0.9662901205314159,
+      "fep_habit_only": 0.9795073515594247,
+      "fep_full_efe": 0.9716190577960705
+    },
+    "cross_entropy": {
+      "softmax": 0.42621737483524524,
+      "fep_habit_only": 0.31668880984960185,
+      "fep_full_efe": 0.29186538708784887
+    },
+    "sim_wall_sec": {
+      "softmax": 9.719225548004033,
+      "fep_habit_only": 11.963344589996268,
+      "fep_full_efe": 12.503430662000028
+    }
+  },
+  "arms_raw": {
+    "softmax": {
+      "weekly_events_mae": 880.7209302325581,
+      "weekly_events_mape": 0.8504193647310347,
+      "weekly_events_corr": 0.9662901205314159,
+      "case_duration_log_mae": 1.9575357391764854,
+      "case_duration_spearman": -0.00903555973151334,
+      "n_cases_compared": 8000,
+      "top20_action_overlap": 19,
+      "sim_events": 69804,
+      "hold_events": 50293,
+      "terminal_share_actual": {
+        "A_CANCELLED": 0.0,
+        "A_DECLINED": 0.0,
+        "A_APPROVED": 0.0,
+        "A_REGISTERED": 0.0
+      },
+      "terminal_share_pred": {
+        "A_CANCELLED": 0.0,
+        "A_DECLINED": 0.0,
+        "A_APPROVED": 0.0,
+        "A_REGISTERED": 0.0
+      },
+      "holdout_next_step_accuracy": 0.9368606138107417,
+      "holdout_next_step_top3": 0.986233216112532,
+      "holdout_next_step_ce": 0.42621737483524524,
+      "holdout_next_step_n": 50048,
+      "holdout_free_energy_proxy": 0.4386562582055973,
+      "policy_kind": "softmax",
+      "sim_case_duration_spearman": -0.00903555973151334,
+      "sim_wall_sec": 9.719225548004033
+    },
+    "fep_habit_only": {
+      "weekly_events_mae": 1009.5,
+      "weekly_events_mape": 0.9422047073637272,
+      "weekly_events_corr": 0.9795073515594247,
+      "case_duration_log_mae": 1.940274499673529,
+      "case_duration_spearman": -0.010075463795302955,
+      "n_cases_compared": 8000,
+      "top20_action_overlap": 16,
+      "sim_events": 89932,
+      "hold_events": 50293,
+      "terminal_share_actual": {
+        "A_CANCELLED": 0.0,
+        "A_DECLINED": 0.0,
+        "A_APPROVED": 0.0,
+        "A_REGISTERED": 0.0
+      },
+      "terminal_share_pred": {
+        "A_CANCELLED": 0.0,
+        "A_DECLINED": 0.0,
+        "A_APPROVED": 0.0,
+        "A_REGISTERED": 0.0
+      },
+      "holdout_next_step_accuracy": 0.9355019181585678,
+      "holdout_next_step_top3": 0.9865129475703325,
+      "holdout_next_step_ce": 0.31668880984960185,
+      "holdout_next_step_n": 50048,
+      "holdout_mean_G_truth": 0.45270166460263256,
+      "holdout_variational_FE": 0.31668880984960185,
+      "policy_kind": "fep_habit_only",
+      "sim_case_duration_spearman": -0.010075463795302955,
+      "sim_wall_sec": 11.963344589996268
+    },
+    "fep_full_efe": {
+      "weekly_events_mae": 961.0232558139535,
+      "weekly_events_mape": 0.8401629478178849,
+      "weekly_events_corr": 0.9716190577960705,
+      "case_duration_log_mae": 2.0013371182983013,
+      "case_duration_spearman": 0.027970310377989263,
+      "n_cases_compared": 8000,
+      "top20_action_overlap": 18,
+      "sim_events": 76061,
+      "hold_events": 50293,
+      "terminal_share_actual": {
+        "A_CANCELLED": 0.0,
+        "A_DECLINED": 0.0,
+        "A_APPROVED": 0.0,
+        "A_REGISTERED": 0.0
+      },
+      "terminal_share_pred": {
+        "A_CANCELLED": 0.0,
+        "A_DECLINED": 0.0,
+        "A_APPROVED": 0.0,
+        "A_REGISTERED": 0.0
+      },
+      "holdout_next_step_accuracy": 0.9349224744245525,
+      "holdout_next_step_top3": 0.98909047314578,
+      "holdout_next_step_ce": 0.29186538708784887,
+      "holdout_next_step_n": 50048,
+      "holdout_mean_G_truth": 0.9406677840552848,
+      "holdout_variational_FE": 0.29186538708784887,
+      "policy_kind": "fep_full_efe",
+      "sim_case_duration_spearman": 0.027970310377989263,
+      "sim_wall_sec": 12.503430662000028
+    }
+  }
+}

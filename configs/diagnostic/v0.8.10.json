@@ -1,0 +1,41 @@
+{
+  "version": "0.8.10",
+  "contour": "diagnostic",
+  "require_package_version": "0.11.0",
+  "recipe": "agent_rules",
+  "donor": {
+    "id": "HOSPITAL2011",
+    "doi": "10.4121/uuid:d9769f3d-0ab0-4fb8-803b-0d1120ffcf54",
+    "xes_path": "data/raw/Hospital_log.xes"
+  },
+  "notes_ru": "0.8.10: Hospital 2011; глобальная сводка мутаций Information по всем directed рёбрам (не только top-15).",
+  "decisions_seed": [
+    "Сводка mutation по всем ненулевым рёбрам: доля, mass, tertile handover_count.",
+    "Контур diagnostic: agent_rules (счётчики + A/B softmax по CE)."
+  ],
+  "experiment": {
+    "donor_id": "HOSPITAL2011",
+    "donor_doi": "10.4121/uuid:d9769f3d-0ab0-4fb8-803b-0d1120ffcf54",
+    "split": {
+      "fit_months": 7,
+      "holdout_months": 3,
+      "target_fit_months": 7,
+      "target_holdout_months": 3
+    },
+    "donor_adapt": {
+      "agent_column": "org:group",
+      "context_column": "case:Age",
+      "role_mode": "specialism",
+      "count_min_support": 3,
+      "compare_softmax": true,
+      "run_sim": false,
+      "min_input_support": 20,
+      "min_unique_action_support": 30,
+      "unique_share": 0.8,
+      "top1_stuck_threshold": 0.8
+    },
+    "policy": {
+      "prune_min_support": 0
+    }
+  }
+}

@@ -4,11 +4,20 @@ __pycache__/
 .DS_Store
 data/raw/*.xes
 data/raw/*.xes.gz
+data/derived/bpic2019_events.pkl
+data/derived/ui_cache/
 *.egg-info/
 .pytest_cache/
 dist/
 build/
 .eggs/
+web/node_modules/
+web/dist/
+
+# Локальные загрузки и снимки пользователя
+data/uploads/
+data/derived/snapshots/
+data/derived/ui_cache/
 
 # Локальные концепт-доки (не в репозиторий)
 Аудит*.md

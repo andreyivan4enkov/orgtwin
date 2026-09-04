@@ -2,82 +2,92 @@
 
 | | |
 |---|---|
-| **RU** | Цифровой двойник операционного организма компании |
-| **中文** | 企业运营过程的数字孪生 |
+| **RU** | Цифровой двойник операционного организма — **два независимых контура** |
+| **中文** | 企业运营数字孪生 — **两条独立轨道** |
+
+Подробно: [docs/CONTOURS.md](docs/CONTOURS.md).
 
 ---
 
-## Описание / 说明
+## Диагност (коммерческий контур)
 
-### Русский
+Из событийного лога: **локальные правила** \(P(\text{действие}\mid\text{вход}, \text{агент})\), holdout next-step, **застревание** и незаменимые действия.
 
-OrgTwin моделирует одну организацию по событийному логу: агенты (`org:resource`), примитивы **Information** и **Action**, симуляция In Silico, проверка на holdout.
-
-**Донор всех прогонов v0.x:** BPI Challenge 2012 (один финансовый институт). DOI: `data/raw/SOURCE.md`. Split fit/holdout: **3+2 месяца** (лог ≈5.5 мес; целевой протокол 7+3 не применялся).
-
-**Что воспроизводится скриптами:** обучение политики, симуляция кейсов holdout, метрики next-step / weekly / длительности, журнал в `reports/LAB_JOURNAL.md`.
-
-**Правило версий:** каждый эксперимент — новая semver-версия; старые `reports/run_v*` не переписываются.
-
-### 中文
-
-OrgTwin 基于单一组织的事件日志建模：智能体（`org:resource`）、原语 **Information** 与 **Action**、In Silico 仿真，并在 holdout 上评测。
-
-**v0.x 全部实验的数据源：** BPI Challenge 2012（同一金融机构）。DOI 见 `data/raw/SOURCE.md`。划分：**训练 3 个月 + holdout 2 个月**（日志约 5.5 个月；未使用目标协议 7+3）。
-
-**脚本可复现内容：** 策略训练、holdout 案例仿真、next-step / 周负荷 / 时长指标，记录见 `reports/LAB_JOURNAL.md`。
-
-**版本规则：** 每次实验对应新的 semver；不回写旧的 `reports/run_v*`。
-
-Текущая версия / 当前版本: **0.7.0** (`VERSION`, [CHANGELOG.md](CHANGELOG.md)).
-
-Долг: [reports/TECH_DEBT.md](reports/TECH_DEBT.md).
-
----
-
-## Факты по метрикам (holdout, BPIC2012) / 实测指标
-
-Числа из `reports/run_v*.md` и `reports/holdout_metrics_*.json`. Округление для читаемости; точные значения — в артефактах.
-
-| Версия | Политика | next-step acc | top-3 | weekly_corr | Примечание / 备注 |
-|--------|----------|---------------|-------|-------------|-------------------|
-| 0.1.0 | счётчики | — | — | **−0.48** | Относительное время сима |
-| 0.2.0 | softmax | **0.551** | **0.911** | **0.955** | |
-| 0.3.0 | softmax + Ridge(dt) | **0.550** | **0.911** | **0.873** | sum(dt) Spearman ≈ 0; case-head ≈ 0.229 |
-| 0.4.0 | softmax + батч-сима | **0.550** | **0.911** | **0.922** (raw) | калибровка dur Spearman **0.224**; стресс top-3 |
-| 0.5.0 | softmax vs FEP (role habit) | SM **0.550** / FEP **0.466** | SM **0.911** / FEP **0.847** | SM **0.922** / FEP **0.868** | FEP без паритета agent |
-| 0.6.0 | softmax vs FEP (agent habit) | SM **0.550** / habit **0.551** / full **0.548** | SM **0.911** / h **0.902** / f **0.906** | SM **0.922** / h·f **0.861** | FEP 0.5→habit next **+0.085** |
-| 0.7.0 | тот же рецепт через `run_experiment.py` | см. `reports/run_v0.7.0.md` | | | единый entrypoint + JSON |
-
----
-
-## Быстрый старт / 快速开始
+Softmax здесь — `LogisticRegression` на `(prev, amount_bin, agent)`, не LLM. Вторая политика (softmax) только если CE на holdout лучше счётчиков.
 
 ```bash
-python3 -m venv .venv
-.venv/bin/pip install -e .
-.venv/bin/python scripts/download_bpic2012.py
-.venv/bin/python scripts/run_experiment.py --config configs/experiments/v0.7.0.json
+python3 -m venv .venv && .venv/bin/pip install -e .
+.venv/bin/python scripts/download_hospital2011.py
+.venv/bin/python scripts/run_diagnostic.py --config configs/diagnostic/v0.8.0.json
 ```
 
-Версия эксперимента = JSON в `configs/experiments/`. Старые копии — `scripts/legacy/`.
+Отчёты: `reports/diagnostic/`. Эталон: [reports/diagnostic/run_v0.8.0.md](reports/diagnostic/run_v0.8.0.md) (Hospital, next **0.629**, диагност локальных минимумов).
 
-
-Журнал / 日志: `reports/LAB_JOURNAL.md`.
-
----
-
-## Структура / 目录
-
-- `src/orgtwin/` — ядро / 核心
-- `scripts/run_vX_Y_Z.py` — прогон версии / 版本跑数脚本
-- `reports/` — метрики (не SoT кода) / 指标产物
-- `data/raw/` — донор; крупные `.xes` в git не входят / 原始数据（大 XES 不入库）
+**Не входит:** FEP, симуляция нагрузки, timing, ×2 поток (нет слота занятости).
 
 ---
 
-## Публикация на GitHub / GitHub 发布约定
+## Симулятор (научный контур)
 
-При каждом push/релизе описание обновляется **на русском и отдельно на китайском**, только факты: что работает, что тестировали, что изменилось в версии. Спекуляции и прогнозы не пишем.
+R&D: softmax vs FEP, Ridge(dt) — **legacy batch-sim**. Честный стресс нагрузки — **очередь** (v0.10).
 
-每次向 GitHub 推送或发版时，说明必须同时提供**俄文**与**中文**，且仅陈述事实：能做什么、测了什么、该版本改了什么。不写臆测与展望。
+```bash
+.venv/bin/python scripts/download_bpic2012.py
+.venv/bin/python scripts/run_simulator.py --config configs/simulator/v0.7.0.json   # legacy
+.venv/bin/python scripts/run_queue_stress.py   # ×1 vs ×2, метрика max_queue
+```
+
+Документация: [docs/SIMULATOR_HONEST.md](docs/SIMULATOR_HONEST.md). История решений: [docs/HISTORY.md](docs/HISTORY.md).
+
+Отчёты: `reports/simulator/`. Архив v0.1–v0.7 — в корне `reports/`.
+
+---
+
+## Версия
+
+**0.11.0** — полный PoC: диагност + очередь ×1/×2/слот+1 ([CHANGELOG.md](CHANGELOG.md)).
+
+```bash
+.venv/bin/python scripts/run_poc.py
+# отчёт: reports/poc/POC.md
+```
+
+---
+
+## Веб-интерфейс
+
+Самохостируемый UI: карта организма, правила агентов, поток кейсов, срезы нагрузки, режим проектирования.
+Спека: [docs/UI_SPEC.md](docs/UI_SPEC.md).
+
+```bash
+# API
+.venv/bin/pip install -e .
+.venv/bin/uvicorn apps.api.main:app --reload --app-dir . --port 8000
+
+# UI (прокси /api → :8000)
+cd web && npm install && npm run dev
+# http://127.0.0.1:5173
+```
+
+Или целиком:
+
+```bash
+docker compose up --build
+# UI http://127.0.0.1:8080  ·  API http://127.0.0.1:8000/api/health
+```
+
+Доноры: BPIC2012 / BPIC2019 / Hospital (файлы в `data/raw/`).
+
+---
+
+## Структура
+
+| Путь | Назначение |
+|------|------------|
+| `src/orgtwin/policy/counts.py`, `diag/local_minima.py` | Диагност |
+| `src/orgtwin/sim/queue_des.py`, `sim/engine.py` | Симулятор (очередь + legacy) |
+| `configs/diagnostic/`, `configs/simulator/` | Конфиги по контурам |
+| `scripts/run_diagnostic.py`, `run_simulator.py` | Точки входа |
+| `data/raw/SOURCE.md` | Доноры |
+
+При push/релизе: описание **RU + 中文**, только фacts.

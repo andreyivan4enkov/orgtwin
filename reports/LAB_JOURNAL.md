@@ -319,3 +319,141 @@
 
 ### Артефакты
 - `reports/run_v0.7.0.md`, `run_v0.7.0_full.json`
+
+
+---
+
+## v0.8.0 — run_experiment (2026-09-03T13:51:25.316960+00:00)
+
+### Изменения
+- Единый entrypoint; конфиг: `configs/experiments/v0.8.0.json`
+- Рецепт: agent_rules
+
+### Holdout
+- winner_next=softmax; winner_weekly=None
+- comparison={"next_step_accuracy": {"counts": 0.6243750946826239, "softmax": 0.629450083320709}, "top3_accuracy": {"counts": 0.849871231631571, "softmax": 0.861687623087411}, "cross_entropy": {"counts": 2.2233572535629285, "softmax": 1.2965110799102615}, "n": {"counts": 13202, "softmax": 13202}}
+
+### Решения
+- Срез обвязки: FEP / case-head / stress / prune вне критического пути
+- Второй организм: HOSPITAL2011, не склеивать с BPIC2012
+- Прогон recipe=agent_rules через run_experiment.py (версия 0.8.0)
+- package_version=0.8.0
+- FEP / case-head / stress top-3 / prune_min_support вне критического пути
+- λ не входит в обучение; softmax — только A/B по CE holdout
+- Softmax CE holdout лучше счётчиков (1.2965 < 2.2234) — политика = softmax
+- Диагностика: агентов=33, незаменимых частых действий (уник. носитель)=61
+
+### Артефакты
+- `reports/run_v0.8.0.md`, `run_v0.8.0_full.json`
+
+---
+
+## v0.9.1 — разделение контуров (2026-09-03)
+
+### Изменения
+- `run_diagnostic.py` / `run_simulator.py`; `configs/diagnostic/`, `configs/simulator/`
+- `docs/CONTOURS.md` — факт / продукт / R&D
+
+### Решения
+- Диагност (Hospital v0.8.0) ≠ симулятор (BPIC2012 legacy)
+- `run_experiment.py` — legacy с DeprecationWarning
+
+---
+
+## v0.9.0 — BPIC2019 (2026-09-03)
+
+### Изменения
+- Третий донор: BPIC2019 (закупки NL), `configs/simulator/v0.9.0.json`
+- Ingest: filter с 2018-01-01, subsample 12k+8k, amount=`Cumulative net worth (EUR)`, roles=procurement
+
+### Holdout (subsample 8k кейсов)
+| | softmax | fep_habit | fep_full |
+|--|---------|-----------|----------|
+| next-step | **0.937** | 0.936 | 0.935 |
+| top-3 | 0.986 | 0.987 | 0.989 |
+| weekly_corr | 0.966 | **0.980** | 0.972 |
+
+### Решения
+- На BPIC2019 процесс детерминированнее BPIC2012 (next ~0.94 vs ~0.55)
+- FEP не выигрывает next-step; weekly лучше у habit — как на BPIC2012, не KPI продукта
+- Wall: parse XES 136s, sim ~10s/рука
+
+### Артефакты
+- `reports/simulator/run_v0.9.0.md`, `holdout_metrics_v0.9.0.json`
+
+---
+
+## v0.10.0 — queue_des (2026-09-03)
+
+### Изменения
+- `src/orgtwin/sim/queue_des.py`: capacity, FIFO, `input_flow_multiplier`
+- `SimConfig.queue_mode`; `engine.simulate_batch` делегирует при `queue_mode=true`
+- `scripts/run_queue_stress.py`
+
+### Holdout (BPIC2012, 5658 кейсов)
+| поток | max_queue (агент 112) | max_queue_any |
+|-------|----------------------|---------------|
+| ×1 | 4236 | 4236 |
+| ×2 | 9905 | 9905 |
+
+### Решения
+- Метрика нагрузки = **длина очереди**, не Σdt / case-head
+- Service time = `latency_sec` из fit, без Ridge
+- Удалён `run_v0_6_0.py`, кэш `bpic2019_events.pkl`
+
+### Артефакты
+- `reports/simulator/run_v0.10.0-queue.md`, `queue_stress_bpic2012.json`
+- `docs/SIMULATOR_HONEST.md`, `docs/HISTORY.md`
+
+---
+
+## v0.10.1 — queue stress BPIC2019 (2026-09-03)
+
+### Holdout (8k кейсов, subsample)
+| поток | max_queue (NONE) | max_queue_any |
+|-------|------------------|---------------|
+| ×1 | 4568 | 4568 |
+| ×2 | 9150 | 9150 |
+
+### Решения
+- `run_queue_stress.py --config` для любого донора
+- Починка overflow: cap service time (dt_max), auto horizon, safe timestamps
+
+### Артефакты
+- `reports/simulator/queue_stress_bpic2019.json`, `run_v0.10.1-queue-bpic2019.md`
+
+---
+
+## v0.11.0 — full PoC (2026-09-03)
+
+### Holdout BPIC2012
+- counts next=0.546 / softmax=0.550; top-3 0.892 / 0.911
+- queue ×1 max=4281 (агент 112); ×2 max=9958; ×2+слот1 max=8555
+
+### Решения
+- Ghost NONE/UNKNOWN не KPI узкого места
+- PoC = диагност + очередь + сценарий найма слота
+
+### Артефакты
+- `reports/poc/POC.md`, `poc_v0.11.0.json`
+
+---
+
+## diagnostic 0.8.8–0.8.10 — мутации Information по всем рёбрам (2026-09-03)
+
+### Изменения
+- `diagnose_edge_field`: блок `mutation` (доля рёбер/handover, mass, tertile, глобальный топ полей).
+- Исключены `org:resource` / `org:group` из кандидатов Information.
+
+### Факт
+| Донор | рёбра с мутацией | handover с мутацией |
+|---|---|---|
+| Sepsis 0.8.8 | 49/144 | 2640/3262 (81%) |
+| BPIC2012 0.8.9 | 0/1694 | 0/35448 |
+| Hospital 0.8.10 | 184/184 | 8582/8582 |
+
+BPIC кандидаты только `case:REG_DATE`, `case:AMOUNT_REQ`. Hospital 100% тянет `Producer code` (алиас смены группы).
+
+### Артефакты
+- `reports/diagnostic/EDGE_CHANGED_FIELDS_COMPARISON.md`
+- `run_v0.8.8.md`, `run_v0.8.9.md`, `run_v0.8.10.md`

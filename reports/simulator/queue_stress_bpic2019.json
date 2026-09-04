@@ -1,0 +1,105 @@
+{
+  "version": "0.10.1",
+  "contour": "simulator",
+  "engine": "queue_des",
+  "donor": "BPIC2019",
+  "config": "configs/simulator/v0.9.0.json",
+  "split_meta": {
+    "t0": "2018-01-01 02:42:00+00:00",
+    "t1": "2020-04-09 21:59:00+00:00",
+    "fit_end": "2018-04-01 02:42:00+00:00",
+    "hold_end": "2018-06-01 02:42:00+00:00",
+    "fit_cases": 12000,
+    "hold_cases": 8000,
+    "fit_events": 78556,
+    "hold_events": 50293,
+    "fit_months": 3,
+    "holdout_months": 2,
+    "seed": 42,
+    "fit_cases_sampled": 12000,
+    "hold_cases_sampled": 8000
+  },
+  "results": {
+    "flow_x1": {
+      "wall_sec": 201.06821957899956,
+      "max_queue_any": 4568,
+      "sum_final_queue": 0,
+      "n_events": 69622,
+      "top_agents_by_max_queue": [
+        [
+          "NONE",
+          4568
+        ],
+        [
+          "user_002",
+          1086
+        ],
+        [
+          "user_040",
+          686
+        ],
+        [
+          "user_057",
+          542
+        ],
+        [
+          "user_045",
+          457
+        ],
+        [
+          "user_036",
+          406
+        ],
+        [
+          "user_038",
+          330
+        ],
+        [
+          "user_147",
+          284
+        ]
+      ]
+    },
+    "flow_x2": {
+      "wall_sec": 422.1164568219974,
+      "max_queue_any": 9150,
+      "sum_final_queue": 0,
+      "n_events": 138051,
+      "top_agents_by_max_queue": [
+        [
+          "NONE",
+          9150
+        ],
+        [
+          "user_002",
+          2118
+        ],
+        [
+          "user_040",
+          1386
+        ],
+        [
+          "user_057",
+          1085
+        ],
+        [
+          "user_045",
+          921
+        ],
+        [
+          "user_036",
+          828
+        ],
+        [
+          "user_038",
+          671
+        ],
+        [
+          "user_178",
+          645
+        ]
+      ]
+    }
+  },
+  "note": "×2 = дублирование кейсов на тех же arrival times; метрика — очередь"
+}

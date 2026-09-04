@@ -11,6 +11,81 @@
 
 ---
 
+---
+
+---
+
+---
+
+## [0.11.0] — 2026-09-03
+
+### Русский
+
+- Полный PoC: диагност (counts + softmax + local_minima) и честная очередь ×1 / ×2 / слот+1 в одном прогоне.
+- `queue_des`: фильтр ghost-агентов (`NONE`/`UNKNOWN`), `capacity_overrides`.
+- Entrypoint: `scripts/run_poc.py` → `reports/poc/POC.md`.
+
+### 中文
+
+- 完整 PoC：诊断 + 诚实队列 ×1/×2/+1 槽；过滤 NONE/UNKNOWN。
+
+---
+
+## [0.10.0] — 2026-09-03
+
+### Русский
+
+- **Честный симулятор:** `src/orgtwin/sim/queue_des.py` — DES с `agent_capacity`, FIFO-очередью, `input_flow_multiplier` (×2 поток).
+- Время обслуживания = `policy.latency_sec` (медиана из fit), **без** Ridge/case-head.
+- `SimConfig.queue_mode` в `engine.py`; `calibrate_duration` запрещён при очереди.
+- Скрипт: `scripts/run_queue_stress.py` (BPIC2012, сравнение ×1 vs ×2).
+- Документация: `docs/SIMULATOR_HONEST.md`, `docs/HISTORY.md`, `reports/README.md`.
+- Уборка: удалён `scripts/run_v0_6_0.py`, кэш `bpic2019_events.pkl` (пересобирается при необходимости).
+
+### 中文
+
+- **诚实队列仿真**：容量槽、FIFO、输入流量倍增；服务时间来自日志 latency，不用 Ridge/case-head 校准。
+
+---
+
+## [0.9.1] — 2026-09-03
+
+### Русский
+
+- Физическое разделение: **диагност** (`run_diagnostic.py`, `configs/diagnostic/`, `reports/diagnostic/`) vs **симулятор** (`run_simulator.py`, `configs/simulator/`).
+- Документ: `docs/CONTOURS.md` — три слоя (факт / продукт / R&D).
+- `run_experiment.py` — legacy с предупреждением.
+
+### 中文
+
+- 物理分离：**诊断轨**与**仿真轨**（独立配置、报告目录、入口脚本）。
+- 说明见 `docs/CONTOURS.md`。
+
+---
+
+## [0.8.0] — 2026-09-03
+
+### Русский
+
+#### Изменено
+- Критический путь: `recipe=agent_rules` — счётчики `P(действие|prev,контекст,агент)` с backoff; softmax только если CE на holdout лучше.
+- FEP, калибровка длительности, стресс top-3, прунинг `min_support=30` — не в этом рецепте.
+- Второй организм: Hospital log / BPIC2011 (`scripts/download_hospital2011.py`). Не склеивается с BPIC2012.
+- Агент = `org:group` (в логе нет `org:resource`). Контекст = `case:Age`. Роль = specialism.
+- Split **7+3** мес (лог ~3 года).
+- Диагностика локальных минимумов: H(действие|типичный вход), доля топ-1, дыры мембраны роли, частые действия с одним носителем.
+
+#### Протестировано (Hospital 2011, holdout 7+3, n=13202)
+| | counts | softmax |
+|--|--------|---------|
+| next-step | 0.6244 | 0.6295 |
+| top-3 | 0.8499 | 0.8617 |
+| CE | 2.2234 | 1.2965 |
+
+Политика по CE: **softmax**. Fit: 354 кейса / 42880 событий; holdout: 127 / 13210. Агентов (отделений) на fit: 33; частых действий с одним носителем: 61.
+
+---
+
 ## [0.7.0] — 2026-09-03
 
 ### Русский

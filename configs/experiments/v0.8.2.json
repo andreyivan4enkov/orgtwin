@@ -1,0 +1,41 @@
+{
+  "version": "0.8.2",
+  "require_package_version": "0.10.0",
+  "recipe": "agent_rules",
+  "donor": {
+    "id": "BPIC2012",
+    "doi": "10.4121/uuid:3926db30-f712-4394-aebc-75976070e91f",
+    "xes_path": "data/raw/BPI_Challenge_2012.xes"
+  },
+  "notes_ru": "0.8.2: тот же recipe agent_rules на BPIC2012 для сравнения с медлогами (бизнес vs медицина, один протокол).",
+  "decisions_seed": ["Сопоставление: BPIC2012 agent_rules vs Hospital/Sepsis"],
+  "experiment": {
+    "donor_id": "BPIC2012",
+    "donor_doi": "10.4121/uuid:3926db30-f712-4394-aebc-75976070e91f",
+    "split": {
+      "fit_months": 3,
+      "holdout_months": 2,
+      "target_fit_months": 7,
+      "target_holdout_months": 3
+    },
+    "policy": {
+      "lambda_entropy": 0.05,
+      "max_iter": 250,
+      "C": 1.0,
+      "random_state": 42,
+      "solver": "saga",
+      "tol": 0.001,
+      "prune_min_support": 0
+    },
+    "donor_adapt": {
+      "agent_column": "org:resource",
+      "context_column": "",
+      "role_mode": "activity_prefix",
+      "count_min_support": 3,
+      "compare_softmax": true,
+      "run_sim": false
+    },
+    "sim": {"max_steps_per_case": 40, "seed": 42},
+    "eval": {"top_k_actions": 20, "next_step_top_k": 3}
+  }
+}

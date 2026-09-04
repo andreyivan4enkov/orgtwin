@@ -27,10 +27,14 @@ INFO_CANDIDATES = (
     "concept:name",
     "lifecycle:transition",
     "org:resource",
+    "org:group",
     "AMOUNT_REQ",
     "case:AMOUNT_REQ",
     "case:REG_DATE",
     "case:concept:name",
+    "case:Age",
+    "case:Diagnosis code",
+    "Specialism code",
 )
 
 
